@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { motion } from 'framer-motion';
@@ -21,16 +21,9 @@ const BuyPlanPage = () => {
     register,
     handleSubmit,
     formState: { errors },
-    watch,
   } = useForm();
 
-  const amount = watch('amount');
-
-  useEffect(() => {
-    fetchPlan();
-  }, [id]);
-
-  const fetchPlan = async () => {
+  const fetchPlan = useCallback(async () => {
     try {
       setLoading(true);
       const response = await investmentService.getPlans();
@@ -47,7 +40,11 @@ const BuyPlanPage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id]);
+
+  useEffect(() => {
+    fetchPlan();
+  }, [fetchPlan]);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];

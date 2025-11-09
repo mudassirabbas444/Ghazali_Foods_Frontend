@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { TrendingUp, Clock, CheckCircle, XCircle, Plus, DollarSign } from 'lucide-react';
@@ -12,11 +12,7 @@ const MyInvestmentsPage = () => {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
 
-  useEffect(() => {
-    fetchInvestments();
-  }, [filter]);
-
-  const fetchInvestments = async () => {
+  const fetchInvestments = useCallback(async () => {
     try {
       setLoading(true);
       const status = filter !== 'all' ? filter : null;
@@ -29,7 +25,11 @@ const MyInvestmentsPage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [filter]);
+
+  useEffect(() => {
+    fetchInvestments();
+  }, [fetchInvestments]);
 
   const getStatusBadge = (status) => {
     const statusConfig = {

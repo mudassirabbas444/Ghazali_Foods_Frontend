@@ -29,7 +29,6 @@ const RegisterPage = () => {
 
   const password = watch('password');
   const email = watch('email');
-  const phone = watch('phone');
 
   // Get referral code from URL params
   useEffect(() => {
@@ -120,17 +119,6 @@ const RegisterPage = () => {
       opacity: 1,
       y: 0,
       transition: { duration: 0.4 },
-    },
-  };
-
-  const floatingVariants = {
-    float: {
-      y: [-10, 10, -10],
-      transition: {
-        duration: 4,
-        repeat: Infinity,
-        ease: "easeInOut",
-      },
     },
   };
 

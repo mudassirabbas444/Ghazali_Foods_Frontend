@@ -5,7 +5,7 @@ import { Mail, ArrowLeft, RefreshCw, CheckCircle, AlertCircle, Shield } from 'lu
 import { useAuth } from '../../hooks/useAuth';
 import { Button, Input } from '../../components';
 import NotificationContainer from '../../components/common/NotificationContainer';
-import { ROUTES, VALIDATION } from '../../constants';
+import { ROUTES } from '../../constants';
 
 const VerifyEmailPage = () => {
   const navigate = useNavigate();

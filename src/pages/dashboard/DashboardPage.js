@@ -8,7 +8,6 @@ import {
   Award,
   Users,
   ArrowRight,
-  BarChart3,
 } from 'lucide-react';
 import dashboardService from '../../services/dashboard';
 import { Button } from '../../components';
