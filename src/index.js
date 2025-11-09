@@ -3,6 +3,11 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { API_CONFIG } from './constants';
+
+// Log API configuration on app start
+console.log('🚀 App Starting...');
+console.log('📡 API Configuration:', API_CONFIG);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

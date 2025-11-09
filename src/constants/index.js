@@ -18,10 +18,21 @@ const getApiBaseUrl = () => {
   return '/api'; // Fallback to relative path (will use same domain)
 };
 
+const apiBaseUrl = getApiBaseUrl();
+
 export const API_CONFIG = {
-  BASE_URL: getApiBaseUrl(),
+  BASE_URL: apiBaseUrl,
   TIMEOUT: parseInt(process.env.REACT_APP_API_TIMEOUT) || 10000,
 };
+
+// Log API URL for debugging
+console.log('🔗 API Base URL:', apiBaseUrl);
+console.log('🌍 Environment:', process.env.NODE_ENV);
+if (process.env.REACT_APP_API_URL) {
+  console.log('✅ REACT_APP_API_URL is set:', process.env.REACT_APP_API_URL);
+} else {
+  console.log('⚠️  REACT_APP_API_URL is not set, using fallback');
+}
 
 // App Configuration
 export const APP_CONFIG = {
