@@ -8,13 +8,13 @@ const getApiBaseUrl = () => {
   
   // Only use localhost fallback in development
   if (process.env.NODE_ENV === 'development') {
-    console.warn('⚠️  REACT_APP_API_URL not set, using localhost fallback for development');
+    if (typeof console !== 'undefined' && console.warn) {
+      console.warn('⚠️  REACT_APP_API_URL not set, using localhost fallback for development');
+    }
     return 'http://localhost:5000/api';
   }
   
-  // In production, warn and use relative path as fallback
-  console.warn('⚠️  REACT_APP_API_URL is not set. Using relative path /api as fallback.');
-  console.warn('⚠️  Please configure REACT_APP_API_URL in Vercel environment variables for production.');
+  // In production, use relative path as fallback (no console warnings in production builds)
   return '/api'; // Fallback to relative path (will use same domain)
 };
 
