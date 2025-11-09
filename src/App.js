@@ -1,24 +1,224 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import { AuthProvider } from './context/AuthContext';
+import { AdminAuthProvider } from './context/AdminAuthContext';
+import { ThemeProvider } from './context/ThemeContext';
+import { AppProvider } from './context/AppContext';
+import { NotificationContainer } from './components';
+import { ROUTES } from './constants';
+
+// Home Page
+import Home from './pages/Home';
+
+// Auth Pages
+import LoginPage from './pages/auth/LoginPage';
+import RegisterPage from './pages/auth/RegisterPage';
+import ForgotPasswordPage from './pages/auth/ForgotPasswordPage';
+import ResetPasswordPage from './pages/auth/ResetPasswordPage';
+import VerifyEmailPage from './pages/auth/VerifyEmailPage';
+
+// Investment Pages
+import PlansPage from './pages/investment/PlansPage';
+import BuyPlanPage from './pages/investment/BuyPlanPage';
+import MyInvestmentsPage from './pages/investment/MyInvestmentsPage';
+
+// Dashboard & Other Pages
+import DashboardPage from './pages/dashboard/DashboardPage';
+import WithdrawPage from './pages/withdrawal/WithdrawPage';
+import TeamPage from './pages/team/TeamPage';
+
+// Admin Pages
+import AdminDashboardPage from './pages/admin/AdminDashboardPage';
+import AdminInvestmentsPage from './pages/admin/AdminInvestmentsPage';
+import AdminWithdrawalsPage from './pages/admin/AdminWithdrawalsPage';
+
+// Layout
+import Layout from './components/layout/Layout';
+import AdminLayout from './components/layout/AdminLayout';
+import { useAuth } from './context/AuthContext';
+import { useAdminAuth } from './context/AdminAuthContext';
+
+// Protected Route Component
+const ProtectedRoute = ({ children }) => {
+  const { user, isLoading } = useAuth();
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-slate-900 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return <Navigate to={ROUTES.LOGIN} replace />;
+  }
+
+  return children;
+};
+
+// Public Route Component (redirect to dashboard if logged in)
+const PublicRoute = ({ children }) => {
+  const { user, isLoading } = useAuth();
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-slate-900 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+      </div>
+    );
+  }
+
+  if (user) {
+    return <Navigate to={ROUTES.DASHBOARD} replace />;
+  }
+
+  return children;
+};
+
+// Admin Protected Route Component
+const AdminProtectedRoute = ({ children }) => {
+  const { admin, isLoading } = useAdminAuth();
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-slate-900 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+      </div>
+    );
+  }
+
+  if (!admin) {
+    return <Navigate to="/admin/login" replace />;
+  }
+
+  return children;
+};
 
 function App() {
+  const googleClientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <GoogleOAuthProvider clientId={googleClientId || ''}>
+      <ThemeProvider>
+        <AppProvider>
+          <AuthProvider>
+            <AdminAuthProvider>
+              <Router>
+              <div className="App">
+            <Routes>
+              {/* Public Routes */}
+              <Route path="/" element={<Home />} />
+              <Route
+                path={ROUTES.LOGIN}
+                element={
+                  <PublicRoute>
+                    <LoginPage />
+                  </PublicRoute>
+                }
+              />
+              <Route
+                path={ROUTES.REGISTER}
+                element={
+                  <PublicRoute>
+                    <RegisterPage />
+                  </PublicRoute>
+                }
+              />
+              <Route path={ROUTES.FORGOT_PASSWORD} element={<ForgotPasswordPage />} />
+              <Route path={ROUTES.RESET_PASSWORD} element={<ResetPasswordPage />} />
+              <Route path={ROUTES.VERIFY_EMAIL} element={<VerifyEmailPage />} />
+
+              {/* Protected Routes with Layout */}
+              <Route
+                path={ROUTES.DASHBOARD}
+                element={
+                  <ProtectedRoute>
+                    <Layout>
+                      <DashboardPage />
+                    </Layout>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path={ROUTES.PLANS}
+                element={
+                  <ProtectedRoute>
+                    <Layout>
+                      <PlansPage />
+                    </Layout>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/buy-plan/:id"
+                element={
+                  <ProtectedRoute>
+                    <Layout>
+                      <BuyPlanPage />
+                    </Layout>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path={ROUTES.MY_INVESTMENTS}
+                element={
+                  <ProtectedRoute>
+                    <Layout>
+                      <MyInvestmentsPage />
+                    </Layout>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path={ROUTES.WITHDRAW}
+                element={
+                  <ProtectedRoute>
+                    <Layout>
+                      <WithdrawPage />
+                    </Layout>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path={ROUTES.TEAM}
+                element={
+                  <ProtectedRoute>
+                    <Layout>
+                      <TeamPage />
+                    </Layout>
+                  </ProtectedRoute>
+                }
+              />
+
+              {/* Admin Routes */}
+              <Route
+                path="/admin"
+                element={
+                  <AdminProtectedRoute>
+                    <AdminLayout />
+                  </AdminProtectedRoute>
+                }
+              >
+                <Route index element={<AdminDashboardPage />} />
+                <Route path="investments" element={<AdminInvestmentsPage />} />
+                <Route path="withdrawals" element={<AdminWithdrawalsPage />} />
+              </Route>
+
+              {/* 404 - Redirect to home */}
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+
+            {/* Notification Container */}
+            <NotificationContainer />
+          </div>
+        </Router>
+        </AdminAuthProvider>
+      </AuthProvider>
+      </AppProvider>
+    </ThemeProvider>
+    </GoogleOAuthProvider>
   );
 }
 

@@ -1,0 +1,325 @@
+import React, { useState, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { motion } from 'framer-motion';
+import { Wallet, ArrowRight, Clock, CheckCircle, XCircle, DollarSign, History } from 'lucide-react';
+import withdrawalService from '../../services/withdrawal';
+import dashboardService from '../../services/dashboard';
+import { Button, Input } from '../../components';
+
+const WithdrawPage = () => {
+  const [withdrawals, setWithdrawals] = useState([]);
+  const [availableBalance, setAvailableBalance] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm();
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const [dashboardRes, withdrawalsRes] = await Promise.all([
+        dashboardService.getDashboard(),
+        withdrawalService.getMyWithdrawals(),
+      ]);
+
+      if (dashboardRes.success) {
+        setAvailableBalance(dashboardRes.data?.availableBalance || 0);
+      }
+
+      if (withdrawalsRes.success) {
+        setWithdrawals(withdrawalsRes.withdrawals || []);
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const onSubmit = async (data) => {
+    if (parseFloat(data.amount) > availableBalance) {
+      setError('Insufficient balance');
+      return;
+    }
+
+    if (parseFloat(data.amount) <= 0) {
+      setError('Amount must be greater than 0');
+      return;
+    }
+
+    try {
+      setSubmitting(true);
+      setError(null);
+      setSuccess(false);
+
+      const response = await withdrawalService.createWithdrawal(
+        parseFloat(data.amount),
+        data.method,
+        data.accountDetails
+      );
+
+      if (response.success) {
+        setSuccess(true);
+        reset();
+        fetchData(); // Refresh data
+        setTimeout(() => setSuccess(false), 3000);
+      } else {
+        setError(response.message || 'Failed to create withdrawal request');
+      }
+    } catch (err) {
+      setError(err.message || 'Failed to create withdrawal request');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const getStatusBadge = (status) => {
+    const statusConfig = {
+      Pending: {
+        icon: Clock,
+        bg: 'bg-amber-100 dark:bg-amber-900/20',
+        text: 'text-amber-700 dark:text-amber-400',
+      },
+      Approved: {
+        icon: CheckCircle,
+        bg: 'bg-green-100 dark:bg-green-900/20',
+        text: 'text-green-700 dark:text-green-400',
+      },
+      Paid: {
+        icon: CheckCircle,
+        bg: 'bg-emerald-100 dark:bg-emerald-900/20',
+        text: 'text-emerald-700 dark:text-emerald-400',
+      },
+      Rejected: {
+        icon: XCircle,
+        bg: 'bg-red-100 dark:bg-red-900/20',
+        text: 'text-red-700 dark:text-red-400',
+      },
+    };
+
+    const config = statusConfig[status] || statusConfig.Pending;
+    const Icon = config.icon;
+
+    return (
+      <span
+        className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${config.bg} ${config.text}`}
+      >
+        <Icon className="w-4 h-4 mr-1" />
+        {status}
+      </span>
+    );
+  };
+
+  const formatDate = (dateString) => {
+    if (!dateString) return 'N/A';
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    });
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-slate-900 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-50 dark:bg-slate-900 py-8 sm:py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-6 sm:mb-8"
+        >
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-2">
+            Withdraw Funds
+          </h1>
+          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
+            Request withdrawal from your available balance
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
+          {/* Withdrawal Form */}
+          <div className="lg:col-span-2">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-4 sm:p-6 md:p-8"
+            >
+              {/* Available Balance */}
+              <div className="bg-gradient-to-br from-emerald-50 to-green-50 dark:from-emerald-900/20 dark:to-green-900/20 rounded-lg p-4 sm:p-6 mb-4 sm:mb-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-1">
+                      Available Balance
+                    </p>
+                    <p className="text-2xl sm:text-3xl font-bold text-emerald-600 dark:text-emerald-400">
+                      ${availableBalance.toFixed(2)}
+                    </p>
+                  </div>
+                  <Wallet className="w-10 h-10 sm:w-12 sm:h-12 text-emerald-500 flex-shrink-0" />
+                </div>
+              </div>
+
+              {/* Success Message */}
+              {success && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4 mb-6"
+                >
+                  <div className="flex items-center">
+                    <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
+                    <p className="text-green-700 dark:text-green-400">
+                      Withdrawal request submitted successfully!
+                    </p>
+                  </div>
+                </motion.div>
+              )}
+
+              {/* Error Message */}
+              {error && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 mb-6"
+                >
+                  <p className="text-red-700 dark:text-red-400">{error}</p>
+                </motion.div>
+              )}
+
+              {/* Form */}
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 sm:space-y-6">
+                <Input
+                  label="Amount"
+                  type="number"
+                  step="0.01"
+                  placeholder="Enter withdrawal amount"
+                  leftIcon={<DollarSign className="w-5 h-5" />}
+                  error={errors.amount?.message}
+                  {...register('amount', {
+                    required: 'Amount is required',
+                    min: {
+                      value: 0.01,
+                      message: 'Amount must be greater than 0',
+                    },
+                    max: {
+                      value: availableBalance,
+                      message: `Amount cannot exceed available balance ($${availableBalance.toFixed(2)})`,
+                    },
+                  })}
+                />
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Payment Method <span className="text-red-500">*</span>
+                  </label>
+                  <select
+                    {...register('method', { required: 'Payment method is required' })}
+                    className="w-full px-4 py-3 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent min-h-[44px] text-base"
+                  >
+                    <option value="">Select payment method</option>
+                    <option value="binance">Binance</option>
+                    <option value="jazzcash">JazzCash</option>
+                    <option value="easypaisa">EasyPaisa</option>
+                    <option value="bank">Bank Transfer</option>
+                  </select>
+                  {errors.method && (
+                    <p className="mt-1 text-sm text-red-500">{errors.method.message}</p>
+                  )}
+                </div>
+
+                <Input
+                  label="Account Details"
+                  type="text"
+                  placeholder="Enter your account/wallet details"
+                  error={errors.accountDetails?.message}
+                  {...register('accountDetails', {
+                    required: 'Account details are required',
+                    minLength: {
+                      value: 5,
+                      message: 'Account details must be at least 5 characters',
+                    },
+                  })}
+                />
+
+                <Button
+                  type="submit"
+                  size="lg"
+                  fullWidth
+                  loading={submitting}
+                  disabled={submitting || availableBalance <= 0}
+                  className="bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white min-h-[44px] text-sm sm:text-base"
+                >
+                  Submit Withdrawal Request
+                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2" />
+                </Button>
+              </form>
+            </motion.div>
+          </div>
+
+          {/* Withdrawal History */}
+          <div className="lg:col-span-1 order-first lg:order-last">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-4 sm:p-6"
+            >
+              <div className="flex items-center mb-3 sm:mb-4">
+                <History className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600 dark:text-gray-400 mr-2" />
+                <h3 className="text-base sm:text-lg font-bold text-gray-900 dark:text-white">
+                  Recent Withdrawals
+                </h3>
+              </div>
+
+              {withdrawals.length === 0 ? (
+                <p className="text-gray-500 dark:text-gray-400 text-sm">
+                  No withdrawal history
+                </p>
+              ) : (
+                <div className="space-y-4">
+                  {withdrawals.slice(0, 5).map((withdrawal) => (
+                    <div
+                      key={withdrawal._id}
+                      className="border-b border-gray-200 dark:border-slate-700 pb-4 last:border-0 last:pb-0"
+                    >
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-sm font-semibold text-gray-900 dark:text-white">
+                          ${withdrawal.amount}
+                        </span>
+                        {getStatusBadge(withdrawal.status)}
+                      </div>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                        {formatDate(withdrawal.createdAt)}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </motion.div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default WithdrawPage;
+
