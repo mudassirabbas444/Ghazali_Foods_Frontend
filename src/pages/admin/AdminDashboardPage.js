@@ -77,7 +77,7 @@ const AdminDashboardPage = () => {
       value: overview?.totalUsers || 0,
       icon: Users,
       color: 'indigo',
-      link: null,
+      link: '/admin/users',
     },
     {
       name: 'Total Investments',
@@ -238,27 +238,8 @@ const AdminDashboardPage = () => {
           </ResponsiveContainer>
         </motion.div>
       </div>
-
-      {/* Quick Actions */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Button
-          onClick={() => navigate(ROUTES.ADMIN_INVESTMENTS)}
-          className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white h-20 text-lg"
-        >
-          <DollarSign className="w-6 h-6 mr-2" />
-          Manage Investments
-        </Button>
-        <Button
-          onClick={() => navigate(ROUTES.ADMIN_WITHDRAWALS)}
-          className="bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white h-20 text-lg"
-        >
-          <Wallet className="w-6 h-6 mr-2" />
-          Manage Withdrawals
-        </Button>
-      </div>
     </div>
   );
 };
 
 export default AdminDashboardPage;
-

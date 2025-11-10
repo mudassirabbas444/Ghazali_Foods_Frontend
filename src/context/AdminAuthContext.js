@@ -31,7 +31,7 @@ export const AdminAuthProvider = ({ children }) => {
             if (profileResponse.success) {
               setAdmin(profileResponse.user);
               setIsAuthenticated(true);
-              setIsAdmin(profileResponse.user?.role === 'admin');
+              setIsAdmin(profileResponse.user?.isAdmin === true);
             } else {
               // Token is invalid, clear auth data
               adminAuthService.logout();
@@ -72,7 +72,7 @@ export const AdminAuthProvider = ({ children }) => {
       if (response.success && response.user) {
         setAdmin(response.user);
         setIsAuthenticated(true);
-        setIsAdmin(response.user?.role === 'admin');
+        setIsAdmin(response.user?.isAdmin === true);
         return response;
       } else {
         throw new Error(response.message || 'Login failed');

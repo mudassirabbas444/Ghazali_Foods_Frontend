@@ -35,6 +35,33 @@ class DashboardService {
       throw error;
     }
   }
+
+  // Get referral code and link
+  async getReferralInfo() {
+    try {
+      const response = await apiService.get(API_ENDPOINTS.DASHBOARD.REFERRAL_INFO);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // Get daily earnings records
+  async getDailyEarnings(startDate = null, endDate = null) {
+    try {
+      let url = API_ENDPOINTS.DASHBOARD.DAILY_EARNINGS;
+      const params = [];
+      if (startDate) params.push(`startDate=${startDate}`);
+      if (endDate) params.push(`endDate=${endDate}`);
+      if (params.length > 0) {
+        url += `?${params.join('&')}`;
+      }
+      const response = await apiService.get(url);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 const dashboardService = new DashboardService();

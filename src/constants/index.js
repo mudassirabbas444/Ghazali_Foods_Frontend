@@ -126,6 +126,8 @@ export const API_ENDPOINTS = {
     SUMMARY: '/dashboard',
     EARNINGS: '/earnings',
     TEAM: '/team',
+    REFERRAL_INFO: '/referral-info',
+    DAILY_EARNINGS: '/daily-earnings',
   },
 
   // Admin endpoints
@@ -136,6 +138,16 @@ export const API_ENDPOINTS = {
     WITHDRAWALS: '/admin/withdrawals',
     APPROVE_WITHDRAWAL: '/admin/withdrawals/:id/approve',
     SEED_RANKS: '/admin/seed-ranks',
+    GET_USERS: '/admin/users',
+    GET_USER_EARNINGS: '/admin/users/:id/earnings',
+    PLANS: '/admin/plans',
+    CREATE_PLAN: '/admin/plans',
+    UPDATE_PLAN: '/admin/plans/:id',
+    DELETE_PLAN: '/admin/plans/:id',
+    RANKS: '/admin/ranks',
+    CREATE_RANK: '/admin/ranks',
+    UPDATE_RANK: '/admin/ranks/:id',
+    DELETE_RANK: '/admin/ranks/:id',
   },
 };
 
@@ -155,7 +167,9 @@ export const ROUTES = {
   WITHDRAW: '/withdraw',
   TEAM: '/team',
   PROFILE: '/profile',
+  DAILY_EARNINGS: '/daily-earnings',
   // Admin routes
+  ADMIN_LOGIN: '/admin/login',
   ADMIN_DASHBOARD: '/admin',
   ADMIN_INVESTMENTS: '/admin/investments',
   ADMIN_WITHDRAWALS: '/admin/withdrawals',

@@ -41,7 +41,7 @@ export const AuthProvider = ({ children }) => {
           const status = error?.response?.status || error?.status;
           if (status === 401 || status === 403) {
             console.log('Authentication failed, logging out');
-            handleLogout();
+          handleLogout();
           }
           // For other errors (network, 500, etc.), keep user logged in
         }

@@ -8,6 +8,10 @@ import {
   Award,
   Users,
   ArrowRight,
+  Copy,
+  Share2,
+  Calendar,
+  CheckCircle,
 } from 'lucide-react';
 import dashboardService from '../../services/dashboard';
 import { Button } from '../../components';
@@ -30,10 +34,15 @@ const DashboardPage = () => {
   const [dashboardData, setDashboardData] = useState(null);
   const [earnings, setEarnings] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [referralInfo, setReferralInfo] = useState(null);
+  const [dailyEarnings, setDailyEarnings] = useState([]);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     fetchDashboardData();
     fetchEarnings();
+    fetchReferralInfo();
+    fetchDailyEarnings();
   }, []);
 
   const fetchDashboardData = async () => {
@@ -57,6 +66,50 @@ const DashboardPage = () => {
       }
     } catch (error) {
       console.error('Error fetching earnings:', error);
+    }
+  };
+
+  const fetchReferralInfo = async () => {
+    try {
+      const response = await dashboardService.getReferralInfo();
+      if (response.success) {
+        setReferralInfo(response.data);
+      }
+    } catch (error) {
+      console.error('Error fetching referral info:', error);
+    }
+  };
+
+  const fetchDailyEarnings = async () => {
+    try {
+      const response = await dashboardService.getDailyEarnings();
+      if (response.success) {
+        setDailyEarnings(response.data?.records || []);
+      }
+    } catch (error) {
+      console.error('Error fetching daily earnings:', error);
+    }
+  };
+
+  const copyToClipboard = (text) => {
+    navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const shareReferralLink = async () => {
+    if (navigator.share && referralInfo) {
+      try {
+        await navigator.share({
+          title: 'Join Dreams Life',
+          text: referralInfo.shareText,
+          url: referralInfo.referralLink,
+        });
+      } catch (error) {
+        console.error('Error sharing:', error);
+      }
+    } else {
+      copyToClipboard(referralInfo?.referralLink || '');
     }
   };
 
@@ -248,6 +301,109 @@ const DashboardPage = () => {
             )}
           </motion.div>
         </div>
+
+        {/* Referral Code Section */}
+        {referralInfo && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl shadow-lg p-6 sm:p-8 mb-6 sm:mb-8"
+          >
+            <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">
+              Your Referral Code
+            </h2>
+            <div className="space-y-4">
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+                <label className="text-sm font-medium text-white/80 mb-2 block">
+                  Referral Code
+                </label>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    value={referralInfo.refCode}
+                    readOnly
+                    className="flex-1 bg-white/20 text-white font-mono text-lg sm:text-xl px-4 py-2 rounded border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50"
+                  />
+                  <button
+                    onClick={() => copyToClipboard(referralInfo.refCode)}
+                    className="p-2 bg-white/20 hover:bg-white/30 rounded transition-colors"
+                    title="Copy code"
+                  >
+                    {copied ? (
+                      <CheckCircle className="w-5 h-5 text-white" />
+                    ) : (
+                      <Copy className="w-5 h-5 text-white" />
+                    )}
+                  </button>
+                </div>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+                <label className="text-sm font-medium text-white/80 mb-2 block">
+                  Referral Link
+                </label>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    value={referralInfo.referralLink}
+                    readOnly
+                    className="flex-1 bg-white/20 text-white text-sm sm:text-base px-4 py-2 rounded border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 truncate"
+                  />
+                  <button
+                    onClick={() => copyToClipboard(referralInfo.referralLink)}
+                    className="p-2 bg-white/20 hover:bg-white/30 rounded transition-colors"
+                    title="Copy link"
+                  >
+                    {copied ? (
+                      <CheckCircle className="w-5 h-5 text-white" />
+                    ) : (
+                      <Copy className="w-5 h-5 text-white" />
+                    )}
+                  </button>
+                  <button
+                    onClick={shareReferralLink}
+                    className="p-2 bg-white/20 hover:bg-white/30 rounded transition-colors"
+                    title="Share link"
+                  >
+                    <Share2 className="w-5 h-5 text-white" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+
+        {/* Daily Earnings Summary */}
+        {dailyEarnings.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-4 sm:p-6 mb-6 sm:mb-8 cursor-pointer hover:shadow-xl transition-shadow"
+            onClick={() => navigate(ROUTES.DAILY_EARNINGS)}
+          >
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="p-3 bg-indigo-100 dark:bg-indigo-900/20 rounded-lg">
+                  <Calendar className="w-6 h-6 sm:w-8 sm:h-8 text-indigo-600 dark:text-indigo-400" />
+                </div>
+                <div>
+                  <h2 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
+                    Daily Earnings
+                  </h2>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    {dailyEarnings.length} day{dailyEarnings.length !== 1 ? 's' : ''} recorded
+                  </p>
+                </div>
+              </div>
+              <div className="text-right">
+                <p className="text-2xl sm:text-3xl font-bold text-emerald-600 dark:text-emerald-400">
+                  ${dailyEarnings.reduce((sum, record) => sum + record.totalEarnings, 0).toFixed(2)}
+                </p>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Total</p>
+                <ArrowRight className="w-5 h-5 text-gray-400 mt-2 ml-auto" />
+              </div>
+            </div>
+          </motion.div>
+        )}
 
         {/* Quick Actions */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">

@@ -206,6 +206,45 @@ const BuyPlanPage = () => {
             </div>
           </div>
 
+          {/* Payment Account Details */}
+          <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 sm:p-6 mb-4 sm:mb-6">
+            <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center">
+              <DollarSign className="w-5 h-5 mr-2 text-blue-600 dark:text-blue-400" />
+              Payment Account Details
+            </h3>
+            <div className="space-y-3">
+              <div className="bg-white dark:bg-slate-800 rounded-lg p-3">
+                <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-1">Binance Wallet Address</p>
+                <p className="text-sm sm:text-base font-mono font-semibold text-gray-900 dark:text-white break-all">
+                  0xd50738b08c7da487871a56cea2eea628af59a184
+                </p>
+              </div>
+              <div className="bg-white dark:bg-slate-800 rounded-lg p-3">
+                <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-1">Payment Methods</p>
+                <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
+                  Easypaisa and Jazzcash
+                </p>
+              </div>
+              <div className="bg-white dark:bg-slate-800 rounded-lg p-3">
+                <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-1">Contact Name</p>
+                <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
+                  Danish Ali
+                </p>
+              </div>
+              <div className="bg-white dark:bg-slate-800 rounded-lg p-3">
+                <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-1">Contact Number</p>
+                <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
+                  03274159132
+                </p>
+              </div>
+            </div>
+            <div className="mt-4 p-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg">
+              <p className="text-xs sm:text-sm text-amber-700 dark:text-amber-400">
+                <strong>Important:</strong> Please make sure to send the exact amount (${plan.amount}) and upload a clear receipt/screenshot of your payment.
+              </p>
+            </div>
+          </div>
+
           {/* Form */}
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 sm:space-y-6">
             <Input

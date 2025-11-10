@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { motion } from 'framer-motion';
-import { Wallet, ArrowRight, Clock, CheckCircle, XCircle, DollarSign, History } from 'lucide-react';
+import { Wallet, ArrowRight, Clock, CheckCircle, XCircle, DollarSign, History, Eye, X } from 'lucide-react';
 import withdrawalService from '../../services/withdrawal';
 import dashboardService from '../../services/dashboard';
 import { Button, Input } from '../../components';
@@ -13,6 +13,7 @@ const WithdrawPage = () => {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
+  const [viewReceipt, setViewReceipt] = useState(null);
 
   const {
     register,
@@ -306,9 +307,18 @@ const WithdrawPage = () => {
                         </span>
                         {getStatusBadge(withdrawal.status)}
                       </div>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">
                         {formatDate(withdrawal.createdAt)}
                       </p>
+                      {withdrawal.receipt && withdrawal.status === 'Paid' && (
+                        <button
+                          onClick={() => setViewReceipt(withdrawal.receipt)}
+                          className="flex items-center gap-1 text-xs text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300"
+                        >
+                          <Eye className="w-3 h-3" />
+                          View Receipt
+                        </button>
+                      )}
                     </div>
                   ))}
                 </div>
@@ -317,6 +327,44 @@ const WithdrawPage = () => {
           </div>
         </div>
       </div>
+
+      {/* Receipt View Modal */}
+      {viewReceipt && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-white dark:bg-slate-800 rounded-xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col"
+          >
+            <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-slate-700">
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                Payment Receipt
+              </h3>
+              <button
+                onClick={() => setViewReceipt(null)}
+                className="p-2 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
+              >
+                <X className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+              </button>
+            </div>
+            <div className="flex-1 overflow-y-auto p-4">
+              {viewReceipt.endsWith('.pdf') ? (
+                <iframe
+                  src={viewReceipt}
+                  className="w-full h-full min-h-[500px] rounded-lg"
+                  title="Receipt PDF"
+                />
+              ) : (
+                <img
+                  src={viewReceipt}
+                  alt="Payment Receipt"
+                  className="w-full h-auto rounded-lg"
+                />
+              )}
+            </div>
+          </motion.div>
+        </div>
+      )}
     </div>
   );
 };

@@ -25,13 +25,18 @@ import MyInvestmentsPage from './pages/investment/MyInvestmentsPage';
 
 // Dashboard & Other Pages
 import DashboardPage from './pages/dashboard/DashboardPage';
+import DailyEarningsPage from './pages/dashboard/DailyEarningsPage';
 import WithdrawPage from './pages/withdrawal/WithdrawPage';
 import TeamPage from './pages/team/TeamPage';
 
 // Admin Pages
+import AdminLoginPage from './pages/admin/AdminLoginPage';
 import AdminDashboardPage from './pages/admin/AdminDashboardPage';
 import AdminInvestmentsPage from './pages/admin/AdminInvestmentsPage';
 import AdminWithdrawalsPage from './pages/admin/AdminWithdrawalsPage';
+import AdminPlansPage from './pages/admin/AdminPlansPage';
+import AdminRanksPage from './pages/admin/AdminRanksPage';
+import AdminUsersPage from './pages/admin/AdminUsersPage';
 
 // Layout
 import Layout from './components/layout/Layout';
@@ -79,7 +84,7 @@ const PublicRoute = ({ children }) => {
 
 // Admin Protected Route Component
 const AdminProtectedRoute = ({ children }) => {
-  const { admin, isLoading } = useAdminAuth();
+  const { admin, isLoading, isAuthenticated } = useAdminAuth();
 
   if (isLoading) {
     return (
@@ -89,8 +94,8 @@ const AdminProtectedRoute = ({ children }) => {
     );
   }
 
-  if (!admin) {
-    return <Navigate to="/admin/login" replace />;
+  if (!admin || !isAuthenticated) {
+    return <Navigate to={ROUTES.ADMIN_LOGIN} replace />;
   }
 
   return children;
@@ -129,6 +134,12 @@ function App() {
               <Route path={ROUTES.FORGOT_PASSWORD} element={<ForgotPasswordPage />} />
               <Route path={ROUTES.RESET_PASSWORD} element={<ResetPasswordPage />} />
               <Route path={ROUTES.VERIFY_EMAIL} element={<VerifyEmailPage />} />
+
+              {/* Admin Login (Public - no redirect for regular users) */}
+              <Route
+                path={ROUTES.ADMIN_LOGIN}
+                element={<AdminLoginPage />}
+              />
 
               {/* Protected Routes with Layout */}
               <Route
@@ -191,6 +202,16 @@ function App() {
                   </ProtectedRoute>
                 }
               />
+              <Route
+                path={ROUTES.DAILY_EARNINGS}
+                element={
+                  <ProtectedRoute>
+                    <Layout>
+                      <DailyEarningsPage />
+                    </Layout>
+                  </ProtectedRoute>
+                }
+              />
 
               {/* Admin Routes */}
               <Route
@@ -204,6 +225,9 @@ function App() {
                 <Route index element={<AdminDashboardPage />} />
                 <Route path="investments" element={<AdminInvestmentsPage />} />
                 <Route path="withdrawals" element={<AdminWithdrawalsPage />} />
+                <Route path="users" element={<AdminUsersPage />} />
+                <Route path="plans" element={<AdminPlansPage />} />
+                <Route path="ranks" element={<AdminRanksPage />} />
               </Route>
 
               {/* 404 - Redirect to home */}

@@ -9,8 +9,8 @@ import {
   Wallet,
   Users,
   DollarSign,
-  Settings,
   LogOut,
+  Calendar,
 } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { ThemeToggle } from '../ui';
@@ -140,6 +140,16 @@ const Header = () => {
                     <span className='absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-primary-500 to-secondary-500 group-hover:w-full transition-all duration-300'></span>
                   </Link>
                 </motion.div>
+                
+                <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
+                  <Link 
+                    to={ROUTES.DAILY_EARNINGS} 
+                    className='text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-300 relative group'
+                  >
+                    Earnings
+                    <span className='absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-primary-500 to-secondary-500 group-hover:w-full transition-all duration-300'></span>
+                  </Link>
+                </motion.div>
               </>
             ) : (
               <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
@@ -224,14 +234,13 @@ const Header = () => {
                           <Users className='h-4 w-4 mr-3' />
                           My Team
                         </Link>
-                        <hr className='my-1 border-gray-200 dark:border-gray-700' />
                         <Link
-                          to={ROUTES.PROFILE}
+                          to={ROUTES.DAILY_EARNINGS}
                           className='flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200'
                           onClick={() => setIsUserMenuOpen(false)}
                         >
-                          <Settings className='h-4 w-4 mr-3' />
-                          Settings
+                          <Calendar className='h-4 w-4 mr-3' />
+                          Daily Earnings
                         </Link>
                         <hr className='my-1 border-gray-200 dark:border-gray-700' />
                         <button
@@ -389,11 +398,11 @@ const Header = () => {
                       transition={{ delay: 0.7 }}
                     >
                       <Link
-                        to={ROUTES.PROFILE}
+                        to={ROUTES.DAILY_EARNINGS}
                         className='block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-colors duration-300'
                         onClick={() => setIsMobileMenuOpen(false)}
                       >
-                        Settings
+                        Daily Earnings
                       </Link>
                     </motion.div>
                     
@@ -402,7 +411,7 @@ const Header = () => {
                     <motion.div
                       initial={{ x: -20, opacity: 0 }}
                       animate={{ x: 0, opacity: 1 }}
-                      transition={{ delay: 0.8 }}
+                      transition={{ delay: 0.9 }}
                     >
                       <button
                         onClick={handleLogout}

@@ -16,6 +16,7 @@ import {
   Lock,
 } from 'lucide-react';
 import { ROUTES } from '../constants';
+import { ThemeToggle } from '../components/ui';
 
 const Home = () => {
   const features = [
@@ -137,6 +138,7 @@ const Home = () => {
               </div>
             </div>
             <div className="flex items-center gap-2 sm:gap-4">
+              <ThemeToggle />
               <Link
                 to={ROUTES.LOGIN}
                 className="text-sm sm:text-base text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium transition-colors px-2 sm:px-0"

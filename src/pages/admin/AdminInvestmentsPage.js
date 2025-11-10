@@ -30,8 +30,9 @@ const AdminInvestmentsPage = () => {
       const status = filter !== 'all' ? filter : null;
       const response = await adminService.getInvestments(status, page, 20);
       if (response.success) {
-        setInvestments(response.investments || []);
-        setTotalPages(response.pages || 1);
+        // Backend returns { success: true, data: { investments, total, page, pages } }
+        setInvestments(response.data?.investments || response.investments || []);
+        setTotalPages(response.data?.pages || response.pages || 1);
       }
     } catch (error) {
       console.error('Error fetching investments:', error);

@@ -7,6 +7,9 @@ import {
   DollarSign,
   RefreshCw,
   MessageSquare,
+  Upload,
+  FileText,
+  Eye,
 } from 'lucide-react';
 import adminService from '../../services/admin';
 import { Button, Input } from '../../components';
@@ -20,6 +23,8 @@ const AdminWithdrawalsPage = () => {
   const [processingId, setProcessingId] = useState(null);
   const [selectedWithdrawal, setSelectedWithdrawal] = useState(null);
   const [adminNote, setAdminNote] = useState('');
+  const [receiptFile, setReceiptFile] = useState(null);
+  const [viewReceipt, setViewReceipt] = useState(null);
 
   useEffect(() => {
     fetchWithdrawals();
@@ -31,13 +36,30 @@ const AdminWithdrawalsPage = () => {
       const status = filter !== 'all' ? filter : null;
       const response = await adminService.getWithdrawals(status, page, 20);
       if (response.success) {
-        setWithdrawals(response.withdrawals || []);
-        setTotalPages(response.pages || 1);
+        // Backend returns { success: true, data: { withdrawals, total, page, pages } }
+        setWithdrawals(response.data?.withdrawals || response.withdrawals || []);
+        setTotalPages(response.data?.pages || response.pages || 1);
       }
     } catch (error) {
       console.error('Error fetching withdrawals:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'application/pdf'];
+      if (!allowedTypes.includes(file.type)) {
+        alert('Invalid file type. Only JPEG, PNG, WebP images and PDF files are allowed.');
+        return;
+      }
+      if (file.size > 5 * 1024 * 1024) {
+        alert('File size must be less than 5MB');
+        return;
+      }
+      setReceiptFile(file);
     }
   };
 
@@ -48,10 +70,11 @@ const AdminWithdrawalsPage = () => {
 
     try {
       setProcessingId(withdrawalId);
-      const response = await adminService.approveWithdrawal(withdrawalId, adminNote);
+      const response = await adminService.approveWithdrawal(withdrawalId, adminNote, receiptFile);
       if (response.success) {
         await fetchWithdrawals();
         setAdminNote('');
+        setReceiptFile(null);
         setSelectedWithdrawal(null);
         alert('Withdrawal approved and marked as paid!');
       } else {
@@ -223,19 +246,33 @@ const AdminWithdrawalsPage = () => {
                       </p>
                     </div>
                   </div>
-                  {(withdrawal.status === 'Pending' || withdrawal.status === 'Approved') && (
-                    <Button
-                      onClick={() => {
-                        setSelectedWithdrawal(withdrawal);
-                        setAdminNote(withdrawal.adminNote || '');
-                      }}
-                      size="sm"
-                      className="bg-green-600 hover:bg-green-700 text-white w-full min-h-[44px] text-xs"
-                    >
-                      <CheckCircle className="w-3 h-3 mr-1" />
-                      Approve
-                    </Button>
-                  )}
+                  <div className="flex gap-2">
+                    {withdrawal.receipt && (
+                      <Button
+                        onClick={() => setViewReceipt(withdrawal.receipt)}
+                        variant="outline"
+                        size="sm"
+                        className="flex-1 min-h-[44px] text-xs"
+                      >
+                        <Eye className="w-3 h-3 mr-1" />
+                        Receipt
+                      </Button>
+                    )}
+                    {(withdrawal.status === 'Pending' || withdrawal.status === 'Approved') && (
+                      <Button
+                        onClick={() => {
+                          setSelectedWithdrawal(withdrawal);
+                          setAdminNote(withdrawal.adminNote || '');
+                          setReceiptFile(null);
+                        }}
+                        size="sm"
+                        className="bg-green-600 hover:bg-green-700 text-white flex-1 min-h-[44px] text-xs"
+                      >
+                        <CheckCircle className="w-3 h-3 mr-1" />
+                        Approve
+                      </Button>
+                    )}
+                  </div>
                 </motion.div>
               ))}
             </div>
@@ -306,19 +343,33 @@ const AdminWithdrawalsPage = () => {
                         {formatDate(withdrawal.createdAt)}
                       </td>
                       <td className="px-4 lg:px-6 py-4 whitespace-nowrap text-sm">
-                        {(withdrawal.status === 'Pending' || withdrawal.status === 'Approved') && (
-                          <Button
-                            onClick={() => {
-                              setSelectedWithdrawal(withdrawal);
-                              setAdminNote(withdrawal.adminNote || '');
-                            }}
-                            size="sm"
-                            className="bg-green-600 hover:bg-green-700 text-white min-h-[44px]"
-                          >
-                            <CheckCircle className="w-4 h-4 mr-1" />
-                            Approve
-                          </Button>
-                        )}
+                        <div className="flex items-center gap-2">
+                          {withdrawal.receipt && (
+                            <Button
+                              onClick={() => setViewReceipt(withdrawal.receipt)}
+                              variant="outline"
+                              size="sm"
+                              className="min-h-[44px]"
+                            >
+                              <Eye className="w-4 h-4 mr-1" />
+                              Receipt
+                            </Button>
+                          )}
+                          {(withdrawal.status === 'Pending' || withdrawal.status === 'Approved') && (
+                            <Button
+                              onClick={() => {
+                                setSelectedWithdrawal(withdrawal);
+                                setAdminNote(withdrawal.adminNote || '');
+                                setReceiptFile(null);
+                              }}
+                              size="sm"
+                              className="bg-green-600 hover:bg-green-700 text-white min-h-[44px]"
+                            >
+                              <CheckCircle className="w-4 h-4 mr-1" />
+                              Approve
+                            </Button>
+                          )}
+                        </div>
                       </td>
                     </motion.tr>
                   ))}
@@ -410,11 +461,47 @@ const AdminWithdrawalsPage = () => {
                 leftIcon={<MessageSquare className="w-5 h-5" />}
               />
 
+              {/* Receipt Upload */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Payment Receipt (Optional)
+                </label>
+                <div className="mt-1 flex justify-center px-6 pt-5 pb-4 border-2 border-gray-300 dark:border-slate-600 border-dashed rounded-lg hover:border-indigo-500 dark:hover:border-indigo-400 transition-colors">
+                  <div className="space-y-1 text-center w-full">
+                    <Upload className="mx-auto h-8 w-8 text-gray-400" />
+                    <div className="flex text-sm text-gray-600 dark:text-gray-400 items-center justify-center">
+                      <label className="relative cursor-pointer rounded-md font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-500">
+                        <span>Upload receipt</span>
+                        <input
+                          type="file"
+                          className="sr-only"
+                          accept="image/jpeg,image/jpg,image/png,image/webp,application/pdf"
+                          onChange={handleFileChange}
+                        />
+                      </label>
+                      <p className="pl-1">or drag and drop</p>
+                    </div>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                      PNG, JPG, WebP, PDF up to 5MB
+                    </p>
+                    {receiptFile && (
+                      <div className="flex items-center justify-center mt-2">
+                        <FileText className="w-4 h-4 text-green-500 mr-2" />
+                        <span className="text-sm text-green-600 dark:text-green-400 truncate">
+                          {receiptFile.name}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+
               <div className="flex gap-2">
                 <Button
                   onClick={() => {
                     setSelectedWithdrawal(null);
                     setAdminNote('');
+                    setReceiptFile(null);
                   }}
                   variant="outline"
                   fullWidth
@@ -431,6 +518,45 @@ const AdminWithdrawalsPage = () => {
                   Mark as Paid
                 </Button>
               </div>
+            </div>
+          </motion.div>
+        </div>
+      )}
+
+      {/* Receipt View Modal */}
+      {viewReceipt && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-white dark:bg-slate-800 rounded-xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col"
+          >
+            <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-slate-700">
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                Payment Receipt
+              </h3>
+              <Button
+                onClick={() => setViewReceipt(null)}
+                variant="ghost"
+                size="sm"
+              >
+                <XCircle className="w-5 h-5" />
+              </Button>
+            </div>
+            <div className="flex-1 overflow-y-auto p-4">
+              {viewReceipt.endsWith('.pdf') ? (
+                <iframe
+                  src={viewReceipt}
+                  className="w-full h-full min-h-[500px] rounded-lg"
+                  title="Receipt PDF"
+                />
+              ) : (
+                <img
+                  src={viewReceipt}
+                  alt="Payment Receipt"
+                  className="w-full h-auto rounded-lg"
+                />
+              )}
             </div>
           </motion.div>
         </div>

@@ -85,14 +85,14 @@ const LocationInput = ({
     setIsGeocoding(true);
     try {
       // Location service not available - using basic input
-      const locationData = {
+        const locationData = {
         city: searchQuery,
         area: '',
         address: searchQuery,
         coordinates: null
-      };
-      onChange(locationData);
-      toast.success('Location updated successfully');
+        };
+        onChange(locationData);
+        toast.success('Location updated successfully');
     } catch (error) {
       console.error('Error geocoding address:', error);
       toast.error('Failed to get location details');
@@ -108,18 +108,18 @@ const LocationInput = ({
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           (position) => {
-            const locationData = {
+        const locationData = {
               city: 'Current Location',
               area: '',
               address: 'Current Location',
-              coordinates: {
+          coordinates: {
                 latitude: position.coords.latitude,
                 longitude: position.coords.longitude
-              }
-            };
+          }
+        };
             setSearchQuery('Current Location');
-            onChange(locationData);
-            toast.success('Current location set successfully');
+        onChange(locationData);
+        toast.success('Current location set successfully');
             setIsGeocoding(false);
           },
           (error) => {

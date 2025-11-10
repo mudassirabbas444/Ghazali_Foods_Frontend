@@ -56,21 +56,18 @@ class AdminAuthService {
 
   // Set admin token
   setAdminToken(token) {
-    // Store admin token in cookie with 7 days expiration
-    const expires = new Date();
-    expires.setDate(expires.getDate() + 7);
-
-    document.cookie = `${STORAGE_KEYS.ADMIN_TOKEN || 'admin_token'}=${token}; expires=${expires.toUTCString()}; path=/; secure; samesite=strict`;
+    // Store admin token in localStorage
+    localStorage.setItem(STORAGE_KEYS.ADMIN_TOKEN || 'dreamslife_admin_token', token);
   }
 
   // Get admin token
   getAdminToken() {
-    return this.getCookie(STORAGE_KEYS.ADMIN_TOKEN || 'admin_token');
+    return localStorage.getItem(STORAGE_KEYS.ADMIN_TOKEN || 'dreamslife_admin_token');
   }
 
   // Remove admin token
   removeAdminToken() {
-    document.cookie = `${STORAGE_KEYS.ADMIN_TOKEN || 'admin_token'}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+    localStorage.removeItem(STORAGE_KEYS.ADMIN_TOKEN || 'dreamslife_admin_token');
   }
 
   // Set admin data
@@ -102,7 +99,7 @@ class AdminAuthService {
   // Check if user is admin
   isAdmin() {
     const adminData = this.getAdminData();
-    return adminData?.role === 'admin';
+    return adminData?.isAdmin === true;
   }
 
   // Get admin ID
@@ -111,20 +108,10 @@ class AdminAuthService {
     return adminData?.id || adminData?._id;
   }
 
-  // Get admin role
+  // Get admin role (for backward compatibility)
   getAdminRole() {
     const adminData = this.getAdminData();
-    return adminData?.role;
-  }
-
-  // Helper method to get cookie value
-  getCookie(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) {
-      return parts.pop().split(';').shift();
-    }
-    return null;
+    return adminData?.isAdmin ? 'admin' : null;
   }
 
   // Get admin profile
