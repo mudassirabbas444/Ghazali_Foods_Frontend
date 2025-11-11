@@ -103,7 +103,7 @@ const PlansPage = () => {
                   <div className="flex items-center justify-between p-2 sm:p-3 bg-gray-50 dark:bg-slate-700 rounded-lg">
                     <span className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 flex items-center">
                       <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
-                      Daily Earning
+                      Mining Income
                     </span>
                     <span className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
                       ${plan.dailyEarning}
@@ -113,7 +113,7 @@ const PlansPage = () => {
                   <div className="flex items-center justify-between p-2 sm:p-3 bg-gray-50 dark:bg-slate-700 rounded-lg">
                     <span className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 flex items-center">
                       <Users className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
-                      Level 1 Bonus
+                      Daily Earning
                     </span>
                     <span className="text-sm sm:text-base font-semibold text-emerald-500">
                       ${plan.level1Bonus || 0}

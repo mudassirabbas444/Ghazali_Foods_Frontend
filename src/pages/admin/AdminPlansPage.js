@@ -186,22 +186,22 @@ const AdminPlansPage = () => {
                   <tr key={plan._id} className="hover:bg-gray-50 dark:hover:bg-slate-700/50">
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">{plan.name}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">${plan.amount}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">${plan.dailyEarning}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">${plan.level1Bonus}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                      <div>Bonus: ${plan.level1Bonus}</div>
-                      <div>Daily: ${plan.level1DailyShare}</div>
+                      <div>Daily: ${plan.level1Bonus}</div>
+                      <div>Mining Income: ${plan.level1DailyShare}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                      <div>Bonus: ${plan.level2Bonus}</div>
-                      <div>Daily: ${plan.level2DailyShare}</div>
+                      <div>Daily: ${plan.level2Bonus}</div>
+                      <div>Mining Income: ${plan.level2DailyShare}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                      <div>Bonus: ${plan.level3Bonus}</div>
-                      <div>Daily: ${plan.level3DailyShare}</div>
+                      <div>Daily: ${plan.level3Bonus}</div>
+                      <div>Mining Income: ${plan.level3DailyShare}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                      <div>Bonus: ${plan.level4Bonus}</div>
-                      <div>Daily: ${plan.level4DailyShare}</div>
+                      <div>Daily: ${plan.level4Bonus}</div>
+                      <div>Mining Income: ${plan.level4DailyShare}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                       <div className="flex items-center gap-2">
