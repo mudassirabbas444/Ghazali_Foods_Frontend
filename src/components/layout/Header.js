@@ -16,6 +16,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { ThemeToggle } from '../ui';
 import { cn } from '../../utils';
 import { ROUTES } from '../../constants';
+import logo from '../../assets/Logo.png';
 
 const Header = () => {
   const navigate = useNavigate();
@@ -58,15 +59,15 @@ const Header = () => {
             whileHover={{ scale: 1.05 }}
             transition={{ duration: 0.2 }}
           >
-            <Link to='/' className='flex items-center space-x-2'>
-              <motion.div 
-                className='w-8 h-8 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-xl flex items-center justify-center shadow-lg'
+            <Link to='/' className='flex items-center space-x-2 sm:space-x-3'>
+              <motion.img
+                src={logo}
+                alt='Dreams Life Traders Logo'
+                className='h-8 w-8 sm:h-10 sm:w-10 object-contain'
                 whileHover={{ rotate: 5 }}
                 transition={{ duration: 0.2 }}
-              >
-                <span className='text-white font-bold text-lg'>D</span>
-              </motion.div>
-              <span className='text-xl font-bold text-gray-900 dark:text-white'>
+              />
+              <span className='text-lg sm:text-xl font-bold text-gray-900 dark:text-white hidden sm:inline-block'>
                 Dreams Life Traders
               </span>
             </Link>

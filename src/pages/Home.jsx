@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { ROUTES } from '../constants';
 import { ThemeToggle } from '../components/ui';
+import logo from '../assets/Logo.png';
 
 const Home = () => {
   const features = [
@@ -126,16 +127,16 @@ const Home = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-14 sm:h-16">
             <div className="flex items-center">
-              <div className="flex-shrink-0">
-                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg flex items-center justify-center">
-                  <TrendingUp className="w-4 h-4 sm:w-6 sm:h-6 text-white" />
-                </div>
-              </div>
-              <div className="ml-2 sm:ml-3">
+              <Link to="/" className="flex items-center space-x-2 sm:space-x-3">
+                <img
+                  src={logo}
+                  alt="Dreams Life Traders Logo"
+                  className="h-8 w-8 sm:h-10 sm:w-10 object-contain"
+                />
                 <h1 className="text-base sm:text-xl font-bold text-gray-900 dark:text-white">
                   Dreams Life Traders
                 </h1>
-              </div>
+              </Link>
             </div>
             <div className="flex items-center gap-2 sm:gap-4">
               <ThemeToggle />
