@@ -282,7 +282,7 @@ const Home = () => {
                     <div className="flex justify-between">
                       <span className="text-gray-600 dark:text-gray-400">Daily earning:</span>
                       <span className="font-semibold text-emerald-600 dark:text-emerald-400">
-                        {plan.level1Bonus}
+                        {plan.level1}
                       </span>
                     </div>
                     <div className="flex justify-between">
