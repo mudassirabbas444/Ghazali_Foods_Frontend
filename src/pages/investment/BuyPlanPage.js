@@ -213,28 +213,44 @@ const BuyPlanPage = () => {
               Payment Account Details
             </h3>
             <div className="space-y-3">
+              {/* Meezan Account */}
+              <div className="bg-white dark:bg-slate-800 rounded-lg p-3">
+                <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-1">Meezan Account No.</p>
+                <p className="text-sm sm:text-base font-mono font-semibold text-gray-900 dark:text-white break-all mb-1">
+                  0098830107140467
+                </p>
+                <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
+                  Muhammad Muntazir Khan
+                </p>
+              </div>
+              
+              {/* Jazzcash and Easypaisa - Muhammad Muntazir Khan */}
+              <div className="bg-white dark:bg-slate-800 rounded-lg p-3">
+                <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-1">Jazzcash and Easypaisa</p>
+                <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white mb-1">
+                  03076979277
+                </p>
+                <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
+                  Muhammad Muntazir Khan
+                </p>
+              </div>
+              
+              {/* Easypaisa and Jazzcash - Danish Ali */}
+              <div className="bg-white dark:bg-slate-800 rounded-lg p-3">
+                <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-1">Easypaisa and Jazzcash</p>
+                <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white mb-1">
+                  03274159132
+                </p>
+                <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
+                  Danish Ali
+                </p>
+              </div>
+              
+              {/* Binance Wallet Address */}
               <div className="bg-white dark:bg-slate-800 rounded-lg p-3">
                 <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-1">Binance Wallet Address</p>
                 <p className="text-sm sm:text-base font-mono font-semibold text-gray-900 dark:text-white break-all">
                   0xd50738b08c7da487871a56cea2eea628af59a184
-                </p>
-              </div>
-              <div className="bg-white dark:bg-slate-800 rounded-lg p-3">
-                <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-1">Payment Methods</p>
-                <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
-                  Easypaisa and Jazzcash
-                </p>
-              </div>
-              <div className="bg-white dark:bg-slate-800 rounded-lg p-3">
-                <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-1">Contact Name</p>
-                <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
-                  Danish Ali
-                </p>
-              </div>
-              <div className="bg-white dark:bg-slate-800 rounded-lg p-3">
-                <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-1">Contact Number</p>
-                <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
-                  03274159132
                 </p>
               </div>
             </div>

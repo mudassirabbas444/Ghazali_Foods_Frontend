@@ -124,21 +124,21 @@ const DashboardPage = () => {
   const stats = [
     {
       name: 'Total Investment',
-      value: `$${dashboardData?.totalInvestment || 0}`,
+      value: `$${Number(dashboardData?.totalInvestment || 0).toFixed(2)}`,
       icon: DollarSign,
       color: 'indigo',
       link: ROUTES.MY_INVESTMENTS,
     },
     {
       name: 'Total Earnings',
-      value: `$${dashboardData?.totalEarnings || 0}`,
+      value: `$${Number(dashboardData?.totalEarnings || 0).toFixed(2)}`,
       icon: TrendingUp,
       color: 'emerald',
       link: null,
     },
     {
       name: 'Available Balance',
-      value: `$${dashboardData?.availableBalance || 0}`,
+      value: `$${Number(dashboardData?.availableBalance || 0).toFixed(2)}`,
       icon: Wallet,
       color: 'purple',
       link: ROUTES.WITHDRAW,
