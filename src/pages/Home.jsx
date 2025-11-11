@@ -276,19 +276,19 @@ const Home = () => {
               >
                 <div className="text-center">
                   <div className="text-3xl font-bold text-indigo-600 dark:text-indigo-400 mb-2">
-                    ${plan.amount}
+                    {plan.amount}
                   </div>
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
                       <span className="text-gray-600 dark:text-gray-400">Daily earning:</span>
                       <span className="font-semibold text-emerald-600 dark:text-emerald-400">
-                        ${plan.level1Bonus}
+                        {plan.level1Bonus}
                       </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600 dark:text-gray-400">Level 1 Mining Income:</span>
                       <span className="font-semibold text-purple-600 dark:text-purple-400">
-                        ${plan.level1DailyShare}
+                        {plan.dailyEarning}
                       </span>
                     </div>
                   </div>

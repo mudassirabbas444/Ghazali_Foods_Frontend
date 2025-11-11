@@ -135,6 +135,7 @@ export const API_ENDPOINTS = {
     OVERVIEW: '/admin/overview',
     INVESTMENTS: '/admin/investments',
     APPROVE_INVESTMENT: '/admin/investments/:id/approve',
+    REJECT_INVESTMENT: '/admin/investments/:id/reject',
     WITHDRAWALS: '/admin/withdrawals',
     APPROVE_WITHDRAWAL: '/admin/withdrawals/:id/approve',
     SEED_RANKS: '/admin/seed-ranks',

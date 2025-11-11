@@ -67,6 +67,18 @@ class AdminService {
     }
   }
 
+  // Reject investment
+  async rejectInvestment(investmentId) {
+    try {
+      const response = await adminApi.patch(
+        API_ENDPOINTS.ADMIN.REJECT_INVESTMENT.replace(':id', investmentId)
+      );
+      return response.data;
+    } catch (error) {
+      throw this.handleError(error);
+    }
+  }
+
   // Get all withdrawals with filters
   async getWithdrawals(status = null, page = 1, limit = 20) {
     try {

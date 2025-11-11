@@ -194,13 +194,13 @@ const BuyPlanPage = () => {
               <div>
                 <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Daily Earning</p>
                 <p className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">
-                  ${plan.dailyEarning}
+                  ${plan.level1Bonus}
                 </p>
               </div>
               <div>
-                <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Level 1 Bonus</p>
+                <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Level 1 Mining Income</p>
                 <p className="text-base sm:text-lg font-semibold text-emerald-500">
-                  ${plan.level1Bonus || 0}
+                  ${plan.dailyEarning || 0}
                 </p>
               </div>
             </div>

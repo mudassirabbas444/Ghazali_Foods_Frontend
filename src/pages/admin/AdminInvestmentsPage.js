@@ -62,6 +62,27 @@ const AdminInvestmentsPage = () => {
     }
   };
 
+  const handleReject = async (investmentId) => {
+    if (!window.confirm('Are you sure you want to reject this investment?')) {
+      return;
+    }
+
+    try {
+      setProcessingId(investmentId);
+      const response = await adminService.rejectInvestment(investmentId);
+      if (response.success) {
+        await fetchInvestments();
+        alert('Investment rejected successfully!');
+      } else {
+        alert(response.message || 'Failed to reject investment');
+      }
+    } catch (error) {
+      alert(error.message || 'Failed to reject investment');
+    } finally {
+      setProcessingId(null);
+    }
+  };
+
   const getStatusBadge = (status) => {
     const statusConfig = {
       Pending: {
@@ -220,15 +241,26 @@ const AdminInvestmentsPage = () => {
                       </Button>
                     )}
                     {investment.status === 'Pending' && (
-                      <Button
-                        onClick={() => handleApprove(investment._id)}
-                        size="sm"
-                        loading={processingId === investment._id}
-                        className="bg-green-600 hover:bg-green-700 text-white flex-1 min-h-[44px] text-xs"
-                      >
-                        <CheckCircle className="w-3 h-3 mr-1" />
-                        Approve
-                      </Button>
+                      <>
+                        <Button
+                          onClick={() => handleApprove(investment._id)}
+                          size="sm"
+                          loading={processingId === investment._id}
+                          className="bg-green-600 hover:bg-green-700 text-white flex-1 min-h-[44px] text-xs"
+                        >
+                          <CheckCircle className="w-3 h-3 mr-1" />
+                          Approve
+                        </Button>
+                        <Button
+                          onClick={() => handleReject(investment._id)}
+                          size="sm"
+                          loading={processingId === investment._id}
+                          className="bg-red-600 hover:bg-red-700 text-white flex-1 min-h-[44px] text-xs"
+                        >
+                          <XCircle className="w-3 h-3 mr-1" />
+                          Reject
+                        </Button>
+                      </>
                     )}
                   </div>
                 </motion.div>
@@ -309,15 +341,26 @@ const AdminInvestmentsPage = () => {
                             </Button>
                           )}
                           {investment.status === 'Pending' && (
-                            <Button
-                              onClick={() => handleApprove(investment._id)}
-                              size="sm"
-                              loading={processingId === investment._id}
-                              className="bg-green-600 hover:bg-green-700 text-white min-h-[44px]"
-                            >
-                              <CheckCircle className="w-4 h-4 mr-1" />
-                              Approve
-                            </Button>
+                            <>
+                              <Button
+                                onClick={() => handleApprove(investment._id)}
+                                size="sm"
+                                loading={processingId === investment._id}
+                                className="bg-green-600 hover:bg-green-700 text-white min-h-[44px]"
+                              >
+                                <CheckCircle className="w-4 h-4 mr-1" />
+                                Approve
+                              </Button>
+                              <Button
+                                onClick={() => handleReject(investment._id)}
+                                size="sm"
+                                loading={processingId === investment._id}
+                                className="bg-red-600 hover:bg-red-700 text-white min-h-[44px]"
+                              >
+                                <XCircle className="w-4 h-4 mr-1" />
+                                Reject
+                              </Button>
+                            </>
                           )}
                         </div>
                       </td>
