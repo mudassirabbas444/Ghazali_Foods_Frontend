@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { TrendingUp, DollarSign, Users, ArrowRight, Sparkles } from 'lucide-react';
 import investmentService from '../../services/investment';
 import { Button } from '../../components';
+import { formatCurrency } from '../../utils/currency';
 
 const PlansPage = () => {
   const navigate = useNavigate();
@@ -93,8 +94,13 @@ const PlansPage = () => {
                   <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-2">
                     {plan.name}
                   </h3>
-                  <div className="text-2xl sm:text-3xl font-bold text-indigo-600 dark:text-indigo-400">
-                    ${plan.amount}
+                  <div>
+                    <div className="text-2xl sm:text-3xl font-bold text-indigo-600 dark:text-indigo-400">
+                      ${plan.amount}
+                    </div>
+                    <div className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-1">
+                      {formatCurrency(plan.amount).pkr}
+                    </div>
                   </div>
                 </div>
 
@@ -105,9 +111,14 @@ const PlansPage = () => {
                       <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
                       Mining Income
                     </span>
-                    <span className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
-                      ${plan.dailyEarning}
-                    </span>
+                    <div className="text-right">
+                      <span className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white block">
+                        ${plan.dailyEarning}
+                      </span>
+                      <span className="text-xs text-gray-500 dark:text-gray-400">
+                        {formatCurrency(plan.dailyEarning).pkrOnly}
+                      </span>
+                    </div>
                   </div>
 
                   <div className="flex items-center justify-between p-2 sm:p-3 bg-gray-50 dark:bg-slate-700 rounded-lg">
@@ -115,9 +126,14 @@ const PlansPage = () => {
                       <Users className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
                       Daily Earning
                     </span>
-                    <span className="text-sm sm:text-base font-semibold text-emerald-500">
-                      ${plan.level1Bonus || 0}
-                    </span>
+                    <div className="text-right">
+                      <span className="text-sm sm:text-base font-semibold text-emerald-500 block">
+                        ${plan.level1Bonus || 0}
+                      </span>
+                      <span className="text-xs text-gray-500 dark:text-gray-400">
+                        {formatCurrency(plan.level1Bonus || 0).pkrOnly}
+                      </span>
+                    </div>
                   </div>
                 </div>
 

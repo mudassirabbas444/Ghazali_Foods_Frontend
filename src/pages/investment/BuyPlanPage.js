@@ -6,6 +6,7 @@ import { Upload, DollarSign, FileText, ArrowLeft, CheckCircle, AlertCircle } fro
 import investmentService from '../../services/investment';
 import { Button, Input } from '../../components';
 import { ROUTES } from '../../constants';
+import { formatCurrency } from '../../utils/currency';
 
 const BuyPlanPage = () => {
   const { id } = useParams();
@@ -187,7 +188,10 @@ const BuyPlanPage = () => {
                 <div className="text-2xl sm:text-3xl font-bold text-indigo-600 dark:text-indigo-400">
                   ${plan.amount}
                 </div>
-                <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Investment Amount</p>
+                <div className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-1">
+                  {formatCurrency(plan.amount).pkr}
+                </div>
+                <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-1">Investment Amount</p>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-3 sm:gap-4 mt-4">
@@ -196,11 +200,17 @@ const BuyPlanPage = () => {
                 <p className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">
                   ${plan.level1Bonus}
                 </p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">
+                  {formatCurrency(plan.level1Bonus).pkrOnly}
+                </p>
               </div>
               <div>
                 <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Level 1 Mining Income</p>
                 <p className="text-base sm:text-lg font-semibold text-emerald-500">
                   ${plan.dailyEarning || 0}
+                </p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">
+                  {formatCurrency(plan.dailyEarning || 0).pkrOnly}
                 </p>
               </div>
             </div>
