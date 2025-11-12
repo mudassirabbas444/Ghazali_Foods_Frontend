@@ -315,20 +315,27 @@ const RegisterPage = () => {
                 label='Referral Code'
                 type='text'
                 autoComplete='off'
-                placeholder='Enter referral code'
+                placeholder='Enter referral code (8 characters)'
                 leftIcon={<Gift className='h-5 w-5 text-gray-400' />}
                 error={errors.referredBy?.message}
-                className='bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 focus:bg-white dark:focus:bg-gray-600 focus:border-indigo-500 dark:focus:border-indigo-400'
+                className='bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 focus:bg-white dark:focus:bg-gray-600 focus:border-indigo-500 dark:focus:border-indigo-400 uppercase'
                 {...register('referredBy', {
                   required: 'Referral code is required',
                   pattern: {
-                    value: /^[A-Z0-9]{8}$/,
-                    message: 'Referral code must be 8 alphanumeric characters',
+                    value: /^[A-Za-z0-9]{8}$/,
+                    message: 'Referral code must be exactly 8 alphanumeric characters',
+                  },
+                  onChange: (e) => {
+                    // Convert to uppercase automatically
+                    const upperValue = e.target.value.toUpperCase();
+                    e.target.value = upperValue;
+                    setValue('referredBy', upperValue);
+                    setReferralCode(upperValue);
                   },
                 })}
               />
               
-              {referralCode && (
+              {referralCode && !errors.referredBy && referralCode.length === 8 && /^[A-Za-z0-9]{8}$/.test(referralCode) && (
                 <motion.div
                   className='bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-3'
                   initial={{ opacity: 0, scale: 0.95 }}
