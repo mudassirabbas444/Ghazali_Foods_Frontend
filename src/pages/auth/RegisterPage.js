@@ -30,11 +30,19 @@ const RegisterPage = () => {
   const password = watch('password');
   const email = watch('email');
 
-  // Get referral code from URL params
+  // Get referral code, username, and company from URL params
   useEffect(() => {
     const refCode = searchParams.get('ref');
+    const username = searchParams.get('user');
+    const company = searchParams.get('company');
+    
     if (refCode) {
       setReferralCode(refCode);
+    }
+    
+    // Display username and company if present in URL
+    if (username || company) {
+      console.log('Referral link info:', { username, company, refCode });
     }
   }, [searchParams]);
 
@@ -70,13 +78,21 @@ const RegisterPage = () => {
     if (isBlocked) return;
 
     // Prepare registration data matching backend format
+    // Referral code is now required - use from URL param or form input
+    const finalReferralCode = referralCode || data.referredBy;
+    if (!finalReferralCode) {
+      // This should not happen if validation is working, but add safety check
+      console.error('Referral code is missing');
+      return;
+    }
+
     const registrationData = {
       fullName: data.name, // Map name to fullName for backend
       email: data.email,
       phone: data.phone,
       password: data.password,
       walletInfo: data.walletInfo || '', // Optional wallet info
-      referredBy: referralCode || data.referredBy || null // Use referral code from URL or input
+      referredBy: finalReferralCode // Required referral code
     };
 
     console.log('Registration attempt:', registrationData);
@@ -286,17 +302,17 @@ const RegisterPage = () => {
               />
 
               <Input
-                label='Referral Code (Optional)'
+                label='Referral Code'
                 type='text'
                 autoComplete='off'
-                placeholder='Enter referral code if you have one'
+                placeholder='Enter referral code'
                 leftIcon={<Gift className='h-5 w-5 text-gray-400' />}
                 error={errors.referredBy?.message}
                 value={referralCode}
                 onChange={(e) => setReferralCode(e.target.value)}
                 className='bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 focus:bg-white dark:focus:bg-gray-600 focus:border-indigo-500 dark:focus:border-indigo-400'
                 {...register('referredBy', {
-                  required: false,
+                  required: 'Referral code is required',
                   pattern: {
                     value: /^[A-Z0-9]{8}$/,
                     message: 'Referral code must be 8 alphanumeric characters',

@@ -169,11 +169,13 @@ export const ROUTES = {
   TEAM: '/team',
   PROFILE: '/profile',
   DAILY_EARNINGS: '/daily-earnings',
+  SUPPORT: '/support',
   // Admin routes
   ADMIN_LOGIN: '/admin/login',
   ADMIN_DASHBOARD: '/admin',
   ADMIN_INVESTMENTS: '/admin/investments',
   ADMIN_WITHDRAWALS: '/admin/withdrawals',
+  ADMIN_SUPPORT: '/admin/support',
   PRODUCTS: '/products',
   PRODUCT_DETAIL: '/products/:id',
   PRODUCT_CREATE: '/products/create',

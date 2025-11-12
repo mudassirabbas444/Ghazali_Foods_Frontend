@@ -12,7 +12,8 @@ import {
   DollarSign,
   Wallet,
   Coins,
-  Award
+  Award,
+  MessageCircle
 } from 'lucide-react';
 import { ThemeToggle } from '../ui';
 import NotificationContainer from '../common/NotificationContainer';
@@ -39,6 +40,7 @@ const AdminLayout = () => {
     { to: '/admin/users', label: 'Users', icon: Users },
     { to: '/admin/plans', label: 'Plans', icon: Coins },
     { to: '/admin/ranks', label: 'Ranks', icon: Award },
+    { to: '/admin/support', label: 'Support', icon: MessageCircle },
   ];
 
   return (
