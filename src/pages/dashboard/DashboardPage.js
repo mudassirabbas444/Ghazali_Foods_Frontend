@@ -74,6 +74,8 @@ const DashboardPage = () => {
       const response = await dashboardService.getReferralInfo();
       if (response.success) {
         setReferralInfo(response.data);
+      } else {
+        console.error('Failed to fetch referral info:', response.message);
       }
     } catch (error) {
       console.error('Error fetching referral info:', error);

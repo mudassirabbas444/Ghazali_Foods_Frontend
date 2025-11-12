@@ -25,10 +25,12 @@ const RegisterPage = () => {
     handleSubmit,
     formState: { errors },
     watch,
+    setValue,
   } = useForm();
 
   const password = watch('password');
   const email = watch('email');
+  const watchedReferralCode = watch('referredBy');
 
   // Get referral code, username, and company from URL params
   useEffect(() => {
@@ -38,13 +40,21 @@ const RegisterPage = () => {
     
     if (refCode) {
       setReferralCode(refCode);
+      setValue('referredBy', refCode);
     }
     
     // Display username and company if present in URL
     if (username || company) {
       console.log('Referral link info:', { username, company, refCode });
     }
-  }, [searchParams]);
+  }, [searchParams, setValue]);
+
+  // Sync watched referral code with state
+  useEffect(() => {
+    if (watchedReferralCode) {
+      setReferralCode(watchedReferralCode);
+    }
+  }, [watchedReferralCode]);
 
   // Password strength calculation
   useEffect(() => {
@@ -308,8 +318,6 @@ const RegisterPage = () => {
                 placeholder='Enter referral code'
                 leftIcon={<Gift className='h-5 w-5 text-gray-400' />}
                 error={errors.referredBy?.message}
-                value={referralCode}
-                onChange={(e) => setReferralCode(e.target.value)}
                 className='bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 focus:bg-white dark:focus:bg-gray-600 focus:border-indigo-500 dark:focus:border-indigo-400'
                 {...register('referredBy', {
                   required: 'Referral code is required',
