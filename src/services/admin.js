@@ -117,6 +117,19 @@ class AdminService {
     }
   }
 
+  // Reject withdrawal
+  async rejectWithdrawal(withdrawalId, adminNote = '') {
+    try {
+      const response = await adminApi.patch(
+        API_ENDPOINTS.ADMIN.REJECT_WITHDRAWAL.replace(':id', withdrawalId),
+        { adminNote }
+      );
+      return response.data;
+    } catch (error) {
+      throw this.handleError(error);
+    }
+  }
+
   // Seed ranks
   async seedRanks() {
     try {

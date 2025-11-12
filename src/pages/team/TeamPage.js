@@ -8,6 +8,8 @@ import {
   Calendar,
   UserPlus,
   TrendingUp,
+  CheckCircle,
+  XCircle,
 } from 'lucide-react';
 import dashboardService from '../../services/dashboard';
 
@@ -139,25 +141,72 @@ const TeamPage = () => {
         </motion.div>
 
         {/* Team Summary */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
-          {levels.map((level) => (
-            <motion.div
-              key={level.key}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className={`bg-white dark:bg-slate-800 rounded-xl shadow-lg p-3 sm:p-4 md:p-6 ${colorClasses[level.color].bg} ${colorClasses[level.color].border} border-2`}
-            >
-              <div className="flex items-center justify-between mb-2">
-                <level.icon className={`w-5 h-5 sm:w-6 sm:h-6 ${colorClasses[level.color].icon}`} />
-                <span className={`text-xl sm:text-2xl font-bold ${colorClasses[level.color].text}`}>
-                  {level.members.length}
-                </span>
+        {teamData?.summary && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-4 sm:p-6 mb-6 sm:mb-8"
+          >
+            <h2 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-4">
+              Team Overview
+            </h2>
+            <div className="grid grid-cols-3 gap-4">
+              <div className="text-center">
+                <p className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">
+                  {teamData.summary.total || 0}
+                </p>
+                <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-1">Total Members</p>
               </div>
-              <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400">
-                {level.name}
-              </p>
-            </motion.div>
-          ))}
+              <div className="text-center">
+                <p className="text-2xl sm:text-3xl font-bold text-emerald-600 dark:text-emerald-400">
+                  {teamData.summary.active || 0}
+                </p>
+                <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-1">Active</p>
+              </div>
+              <div className="text-center">
+                <p className="text-2xl sm:text-3xl font-bold text-red-600 dark:text-red-400">
+                  {teamData.summary.inactive || 0}
+                </p>
+                <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-1">Inactive</p>
+              </div>
+            </div>
+          </motion.div>
+        )}
+
+        {/* Level Summary Cards */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
+          {levels.map((level) => {
+            const activeCount = level.members.filter(m => m.isActive).length;
+            const inactiveCount = level.members.length - activeCount;
+            return (
+              <motion.div
+                key={level.key}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className={`bg-white dark:bg-slate-800 rounded-xl shadow-lg p-3 sm:p-4 md:p-6 ${colorClasses[level.color].bg} ${colorClasses[level.color].border} border-2`}
+              >
+                <div className="flex items-center justify-between mb-2">
+                  <level.icon className={`w-5 h-5 sm:w-6 sm:h-6 ${colorClasses[level.color].icon}`} />
+                  <span className={`text-xl sm:text-2xl font-bold ${colorClasses[level.color].text}`}>
+                    {level.members.length}
+                  </span>
+                </div>
+                <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
+                  {level.name}
+                </p>
+                <div className="flex items-center gap-2 mt-2">
+                  <span className="text-xs text-emerald-600 dark:text-emerald-400 font-medium">
+                    {activeCount} active
+                  </span>
+                  {inactiveCount > 0 && (
+                    <span className="text-xs text-red-600 dark:text-red-400 font-medium">
+                      {inactiveCount} inactive
+                    </span>
+                  )}
+                </div>
+              </motion.div>
+            );
+          })}
         </div>
 
         {/* Team Levels */}
@@ -217,13 +266,33 @@ const TeamPage = () => {
                                 key={member._id}
                                 initial={{ opacity: 0, scale: 0.95 }}
                                 animate={{ opacity: 1, scale: 1 }}
-                                className="bg-gray-50 dark:bg-slate-700 rounded-lg p-3 sm:p-4 border border-gray-200 dark:border-slate-600"
+                                className={`bg-gray-50 dark:bg-slate-700 rounded-lg p-3 sm:p-4 border ${
+                                  member.isActive 
+                                    ? 'border-emerald-200 dark:border-emerald-800' 
+                                    : 'border-gray-200 dark:border-slate-600'
+                                }`}
                               >
                                 <div className="flex items-start justify-between mb-2 sm:mb-3">
                                   <div className="flex-1 min-w-0">
-                                    <h4 className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white mb-1 truncate">
-                                      {member.fullName || 'N/A'}
-                                    </h4>
+                                    <div className="flex items-center gap-2 mb-1">
+                                      <h4 className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white truncate">
+                                        {member.fullName || 'N/A'}
+                                      </h4>
+                                      {member.isActive ? (
+                                        <CheckCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
+                                      ) : (
+                                        <XCircle className="w-4 h-4 text-red-600 dark:text-red-400 flex-shrink-0" />
+                                      )}
+                                    </div>
+                                    <div className="flex items-center gap-2 mb-1">
+                                      <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
+                                        member.isActive
+                                          ? 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400'
+                                          : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400'
+                                      }`}>
+                                        {member.isActive ? 'Active' : 'Inactive'}
+                                      </span>
+                                    </div>
                                     <div className="flex items-center text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-2">
                                       <Mail className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2 flex-shrink-0" />
                                       <span className="truncate">{member.email || 'N/A'}</span>

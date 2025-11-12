@@ -144,11 +144,12 @@ const DashboardPage = () => {
       link: ROUTES.WITHDRAW,
     },
     {
-      name: 'Team Count',
-      value: dashboardData?.teamCount || 0,
+      name: 'Active Team',
+      value: dashboardData?.activeTeamCount || 0,
       icon: Users,
       color: 'blue',
       link: ROUTES.TEAM,
+      subtitle: `${dashboardData?.inactiveTeamCount || 0} inactive`,
     },
     {
       name: 'Rank',
@@ -218,6 +219,11 @@ const DashboardPage = () => {
                 <p className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white break-words">
                   {stat.value}
                 </p>
+                {stat.subtitle && (
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    {stat.subtitle}
+                  </p>
+                )}
               </motion.div>
             );
           })}

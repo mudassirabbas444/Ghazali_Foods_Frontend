@@ -25,6 +25,7 @@ const AdminWithdrawalsPage = () => {
   const [adminNote, setAdminNote] = useState('');
   const [receiptFile, setReceiptFile] = useState(null);
   const [viewReceipt, setViewReceipt] = useState(null);
+  const [actionType, setActionType] = useState('approve'); // 'approve' or 'reject'
 
   useEffect(() => {
     fetchWithdrawals();
@@ -76,12 +77,37 @@ const AdminWithdrawalsPage = () => {
         setAdminNote('');
         setReceiptFile(null);
         setSelectedWithdrawal(null);
+        setActionType('approve');
         alert('Withdrawal approved and marked as paid!');
       } else {
         alert(response.message || 'Failed to approve withdrawal');
       }
     } catch (error) {
       alert(error.message || 'Failed to approve withdrawal');
+    } finally {
+      setProcessingId(null);
+    }
+  };
+
+  const handleReject = async (withdrawalId) => {
+    if (!window.confirm('Are you sure you want to reject this withdrawal? The amount will be refunded to the user.')) {
+      return;
+    }
+
+    try {
+      setProcessingId(withdrawalId);
+      const response = await adminService.rejectWithdrawal(withdrawalId, adminNote);
+      if (response.success) {
+        await fetchWithdrawals();
+        setAdminNote('');
+        setSelectedWithdrawal(null);
+        setActionType('approve');
+        alert('Withdrawal rejected and amount refunded!');
+      } else {
+        alert(response.message || 'Failed to reject withdrawal');
+      }
+    } catch (error) {
+      alert(error.message || 'Failed to reject withdrawal');
     } finally {
       setProcessingId(null);
     }
@@ -258,12 +284,42 @@ const AdminWithdrawalsPage = () => {
                         Receipt
                       </Button>
                     )}
-                    {(withdrawal.status === 'Pending' || withdrawal.status === 'Approved') && (
+                    {withdrawal.status === 'Pending' && (
+                      <>
+                        <Button
+                          onClick={() => {
+                            setSelectedWithdrawal(withdrawal);
+                            setAdminNote(withdrawal.adminNote || '');
+                            setReceiptFile(null);
+                            setActionType('approve');
+                          }}
+                          size="sm"
+                          className="bg-green-600 hover:bg-green-700 text-white flex-1 min-h-[44px] text-xs"
+                        >
+                          <CheckCircle className="w-3 h-3 mr-1" />
+                          Approve
+                        </Button>
+                        <Button
+                          onClick={() => {
+                            setSelectedWithdrawal(withdrawal);
+                            setAdminNote(withdrawal.adminNote || '');
+                            setActionType('reject');
+                          }}
+                          size="sm"
+                          className="bg-red-600 hover:bg-red-700 text-white flex-1 min-h-[44px] text-xs"
+                        >
+                          <XCircle className="w-3 h-3 mr-1" />
+                          Reject
+                        </Button>
+                      </>
+                    )}
+                    {withdrawal.status === 'Approved' && (
                       <Button
                         onClick={() => {
                           setSelectedWithdrawal(withdrawal);
                           setAdminNote(withdrawal.adminNote || '');
                           setReceiptFile(null);
+                          setActionType('approve');
                         }}
                         size="sm"
                         className="bg-green-600 hover:bg-green-700 text-white flex-1 min-h-[44px] text-xs"
@@ -355,12 +411,42 @@ const AdminWithdrawalsPage = () => {
                               Receipt
                             </Button>
                           )}
-                          {(withdrawal.status === 'Pending' || withdrawal.status === 'Approved') && (
+                          {withdrawal.status === 'Pending' && (
+                            <>
+                              <Button
+                                onClick={() => {
+                                  setSelectedWithdrawal(withdrawal);
+                                  setAdminNote(withdrawal.adminNote || '');
+                                  setReceiptFile(null);
+                                  setActionType('approve');
+                                }}
+                                size="sm"
+                                className="bg-green-600 hover:bg-green-700 text-white min-h-[44px]"
+                              >
+                                <CheckCircle className="w-4 h-4 mr-1" />
+                                Approve
+                              </Button>
+                              <Button
+                                onClick={() => {
+                                  setSelectedWithdrawal(withdrawal);
+                                  setAdminNote(withdrawal.adminNote || '');
+                                  setActionType('reject');
+                                }}
+                                size="sm"
+                                className="bg-red-600 hover:bg-red-700 text-white min-h-[44px]"
+                              >
+                                <XCircle className="w-4 h-4 mr-1" />
+                                Reject
+                              </Button>
+                            </>
+                          )}
+                          {withdrawal.status === 'Approved' && (
                             <Button
                               onClick={() => {
                                 setSelectedWithdrawal(withdrawal);
                                 setAdminNote(withdrawal.adminNote || '');
                                 setReceiptFile(null);
+                                setActionType('approve');
                               }}
                               size="sm"
                               className="bg-green-600 hover:bg-green-700 text-white min-h-[44px]"
@@ -413,12 +499,14 @@ const AdminWithdrawalsPage = () => {
           >
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-                Approve Withdrawal
+                {actionType === 'approve' ? 'Approve Withdrawal' : 'Reject Withdrawal'}
               </h3>
               <Button
                 onClick={() => {
                   setSelectedWithdrawal(null);
                   setAdminNote('');
+                  setReceiptFile(null);
+                  setActionType('approve');
                 }}
                 variant="ghost"
                 size="sm"
@@ -457,44 +545,54 @@ const AdminWithdrawalsPage = () => {
                 label="Admin Note (Optional)"
                 value={adminNote}
                 onChange={(e) => setAdminNote(e.target.value)}
-                placeholder="Add a note about this withdrawal..."
+                placeholder={actionType === 'approve' ? "Add a note about this withdrawal..." : "Reason for rejection..."}
                 leftIcon={<MessageSquare className="w-5 h-5" />}
               />
 
-              {/* Receipt Upload */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Payment Receipt (Optional)
-                </label>
-                <div className="mt-1 flex justify-center px-6 pt-5 pb-4 border-2 border-gray-300 dark:border-slate-600 border-dashed rounded-lg hover:border-indigo-500 dark:hover:border-indigo-400 transition-colors">
-                  <div className="space-y-1 text-center w-full">
-                    <Upload className="mx-auto h-8 w-8 text-gray-400" />
-                    <div className="flex text-sm text-gray-600 dark:text-gray-400 items-center justify-center">
-                      <label className="relative cursor-pointer rounded-md font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-500">
-                        <span>Upload receipt</span>
-                        <input
-                          type="file"
-                          className="sr-only"
-                          accept="image/jpeg,image/jpg,image/png,image/webp,application/pdf"
-                          onChange={handleFileChange}
-                        />
-                      </label>
-                      <p className="pl-1">or drag and drop</p>
-                    </div>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                      PNG, JPG, WebP, PDF up to 5MB
-                    </p>
-                    {receiptFile && (
-                      <div className="flex items-center justify-center mt-2">
-                        <FileText className="w-4 h-4 text-green-500 mr-2" />
-                        <span className="text-sm text-green-600 dark:text-green-400 truncate">
-                          {receiptFile.name}
-                        </span>
+              {/* Receipt Upload - Only show for approve */}
+              {actionType === 'approve' && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Payment Receipt (Optional)
+                  </label>
+                  <div className="mt-1 flex justify-center px-6 pt-5 pb-4 border-2 border-gray-300 dark:border-slate-600 border-dashed rounded-lg hover:border-indigo-500 dark:hover:border-indigo-400 transition-colors">
+                    <div className="space-y-1 text-center w-full">
+                      <Upload className="mx-auto h-8 w-8 text-gray-400" />
+                      <div className="flex text-sm text-gray-600 dark:text-gray-400 items-center justify-center">
+                        <label className="relative cursor-pointer rounded-md font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-500">
+                          <span>Upload receipt</span>
+                          <input
+                            type="file"
+                            className="sr-only"
+                            accept="image/jpeg,image/jpg,image/png,image/webp,application/pdf"
+                            onChange={handleFileChange}
+                          />
+                        </label>
+                        <p className="pl-1">or drag and drop</p>
                       </div>
-                    )}
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                        PNG, JPG, WebP, PDF up to 5MB
+                      </p>
+                      {receiptFile && (
+                        <div className="flex items-center justify-center mt-2">
+                          <FileText className="w-4 h-4 text-green-500 mr-2" />
+                          <span className="text-sm text-green-600 dark:text-green-400 truncate">
+                            {receiptFile.name}
+                          </span>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
+
+              {actionType === 'reject' && (
+                <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-3">
+                  <p className="text-sm text-red-700 dark:text-red-400">
+                    <strong>Note:</strong> Rejecting this withdrawal will refund the amount back to the user's available balance.
+                  </p>
+                </div>
+              )}
 
               <div className="flex gap-2">
                 <Button
@@ -502,21 +600,34 @@ const AdminWithdrawalsPage = () => {
                     setSelectedWithdrawal(null);
                     setAdminNote('');
                     setReceiptFile(null);
+                    setActionType('approve');
                   }}
                   variant="outline"
                   fullWidth
                 >
                   Cancel
                 </Button>
-                <Button
-                  onClick={() => handleApprove(selectedWithdrawal._id)}
-                  loading={processingId === selectedWithdrawal._id}
-                  fullWidth
-                  className="bg-green-600 hover:bg-green-700 text-white"
-                >
-                  <CheckCircle className="w-4 h-4 mr-2" />
-                  Mark as Paid
-                </Button>
+                {actionType === 'approve' ? (
+                  <Button
+                    onClick={() => handleApprove(selectedWithdrawal._id)}
+                    loading={processingId === selectedWithdrawal._id}
+                    fullWidth
+                    className="bg-green-600 hover:bg-green-700 text-white"
+                  >
+                    <CheckCircle className="w-4 h-4 mr-2" />
+                    Mark as Paid
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={() => handleReject(selectedWithdrawal._id)}
+                    loading={processingId === selectedWithdrawal._id}
+                    fullWidth
+                    className="bg-red-600 hover:bg-red-700 text-white"
+                  >
+                    <XCircle className="w-4 h-4 mr-2" />
+                    Reject & Refund
+                  </Button>
+                )}
               </div>
             </div>
           </motion.div>

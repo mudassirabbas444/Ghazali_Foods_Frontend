@@ -138,6 +138,7 @@ export const API_ENDPOINTS = {
     REJECT_INVESTMENT: '/admin/investments/:id/reject',
     WITHDRAWALS: '/admin/withdrawals',
     APPROVE_WITHDRAWAL: '/admin/withdrawals/:id/approve',
+    REJECT_WITHDRAWAL: '/admin/withdrawals/:id/reject',
     SEED_RANKS: '/admin/seed-ranks',
     GET_USERS: '/admin/users',
     GET_USER_EARNINGS: '/admin/users/:id/earnings',
