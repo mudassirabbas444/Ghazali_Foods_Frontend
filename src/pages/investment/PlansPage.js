@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { TrendingUp, DollarSign, Users, ArrowRight, Sparkles } from 'lucide-react';
 import investmentService from '../../services/investment';
 import { Button } from '../../components';
-import { formatCurrency } from '../../utils/currency';
+import { formatCurrency, formatPackageCurrency } from '../../utils/currency';
 
 const PlansPage = () => {
   const navigate = useNavigate();
@@ -99,7 +99,7 @@ const PlansPage = () => {
                       ${plan.amount}
                     </div>
                     <div className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-1">
-                      {formatCurrency(plan.amount).pkr}
+                      {formatPackageCurrency(plan.amount).pkr}
                     </div>
                   </div>
                 </div>

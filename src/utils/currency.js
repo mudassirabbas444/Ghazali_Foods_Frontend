@@ -2,7 +2,8 @@
  * Currency conversion utilities
  * Exchange rate: 1 USD = 315 PKR
  */
-export const USD_TO_PKR_RATE = 315;
+export const USD_TO_PKR_PACKAGE_RATE = 315;
+export const USD_TO_PKR_RATE = 300;
 
 /**
  * Convert USD amount to PKR
@@ -11,6 +12,10 @@ export const USD_TO_PKR_RATE = 315;
  */
 export const usdToPkr = (usdAmount) => {
   return Math.round(usdAmount * USD_TO_PKR_RATE);
+};
+
+export const usdToPkrPackage = (usdAmount) => {
+  return Math.round(usdAmount * USD_TO_PKR_PACKAGE_RATE);
 };
 
 /**
@@ -35,4 +40,11 @@ export const formatCurrency = (usdAmount) => {
     pkrOnly: formatPkr(pkrAmount)
   };
 };
-
+export const formatPackageCurrency = (usdAmount) => {
+    const pkrAmount = usdToPkrPackage(usdAmount);
+    return {
+      usd: `$${usdAmount}`,
+    pkr: `PKR ${formatPkr(pkrAmount)}`,
+    pkrOnly: formatPkr(pkrAmount)
+  };
+};

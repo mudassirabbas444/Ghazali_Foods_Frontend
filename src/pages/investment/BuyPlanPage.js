@@ -6,7 +6,7 @@ import { Upload, DollarSign, FileText, ArrowLeft, CheckCircle, AlertCircle } fro
 import investmentService from '../../services/investment';
 import { Button, Input } from '../../components';
 import { ROUTES } from '../../constants';
-import { formatCurrency } from '../../utils/currency';
+import { formatCurrency, formatPackageCurrency } from '../../utils/currency';
 
 const BuyPlanPage = () => {
   const { id } = useParams();
@@ -189,7 +189,7 @@ const BuyPlanPage = () => {
                   ${plan.amount}
                 </div>
                 <div className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-1">
-                  {formatCurrency(plan.amount).pkr}
+                  {formatPackageCurrency(plan.amount).pkr}
                 </div>
                 <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-1">Investment Amount</p>
               </div>
@@ -229,9 +229,6 @@ const BuyPlanPage = () => {
                 <p className="text-sm sm:text-base font-mono font-semibold text-gray-900 dark:text-white break-all mb-1">
                   0098830107140467
                 </p>
-                <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
-                  Muhammad Muntazir Khan
-                </p>
               </div>
               
               {/* Jazzcash and Easypaisa - Muhammad Muntazir Khan */}
@@ -240,21 +237,8 @@ const BuyPlanPage = () => {
                 <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white mb-1">
                   03076979277
                 </p>
-                <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
-                  Muhammad Muntazir Khan
-                </p>
               </div>
-              
-              {/* Easypaisa and Jazzcash - Danish Ali */}
-              <div className="bg-white dark:bg-slate-800 rounded-lg p-3">
-                <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-1">Easypaisa and Jazzcash</p>
-                <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white mb-1">
-                  03274159132
-                </p>
-                <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
-                  Danish Ali
-                </p>
-              </div>
+            
               
               {/* Binance Wallet Address */}
               <div className="bg-white dark:bg-slate-800 rounded-lg p-3">
