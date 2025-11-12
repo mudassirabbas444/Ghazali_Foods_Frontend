@@ -223,6 +223,11 @@ const BuyPlanPage = () => {
                 </p>
               </div>
             </div>
+            <div className="mt-4 p-3 bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800 rounded-lg">
+              <p className="text-xs sm:text-sm text-indigo-700 dark:text-indigo-400 text-center font-medium">
+                Investment Duration: <span className="font-bold">35 Days</span>
+              </p>
+            </div>
           </div>
 
           {/* Payment Account Details */}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { TrendingUp, Clock, CheckCircle, XCircle, Plus, DollarSign } from 'lucide-react';
+import { TrendingUp, Clock, CheckCircle, XCircle, Plus, DollarSign, Calendar } from 'lucide-react';
 import investmentService from '../../services/investment';
 import { Button } from '../../components';
 import { ROUTES } from '../../constants';
@@ -73,6 +73,32 @@ const MyInvestmentsPage = () => {
       month: 'short',
       day: 'numeric',
     });
+  };
+
+  const calculateRemainingDays = (endDate) => {
+    if (!endDate) return null;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const end = new Date(endDate);
+    end.setHours(0, 0, 0, 0);
+    const diffTime = end - today;
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays;
+  };
+
+  const getInvestmentStatus = (investment) => {
+    if (investment.status === 'Pending') return { text: 'Pending', color: 'amber' };
+    if (investment.status === 'Rejected') return { text: 'Rejected', color: 'red' };
+    
+    // For approved investments, check if expired
+    if (investment.status === 'Approved') {
+      const remainingDays = calculateRemainingDays(investment.endDate);
+      if (remainingDays === null) return { text: 'Active', color: 'green' };
+      if (remainingDays <= 0) return { text: 'Expired', color: 'gray' };
+      return { text: 'Active', color: 'green' };
+    }
+    
+    return { text: investment.status, color: 'gray' };
   };
 
   if (loading) {
@@ -160,7 +186,7 @@ const MyInvestmentsPage = () => {
                       </div>
                       {getStatusBadge(investment.status)}
                     </div>
-                    <div className="grid grid-cols-2 gap-2 text-sm">
+                    <div className="grid grid-cols-2 gap-2 text-sm mb-2">
                       <div>
                         <p className="text-gray-500 dark:text-gray-400">Total Earned</p>
                         <p className="font-semibold text-gray-900 dark:text-white">
@@ -174,6 +200,33 @@ const MyInvestmentsPage = () => {
                         </p>
                       </div>
                     </div>
+                    {investment.status === 'Approved' && investment.endDate && (
+                      <div className="mt-2 pt-2 border-t border-gray-200 dark:border-slate-600">
+                        {(() => {
+                          const remainingDays = calculateRemainingDays(investment.endDate);
+                          const statusInfo = getInvestmentStatus(investment);
+                          return (
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center text-xs">
+                                <Calendar className="w-3 h-3 mr-1 text-gray-500 dark:text-gray-400" />
+                                <span className="text-gray-500 dark:text-gray-400">
+                                  {remainingDays !== null && remainingDays > 0 
+                                    ? `${remainingDays} days remaining`
+                                    : 'Expired'}
+                                </span>
+                              </div>
+                              <span className={`text-xs px-2 py-0.5 rounded-full ${
+                                statusInfo.color === 'green' 
+                                  ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400'
+                                  : 'bg-gray-100 dark:bg-gray-900/30 text-gray-700 dark:text-gray-400'
+                              }`}>
+                                {statusInfo.text}
+                              </span>
+                            </div>
+                          );
+                        })()}
+                      </div>
+                    )}
                   </motion.div>
                 ))}
               </div>
@@ -191,6 +244,9 @@ const MyInvestmentsPage = () => {
                       </th>
                       <th className="px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                         Status
+                      </th>
+                      <th className="px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                        Remaining Days
                       </th>
                       <th className="px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                         Total Earned
@@ -221,6 +277,36 @@ const MyInvestmentsPage = () => {
                         </td>
                         <td className="px-4 lg:px-6 py-4 whitespace-nowrap">
                           {getStatusBadge(investment.status)}
+                        </td>
+                        <td className="px-4 lg:px-6 py-4 whitespace-nowrap">
+                          {investment.status === 'Approved' && investment.endDate ? (
+                            (() => {
+                              const remainingDays = calculateRemainingDays(investment.endDate);
+                              const statusInfo = getInvestmentStatus(investment);
+                              return (
+                                <div className="flex flex-col">
+                                  {remainingDays !== null && remainingDays > 0 ? (
+                                    <span className="text-sm font-semibold text-indigo-600 dark:text-indigo-400">
+                                      {remainingDays} days
+                                    </span>
+                                  ) : (
+                                    <span className="text-sm text-gray-500 dark:text-gray-400">
+                                      Expired
+                                    </span>
+                                  )}
+                                  <span className={`text-xs px-2 py-0.5 rounded-full mt-1 w-fit ${
+                                    statusInfo.color === 'green' 
+                                      ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400'
+                                      : 'bg-gray-100 dark:bg-gray-900/30 text-gray-700 dark:text-gray-400'
+                                  }`}>
+                                    {statusInfo.text}
+                                  </span>
+                                </div>
+                              );
+                            })()
+                          ) : (
+                            <span className="text-sm text-gray-400 dark:text-gray-500">-</span>
+                          )}
                         </td>
                         <td className="px-4 lg:px-6 py-4 whitespace-nowrap">
                           <div className="text-sm text-gray-900 dark:text-white">

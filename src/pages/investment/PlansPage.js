@@ -101,6 +101,9 @@ const PlansPage = () => {
                     <div className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-1">
                       {formatPackageCurrency(plan.amount).pkr}
                     </div>
+                    <div className="text-xs sm:text-sm text-indigo-500 dark:text-indigo-400 mt-2 font-medium">
+                      35 Days Duration
+                    </div>
                   </div>
                 </div>
 
