@@ -12,6 +12,7 @@ const BuyPlanPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [plan, setPlan] = useState(null);
+  const [paymentAccounts, setPaymentAccounts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
@@ -27,14 +28,22 @@ const BuyPlanPage = () => {
   const fetchPlan = useCallback(async () => {
     try {
       setLoading(true);
-      const response = await investmentService.getPlans();
-      if (response.success) {
-        const foundPlan = response.plans?.find(p => p._id === id);
+      const [plansResponse, accountsResponse] = await Promise.all([
+        investmentService.getPlans(),
+        investmentService.getPaymentAccounts()
+      ]);
+      
+      if (plansResponse.success) {
+        const foundPlan = plansResponse.plans?.find(p => p._id === id);
         if (foundPlan) {
           setPlan(foundPlan);
         } else {
           setError('Plan not found');
         }
+      }
+
+      if (accountsResponse.success) {
+        setPaymentAccounts(accountsResponse.accounts || []);
       }
     } catch (err) {
       setError(err.message || 'Failed to fetch plan');
@@ -223,30 +232,24 @@ const BuyPlanPage = () => {
               Payment Account Details
             </h3>
             <div className="space-y-3">
-              {/* Meezan Account */}
-              <div className="bg-white dark:bg-slate-800 rounded-lg p-3">
-                <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-1">Meezan Account No.</p>
-                <p className="text-sm sm:text-base font-mono font-semibold text-gray-900 dark:text-white break-all mb-1">
-                  0098830107140467
+              {paymentAccounts.length > 0 ? (
+                paymentAccounts.map((account) => (
+                  <div key={account._id} className="bg-white dark:bg-slate-800 rounded-lg p-3">
+                    <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-1">
+                      {account.name}
+                    </p>
+                    <p className={`text-sm sm:text-base font-semibold text-gray-900 dark:text-white break-all ${
+                      account.type === 'Binance' ? 'font-mono' : ''
+                    }`}>
+                      {account.accountNumber}
+                    </p>
+                  </div>
+                ))
+              ) : (
+                <p className="text-sm text-gray-500 dark:text-gray-400 text-center py-4">
+                  No payment accounts available
                 </p>
-              </div>
-              
-              {/* Jazzcash and Easypaisa - Muhammad Muntazir Khan */}
-              <div className="bg-white dark:bg-slate-800 rounded-lg p-3">
-                <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-1">Jazzcash and Easypaisa</p>
-                <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white mb-1">
-                  03076979277
-                </p>
-              </div>
-            
-              
-              {/* Binance Wallet Address */}
-              <div className="bg-white dark:bg-slate-800 rounded-lg p-3">
-                <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-1">Binance Wallet Address</p>
-                <p className="text-sm sm:text-base font-mono font-semibold text-gray-900 dark:text-white break-all">
-                  0xd50738b08c7da487871a56cea2eea628af59a184
-                </p>
-              </div>
+              )}
             </div>
             <div className="mt-4 p-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg">
               <p className="text-xs sm:text-sm text-amber-700 dark:text-amber-400">

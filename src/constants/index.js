@@ -113,6 +113,7 @@ export const API_ENDPOINTS = {
     GET_PLANS: '/plans',
     CREATE_INVESTMENT: '/invest',
     MY_INVESTMENTS: '/my/investments',
+    PAYMENT_ACCOUNTS: '/payment-accounts',
   },
 
   // Withdrawal endpoints

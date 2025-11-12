@@ -44,6 +44,16 @@ class InvestmentService {
       throw error;
     }
   }
+
+  // Get payment accounts
+  async getPaymentAccounts() {
+    try {
+      const response = await apiService.get(API_ENDPOINTS.INVESTMENT.PAYMENT_ACCOUNTS);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 const investmentService = new InvestmentService();
