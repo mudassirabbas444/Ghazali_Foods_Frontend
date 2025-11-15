@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { motion } from 'framer-motion';
-import { Wallet, ArrowRight, Clock, CheckCircle, XCircle, DollarSign, History, Eye, X } from 'lucide-react';
+import { Wallet, ArrowRight, Clock, CheckCircle, XCircle, DollarSign, History, Eye, X, Info } from 'lucide-react';
 import withdrawalService from '../../services/withdrawal';
 import dashboardService from '../../services/dashboard';
 import { Button, Input } from '../../components';
@@ -49,13 +49,22 @@ const WithdrawPage = () => {
   };
 
   const onSubmit = async (data) => {
-    if (parseFloat(data.amount) > availableBalance) {
+    const amount = parseFloat(data.amount);
+    
+    if (amount > availableBalance) {
       setError('Insufficient balance');
       return;
     }
 
-    if (parseFloat(data.amount) <= 0) {
+    if (amount <= 0) {
       setError('Amount must be greater than 0');
+      return;
+    }
+
+    // Check minimum withdrawal amount ($1)
+    const MIN_WITHDRAWAL_AMOUNT = 1;
+    if (amount < MIN_WITHDRAWAL_AMOUNT) {
+      setError(`Minimum withdrawal amount is $${MIN_WITHDRAWAL_AMOUNT}`);
       return;
     }
 
@@ -179,6 +188,33 @@ const WithdrawPage = () => {
                 </div>
               </div>
 
+              {/* Withdrawal Limits Info */}
+              <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-6">
+                <div className="flex items-start">
+                  <Info className="w-5 h-5 text-blue-600 dark:text-blue-400 mr-2 mt-0.5 flex-shrink-0" />
+                  <div className="text-sm text-blue-800 dark:text-blue-300">
+                    <p className="font-semibold mb-1">Withdrawal Limits:</p>
+                    <ul className="list-disc list-inside space-y-1 text-blue-700 dark:text-blue-400">
+                      <li>Minimum withdrawal amount: $1.00</li>
+                      <li>One withdrawal request per 24 hours</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              {/* Approval Notice */}
+              <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4 mb-6">
+                <div className="flex items-start">
+                  <Clock className="w-5 h-5 text-amber-600 dark:text-amber-400 mr-2 mt-0.5 flex-shrink-0" />
+                  <div className="text-sm text-amber-800 dark:text-amber-300">
+                    <p className="font-semibold mb-1">Processing Time:</p>
+                    <p className="text-amber-700 dark:text-amber-400">
+                      Your withdrawal request will be reviewed and approved within 24 hours.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
               {/* Success Message */}
               {success && (
                 <motion.div
@@ -218,8 +254,8 @@ const WithdrawPage = () => {
                   {...register('amount', {
                     required: 'Amount is required',
                     min: {
-                      value: 0.01,
-                      message: 'Amount must be greater than 0',
+                      value: 1,
+                      message: 'Minimum withdrawal amount is $1',
                     },
                     max: {
                       value: availableBalance,

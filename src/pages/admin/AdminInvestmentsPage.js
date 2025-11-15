@@ -201,10 +201,10 @@ const AdminInvestmentsPage = () => {
                 >
                   <div className="mb-3">
                     <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-1">
-                      {investment.user?.fullName || 'N/A'}
+                      {investment.user?.fullName || investment.user?.name || 'User Not Found'}
                     </h3>
                     <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">
-                      {investment.user?.email || 'N/A'}
+                      {investment.user?.email || 'Email not available'}
                     </p>
                     <div className="flex items-center justify-between mb-2">
                       <div>
@@ -303,10 +303,10 @@ const AdminInvestmentsPage = () => {
                       <td className="px-4 lg:px-6 py-4 whitespace-nowrap">
                         <div>
                           <div className="text-sm font-medium text-gray-900 dark:text-white">
-                            {investment.user?.fullName || 'N/A'}
+                            {investment.user?.fullName || investment.user?.name || 'User Not Found'}
                           </div>
                           <div className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
-                            {investment.user?.email || 'N/A'}
+                            {investment.user?.email || 'Email not available'}
                           </div>
                         </div>
                       </td>

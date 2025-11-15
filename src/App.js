@@ -29,6 +29,7 @@ import DailyEarningsPage from './pages/dashboard/DailyEarningsPage';
 import WithdrawPage from './pages/withdrawal/WithdrawPage';
 import TeamPage from './pages/team/TeamPage';
 import SupportPage from './pages/support/SupportPage';
+import ProfilePage from './pages/profile/ProfilePage';
 
 // Admin Pages
 import AdminLoginPage from './pages/admin/AdminLoginPage';
@@ -39,6 +40,7 @@ import AdminPlansPage from './pages/admin/AdminPlansPage';
 import AdminRanksPage from './pages/admin/AdminRanksPage';
 import AdminUsersPage from './pages/admin/AdminUsersPage';
 import AdminSupportPage from './pages/admin/AdminSupportPage';
+import AdminPaymentAccountsPage from './pages/admin/AdminPaymentAccountsPage';
 
 // Layout
 import Layout from './components/layout/Layout';
@@ -224,6 +226,16 @@ function App() {
                   </ProtectedRoute>
                 }
               />
+              <Route
+                path={ROUTES.PROFILE}
+                element={
+                  <ProtectedRoute>
+                    <Layout>
+                      <ProfilePage />
+                    </Layout>
+                  </ProtectedRoute>
+                }
+              />
 
               {/* Admin Routes */}
               <Route
@@ -241,6 +253,7 @@ function App() {
                 <Route path="plans" element={<AdminPlansPage />} />
                 <Route path="ranks" element={<AdminRanksPage />} />
                 <Route path="support" element={<AdminSupportPage />} />
+                <Route path="payment-accounts" element={<AdminPaymentAccountsPage />} />
               </Route>
 
               {/* 404 - Redirect to home */}

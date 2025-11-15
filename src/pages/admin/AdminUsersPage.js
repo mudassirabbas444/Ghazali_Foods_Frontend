@@ -72,15 +72,21 @@ const AdminUsersPage = () => {
 
   const handleViewEarnings = async (user) => {
     try {
+      if (!user || !user._id) {
+        alert('Invalid user data');
+        return;
+      }
       setSelectedUser(user);
       const response = await adminService.getUserEarnings(user._id, 1, 10);
       if (response.success) {
         setUserEarnings(response.data);
         setShowEarningsModal(true);
+      } else {
+        alert(response.message || 'Failed to fetch user earnings');
       }
     } catch (err) {
       console.error('Error fetching user earnings:', err);
-      alert('Failed to fetch user earnings');
+      alert(err.message || 'Failed to fetch user earnings');
     }
   };
 
@@ -271,13 +277,37 @@ const AdminUsersPage = () => {
                       {user.teamCount || 0}
                     </td>
                     <td className="px-4 py-3">
-                      <button
-                        onClick={() => handleViewEarnings(user)}
-                        className="flex items-center gap-1 px-3 py-1.5 bg-indigo-100 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 rounded-lg hover:bg-indigo-200 dark:hover:bg-indigo-900/30 transition-colors text-sm"
-                      >
-                        <Eye className="w-4 h-4" />
-                        View Earnings
-                      </button>
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => handleViewEarnings(user)}
+                          className="flex items-center gap-1 px-3 py-1.5 bg-indigo-100 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 rounded-lg hover:bg-indigo-200 dark:hover:bg-indigo-900/30 transition-colors text-sm"
+                        >
+                          <Eye className="w-4 h-4" />
+                          View Earnings
+                        </button>
+                        <button
+                          onClick={async () => {
+                            if (window.confirm(`Are you sure you want to delete user "${user.fullName}"? This action cannot be undone.`)) {
+                              try {
+                                const response = await adminService.deleteUser(user._id);
+                                if (response.success) {
+                                  alert('User deleted successfully');
+                                  fetchUsers();
+                                } else {
+                                  alert(response.message || 'Failed to delete user');
+                                }
+                              } catch (err) {
+                                console.error('Error deleting user:', err);
+                                alert(err.message || 'Failed to delete user');
+                              }
+                            }
+                          }}
+                          className="flex items-center gap-1 px-3 py-1.5 bg-red-100 dark:bg-red-900/20 text-red-600 dark:text-red-400 rounded-lg hover:bg-red-200 dark:hover:bg-red-900/30 transition-colors text-sm"
+                        >
+                          <X className="w-4 h-4" />
+                          Delete
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -340,7 +370,7 @@ const AdminUsersPage = () => {
                     Earnings Details
                   </h3>
                   <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                    {selectedUser.fullName} ({selectedUser.email})
+                    {selectedUser?.fullName || 'N/A'} ({selectedUser?.email || 'N/A'})
                   </p>
                 </div>
                 <button
@@ -360,19 +390,19 @@ const AdminUsersPage = () => {
                       <div className="bg-indigo-50 dark:bg-indigo-900/20 rounded-lg p-4">
                         <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Total Earnings</p>
                         <p className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
-                          ${(selectedUser.totalEarnings || 0).toFixed(2)}
+                          ${(selectedUser?.totalEarnings || 0).toFixed(2)}
                         </p>
                       </div>
                       <div className="bg-emerald-50 dark:bg-emerald-900/20 rounded-lg p-4">
                         <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Total Transactions</p>
                         <p className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">
-                          {userEarnings.earnings?.total || 0}
+                          {userEarnings?.earnings?.total || 0}
                         </p>
                       </div>
                       <div className="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-4">
                         <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Daily Records</p>
                         <p className="text-2xl font-bold text-purple-600 dark:text-purple-400">
-                          {userEarnings.dailyEarnings?.total || 0}
+                          {userEarnings?.dailyEarnings?.total || 0}
                         </p>
                       </div>
                     </div>
@@ -383,7 +413,7 @@ const AdminUsersPage = () => {
                         Recent Earnings
                       </h4>
                       <div className="space-y-2 max-h-64 overflow-y-auto">
-                        {userEarnings.earnings?.earnings?.length > 0 ? (
+                        {userEarnings?.earnings?.earnings && Array.isArray(userEarnings.earnings.earnings) && userEarnings.earnings.earnings.length > 0 ? (
                           userEarnings.earnings.earnings.map((earning) => (
                             <div
                               key={earning._id}
@@ -391,19 +421,19 @@ const AdminUsersPage = () => {
                             >
                               <div>
                                 <p className="text-sm font-medium text-gray-900 dark:text-white">
-                                  {earning.type}
+                                  {earning?.type || 'N/A'}
                                 </p>
                                 <p className="text-xs text-gray-600 dark:text-gray-400">
-                                  {new Date(earning.createdAt).toLocaleString()}
+                                  {earning?.createdAt ? new Date(earning.createdAt).toLocaleString() : 'N/A'}
                                 </p>
-                                {earning.description && (
+                                {earning?.description && (
                                   <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">
                                     {earning.description}
                                   </p>
                                 )}
                               </div>
                               <p className="text-sm font-semibold text-emerald-600 dark:text-emerald-400">
-                                +${earning.amount.toFixed(2)}
+                                +${(earning?.amount || 0).toFixed(2)}
                               </p>
                             </div>
                           ))
@@ -416,30 +446,30 @@ const AdminUsersPage = () => {
                     </div>
 
                     {/* Daily Earnings */}
-                    {userEarnings.dailyEarnings?.records?.length > 0 && (
+                    {userEarnings?.dailyEarnings?.records && Array.isArray(userEarnings.dailyEarnings.records) && userEarnings.dailyEarnings.records.length > 0 && (
                       <div>
                         <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                           Daily Earnings Breakdown
                         </h4>
                         <div className="space-y-3 max-h-64 overflow-y-auto">
-                          {userEarnings.dailyEarnings.records.slice(0, 10).map((record) => (
+                          {userEarnings.dailyEarnings.records.slice(0, 10).map((record, index) => (
                             <div
-                              key={record.date}
+                              key={record?.date || index}
                               className="p-4 bg-gray-50 dark:bg-slate-700/50 rounded-lg"
                             >
                               <div className="flex items-center justify-between mb-2">
                                 <p className="text-sm font-medium text-gray-900 dark:text-white">
-                                  {new Date(record.date).toLocaleDateString()}
+                                  {record?.date ? new Date(record.date).toLocaleDateString() : 'N/A'}
                                 </p>
                                 <p className="text-sm font-semibold text-emerald-600 dark:text-emerald-400">
-                                  ${record.total.toFixed(2)}
+                                  ${(record?.total || 0).toFixed(2)}
                                 </p>
                               </div>
                               <div className="grid grid-cols-2 gap-2 text-xs">
-                                {record.breakdown && Object.entries(record.breakdown).map(([type, amount]) => (
+                                {record?.breakdown && typeof record.breakdown === 'object' && Object.entries(record.breakdown).map(([type, amount]) => (
                                   <div key={type} className="flex justify-between">
                                     <span className="text-gray-600 dark:text-gray-400 capitalize">{type}:</span>
-                                    <span className="text-gray-900 dark:text-white">${amount.toFixed(2)}</span>
+                                    <span className="text-gray-900 dark:text-white">${(amount || 0).toFixed(2)}</span>
                                   </div>
                                 ))}
                               </div>

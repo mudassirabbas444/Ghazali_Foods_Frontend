@@ -151,6 +151,10 @@ export const API_ENDPOINTS = {
     CREATE_RANK: '/admin/ranks',
     UPDATE_RANK: '/admin/ranks/:id',
     DELETE_RANK: '/admin/ranks/:id',
+    PAYMENT_ACCOUNTS: '/admin/payment-accounts',
+    CREATE_PAYMENT_ACCOUNT: '/admin/payment-accounts',
+    UPDATE_PAYMENT_ACCOUNT: '/admin/payment-accounts/:id',
+    DELETE_PAYMENT_ACCOUNT: '/admin/payment-accounts/:id',
   },
 };
 

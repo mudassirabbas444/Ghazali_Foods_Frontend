@@ -13,7 +13,8 @@ import {
   Wallet,
   Coins,
   Award,
-  MessageCircle
+  MessageCircle,
+  CreditCard
 } from 'lucide-react';
 import { ThemeToggle } from '../ui';
 import NotificationContainer from '../common/NotificationContainer';
@@ -41,6 +42,7 @@ const AdminLayout = () => {
     { to: '/admin/plans', label: 'Plans', icon: Coins },
     { to: '/admin/ranks', label: 'Ranks', icon: Award },
     { to: '/admin/support', label: 'Support', icon: MessageCircle },
+    { to: '/admin/payment-accounts', label: 'Payment Accounts', icon: CreditCard },
   ];
 
   return (

@@ -269,6 +269,60 @@ class AdminService {
     }
   }
 
+  // Delete user
+  async deleteUser(userId) {
+    try {
+      const response = await adminApi.delete(
+        `${API_ENDPOINTS.AUTH.DELETE_USER}?id=${userId}`
+      );
+      return response.data;
+    } catch (error) {
+      throw this.handleError(error);
+    }
+  }
+
+  // Payment Account Management
+  async getPaymentAccounts() {
+    try {
+      const response = await adminApi.get(API_ENDPOINTS.ADMIN.PAYMENT_ACCOUNTS);
+      return response.data;
+    } catch (error) {
+      throw this.handleError(error);
+    }
+  }
+
+  async createPaymentAccount(accountData) {
+    try {
+      const response = await adminApi.post(API_ENDPOINTS.ADMIN.CREATE_PAYMENT_ACCOUNT, accountData);
+      return response.data;
+    } catch (error) {
+      throw this.handleError(error);
+    }
+  }
+
+  async updatePaymentAccount(accountId, accountData) {
+    try {
+      const response = await adminApi.put(
+        API_ENDPOINTS.ADMIN.UPDATE_PAYMENT_ACCOUNT.replace(':id', accountId),
+        accountData
+      );
+      return response.data;
+    } catch (error) {
+      throw this.handleError(error);
+    }
+  }
+
+  async deletePaymentAccount(accountId) {
+    try {
+      const response = await adminApi.delete(
+        API_ENDPOINTS.ADMIN.DELETE_PAYMENT_ACCOUNT.replace(':id', accountId)
+      );
+      return response.data;
+    } catch (error) {
+      throw this.handleError(error);
+    }
+  }
+
   // Error handler
   handleError(error) {
     const { response } = error;

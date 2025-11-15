@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { motion } from 'framer-motion';
-import { Upload, DollarSign, FileText, ArrowLeft, CheckCircle, AlertCircle } from 'lucide-react';
+import { Upload, DollarSign, FileText, ArrowLeft, CheckCircle, AlertCircle, Clock } from 'lucide-react';
 import investmentService from '../../services/investment';
 import { Button, Input } from '../../components';
 import { ROUTES } from '../../constants';
@@ -227,6 +227,19 @@ const BuyPlanPage = () => {
               <p className="text-xs sm:text-sm text-indigo-700 dark:text-indigo-400 text-center font-medium">
                 Investment Duration: <span className="font-bold">35 Days</span>
               </p>
+            </div>
+          </div>
+
+          {/* Approval Notice */}
+          <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4 mb-4 sm:mb-6">
+            <div className="flex items-start">
+              <Clock className="w-5 h-5 text-amber-600 dark:text-amber-400 mr-2 mt-0.5 flex-shrink-0" />
+              <div className="text-sm text-amber-800 dark:text-amber-300">
+                <p className="font-semibold mb-1">Processing Time:</p>
+                <p className="text-amber-700 dark:text-amber-400">
+                  Your investment will be reviewed and approved within 24 hours after payment receipt verification.
+                </p>
+              </div>
             </div>
           </div>
 

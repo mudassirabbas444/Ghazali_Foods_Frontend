@@ -262,6 +262,14 @@ const Header = () => {
                           <MessageCircle className='h-4 w-4 mr-3' />
                           Support
                         </Link>
+                        <Link
+                          to={ROUTES.PROFILE}
+                          className='flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200'
+                          onClick={() => setIsUserMenuOpen(false)}
+                        >
+                          <User className='h-4 w-4 mr-3' />
+                          View Profile
+                        </Link>
                         <hr className='my-1 border-gray-200 dark:border-gray-700' />
                         <button
                           onClick={handleLogout}
