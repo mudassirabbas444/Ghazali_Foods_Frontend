@@ -99,7 +99,7 @@ const Header = () => {
                 to={ROUTES.DASHBOARD} 
                 className='text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-300 relative group'
               >
-                Home
+                Dashboard
                 <span className='absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-primary-500 to-secondary-500 group-hover:w-full transition-all duration-300'></span>
               </Link>
             </motion.div>
@@ -393,19 +393,21 @@ const Header = () => {
                 </motion.div>
               )}
               <div className='space-y-4'>
-                <motion.div
-                  initial={{ x: -20, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
-                  transition={{ delay: 0.1 }}
-                >
-                  <Link
-                    to='/'
-                    className='block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-colors duration-300'
-                    onClick={() => setIsMobileMenuOpen(false)}
+                {!isAuthenticated && (
+                  <motion.div
+                    initial={{ x: -20, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    transition={{ delay: 0.1 }}
                   >
-                    Home
-                  </Link>
-                </motion.div>
+                    <Link
+                      to='/'
+                      className='block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-colors duration-300'
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      Home
+                    </Link>
+                  </motion.div>
+                )}
                 
                 {isAuthenticated ? (
                   <>
