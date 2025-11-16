@@ -286,9 +286,9 @@ const ProfilePage = () => {
               )}
 
               {/* Profile Header */}
-              <div className="flex items-center justify-between mb-6">
-                <div className="flex items-center">
-                  <div className="relative">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
+                <div className="flex items-center flex-1 min-w-0">
+                  <div className="relative flex-shrink-0">
                     {avatarPreview || user.avatar ? (
                       <img
                         src={avatarPreview || user.avatar}
@@ -312,7 +312,7 @@ const ProfilePage = () => {
                       </label>
                     )}
                   </div>
-                  <div className="ml-4 flex-1 min-w-0">
+                  <div className="ml-4 flex-1 min-w-0 pr-2">
                     <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white truncate">
                       {user.fullName || 'User'}
                     </h2>
@@ -324,7 +324,7 @@ const ProfilePage = () => {
                 {!isEditing && (
                   <Button
                     onClick={handleEdit}
-                    className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white"
+                    className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white w-full sm:w-auto flex-shrink-0"
                   >
                     <Edit3 className="w-4 h-4" />
                     Edit Profile

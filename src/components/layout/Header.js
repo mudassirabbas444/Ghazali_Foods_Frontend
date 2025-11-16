@@ -317,7 +317,7 @@ const Header = () => {
           <div className='md:hidden flex items-center space-x-2'>
             {isAuthenticated && (
               <motion.button
-                onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                onClick={() => navigate(ROUTES.PROFILE)}
                 className='p-1 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-300'
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
