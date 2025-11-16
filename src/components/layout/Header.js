@@ -188,9 +188,17 @@ const Header = () => {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
-                    <div className='w-8 h-8 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-full flex items-center justify-center shadow-lg'>
-                      <User className='h-4 w-4 text-white' />
-                    </div>
+                    {user?.avatar ? (
+                      <img
+                        src={user.avatar}
+                        alt={user?.fullName || user?.name || 'User'}
+                        className='w-8 h-8 rounded-full object-cover border-2 border-primary-500 dark:border-primary-400 shadow-lg'
+                      />
+                    ) : (
+                      <div className='w-8 h-8 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-full flex items-center justify-center shadow-lg'>
+                        <User className='h-4 w-4 text-white' />
+                      </div>
+                    )}
                     <span className='text-sm font-medium text-gray-700 dark:text-gray-300'>
                       {user?.fullName || user?.name || 'User'}
                     </span>
@@ -445,6 +453,20 @@ const Header = () => {
                         onClick={() => setIsMobileMenuOpen(false)}
                       >
                         Support
+                      </Link>
+                    </motion.div>
+                    
+                    <motion.div
+                      initial={{ x: -20, opacity: 0 }}
+                      animate={{ x: 0, opacity: 1 }}
+                      transition={{ delay: 0.85 }}
+                    >
+                      <Link
+                        to={ROUTES.PROFILE}
+                        className='block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-colors duration-300'
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        Profile
                       </Link>
                     </motion.div>
                     

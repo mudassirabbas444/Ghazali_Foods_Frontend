@@ -14,6 +14,8 @@ import {
   AlertCircle,
   Copy,
   Award,
+  Camera,
+  Upload,
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import authService from '../../services/auth';
@@ -35,6 +37,9 @@ const ProfilePage = () => {
     confirmPassword: '',
   });
   const [changingPassword, setChangingPassword] = useState(false);
+  const [avatarFile, setAvatarFile] = useState(null);
+  const [avatarPreview, setAvatarPreview] = useState(null);
+  const [uploadingAvatar, setUploadingAvatar] = useState(false);
 
   const {
     register,
@@ -54,6 +59,7 @@ const ProfilePage = () => {
       const response = await authService.getProfile();
       if (response.success) {
         setUser(response.user);
+        setAvatarPreview(response.user?.avatar || null);
         reset({
           fullName: response.user.fullName || '',
           email: response.user.email || '',
@@ -79,6 +85,8 @@ const ProfilePage = () => {
     setIsEditing(false);
     setError(null);
     setSuccess(false);
+    setAvatarFile(null);
+    setAvatarPreview(user?.avatar || null);
     reset({
       fullName: user?.fullName || '',
       email: user?.email || '',
@@ -87,18 +95,54 @@ const ProfilePage = () => {
     });
   };
 
+  const handleAvatarChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        setError('Please select an image file');
+        return;
+      }
+      // Validate file size (5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        setError('Image size must be less than 5MB');
+        return;
+      }
+      setAvatarFile(file);
+      // Create preview
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setAvatarPreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+      setError(null);
+    }
+  };
+
   const onSubmit = async (data) => {
     try {
       setSubmitting(true);
       setError(null);
       setSuccess(false);
 
-      const response = await authService.updateProfile(data);
+      // Create FormData if avatar file is selected
+      let formData;
+      if (avatarFile) {
+        formData = new FormData();
+        formData.append('avatar', avatarFile);
+        formData.append('fullName', data.fullName);
+        formData.append('phone', data.phone);
+        formData.append('walletInfo', data.walletInfo || '');
+      }
+
+      const response = await authService.updateProfile(avatarFile ? formData : data);
       if (response.success) {
         setUser(response.user);
+        setAvatarPreview(response.user?.avatar || null);
+        setAvatarFile(null);
         // Update user in AuthContext
         if (updateUserProfile) {
-          await updateUserProfile(data);
+          updateUserProfile(response.user);
         }
         setIsEditing(false);
         setSuccess(true);
@@ -244,8 +288,29 @@ const ProfilePage = () => {
               {/* Profile Header */}
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center">
-                  <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-2xl sm:text-3xl font-bold">
-                    {user.fullName?.charAt(0)?.toUpperCase() || 'U'}
+                  <div className="relative">
+                    {avatarPreview || user.avatar ? (
+                      <img
+                        src={avatarPreview || user.avatar}
+                        alt={user.fullName || 'User'}
+                        className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover border-2 border-indigo-500 dark:border-indigo-400"
+                      />
+                    ) : (
+                      <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-2xl sm:text-3xl font-bold border-2 border-indigo-500 dark:border-indigo-400">
+                        {user.fullName?.charAt(0)?.toUpperCase() || 'U'}
+                      </div>
+                    )}
+                    {isEditing && (
+                      <label className="absolute bottom-0 right-0 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full p-1.5 sm:p-2 cursor-pointer shadow-lg transition-colors">
+                        <Camera className="w-3 h-3 sm:w-4 sm:h-4" />
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleAvatarChange}
+                          className="hidden"
+                        />
+                      </label>
+                    )}
                   </div>
                   <div className="ml-4">
                     <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">

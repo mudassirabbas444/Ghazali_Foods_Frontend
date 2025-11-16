@@ -124,12 +124,22 @@ class AuthService {
     }
   }
 
-  // Update user profile
+  // Update user profile (supports FormData for file uploads)
   async updateProfile(userData) {
     try {
+      const isFormData = userData instanceof FormData;
+      const config = isFormData
+        ? {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          }
+        : {};
+
       const response = await apiService.put(
         API_ENDPOINTS.AUTH.UPDATE_PROFILE,
-        userData
+        userData,
+        config
       );
 
       if (response.success && response.user) {
