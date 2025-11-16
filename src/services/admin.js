@@ -3,6 +3,33 @@ import { API_ENDPOINTS, API_CONFIG, STORAGE_KEYS } from '../constants';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
+// Create authenticated API instance for /api routes that need admin auth
+const authenticatedApi = axios.create({
+  baseURL: API_CONFIG.BASE_URL || 'http://localhost:5000/api',
+  timeout: API_CONFIG.TIMEOUT,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+// Add auth token interceptor for authenticated API
+authenticatedApi.interceptors.request.use(
+  (config) => {
+    // Try to get token from admin auth storage (localStorage) first, then fallback to regular auth token
+    const token = localStorage.getItem(STORAGE_KEYS.ADMIN_TOKEN || 'dreamslife_admin_token') ||
+                  localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN) || 
+                  Cookies.get(STORAGE_KEYS.AUTH_TOKEN) ||
+                  localStorage.getItem('admin_token') ||
+                  Cookies.get('admin_token');
+    
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
 // Create a separate axios instance for admin routes (without /api prefix)
 const adminApi = axios.create({
   baseURL: API_CONFIG.BASE_URL.replace('/api', '') || 'http://localhost:5000',
@@ -269,10 +296,10 @@ class AdminService {
     }
   }
 
-  // Delete user
+  // Delete user (uses /api/users route, not /admin route)
   async deleteUser(userId) {
     try {
-      const response = await adminApi.delete(
+      const response = await authenticatedApi.delete(
         `${API_ENDPOINTS.AUTH.DELETE_USER}?id=${userId}`
       );
       return response.data;
