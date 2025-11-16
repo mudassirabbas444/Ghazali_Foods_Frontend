@@ -312,11 +312,13 @@ const ProfilePage = () => {
                       </label>
                     )}
                   </div>
-                  <div className="ml-4">
-                    <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
+                  <div className="ml-4 flex-1 min-w-0">
+                    <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white truncate">
                       {user.fullName || 'User'}
                     </h2>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">{user.email}</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 truncate break-all">
+                      {user.email}
+                    </p>
                   </div>
                 </div>
                 {!isEditing && (

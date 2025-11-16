@@ -315,6 +315,26 @@ const Header = () => {
 
           {/* Mobile Menu Button */}
           <div className='md:hidden flex items-center space-x-2'>
+            {isAuthenticated && (
+              <motion.button
+                onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                className='p-1 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-300'
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                {user?.avatar ? (
+                  <img
+                    src={user.avatar}
+                    alt={user?.fullName || user?.name || 'User'}
+                    className='w-8 h-8 rounded-full object-cover border-2 border-primary-500 dark:border-primary-400 shadow-lg'
+                  />
+                ) : (
+                  <div className='w-8 h-8 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-full flex items-center justify-center shadow-lg'>
+                    <User className='h-4 w-4 text-white' />
+                  </div>
+                )}
+              </motion.button>
+            )}
             <ThemeToggle />
             <motion.button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -341,6 +361,37 @@ const Header = () => {
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3 }}
             >
+              {/* Mobile User Info */}
+              {isAuthenticated && (
+                <motion.div
+                  initial={{ x: -20, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ delay: 0.05 }}
+                  className='px-4 py-3 mb-4 bg-gray-50 dark:bg-gray-800/50 rounded-xl'
+                >
+                  <div className='flex items-center space-x-3'>
+                    {user?.avatar ? (
+                      <img
+                        src={user.avatar}
+                        alt={user?.fullName || user?.name || 'User'}
+                        className='w-12 h-12 rounded-full object-cover border-2 border-primary-500 dark:border-primary-400 shadow-lg'
+                      />
+                    ) : (
+                      <div className='w-12 h-12 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-full flex items-center justify-center shadow-lg'>
+                        <User className='h-6 w-6 text-white' />
+                      </div>
+                    )}
+                    <div className='flex-1 min-w-0'>
+                      <p className='text-sm font-semibold text-gray-900 dark:text-white truncate'>
+                        {user?.fullName || user?.name || 'User'}
+                      </p>
+                      <p className='text-xs text-gray-600 dark:text-gray-400 truncate'>
+                        {user?.email || ''}
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
               <div className='space-y-4'>
                 <motion.div
                   initial={{ x: -20, opacity: 0 }}
