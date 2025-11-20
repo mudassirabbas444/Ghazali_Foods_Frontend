@@ -26,10 +26,25 @@ class DashboardService {
     }
   }
 
-  // Get team data (4 levels)
-  async getTeam() {
+  // Get team data (4 levels) with pagination support
+  // pagination: { level1: { page, limit }, level2: { page, limit }, ... }
+  async getTeam(pagination = {}) {
     try {
-      const response = await apiService.get(API_ENDPOINTS.DASHBOARD.TEAM);
+      let url = API_ENDPOINTS.DASHBOARD.TEAM;
+      const params = [];
+      
+      // Build query string for pagination per level
+      Object.keys(pagination).forEach(level => {
+        const { page, limit } = pagination[level];
+        if (page) params.push(`${level}_page=${page}`);
+        if (limit) params.push(`${level}_limit=${limit}`);
+      });
+      
+      if (params.length > 0) {
+        url += `?${params.join('&')}`;
+      }
+      
+      const response = await apiService.get(url);
       return response;
     } catch (error) {
       throw error;

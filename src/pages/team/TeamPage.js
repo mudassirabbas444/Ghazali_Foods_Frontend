@@ -10,12 +10,20 @@ import {
   TrendingUp,
   CheckCircle,
   XCircle,
+  Loader,
 } from 'lucide-react';
 import dashboardService from '../../services/dashboard';
 
 const TeamPage = () => {
   const [teamData, setTeamData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState({});
+  const [pagination, setPagination] = useState({
+    level1: { page: 1, limit: 50 },
+    level2: { page: 1, limit: 50 },
+    level3: { page: 1, limit: 50 },
+    level4: { page: 1, limit: 50 },
+  });
   const [expandedLevels, setExpandedLevels] = useState({
     level1: true,
     level2: false,
@@ -27,17 +35,87 @@ const TeamPage = () => {
     fetchTeamData();
   }, []);
 
-  const fetchTeamData = async () => {
+  const fetchTeamData = async (loadMoreLevel = null) => {
     try {
-      setLoading(true);
-      const response = await dashboardService.getTeam();
+      if (loadMoreLevel) {
+        setLoadingMore(prev => ({ ...prev, [loadMoreLevel]: true }));
+      } else {
+        setLoading(true);
+      }
+
+      const response = await dashboardService.getTeam(pagination);
       if (response.success) {
-        setTeamData(response.data);
+        if (loadMoreLevel) {
+          // Append new data for the specific level
+          setTeamData(prev => ({
+            ...prev,
+            [loadMoreLevel]: [...(prev?.[loadMoreLevel] || []), ...(response.data[loadMoreLevel] || [])],
+            pagination: response.data.pagination,
+            summary: response.data.summary,
+          }));
+        } else {
+          // Initial load
+          setTeamData(response.data);
+        }
+        
+        // Update pagination state
+        if (response.data.pagination) {
+          setPagination(prev => {
+            const updated = { ...prev };
+            Object.keys(response.data.pagination).forEach(level => {
+              if (response.data.pagination[level]) {
+                updated[level] = {
+                  page: response.data.pagination[level].page,
+                  limit: response.data.pagination[level].limit,
+                };
+              }
+            });
+            return updated;
+          });
+        }
       }
     } catch (error) {
       console.error('Error fetching team data:', error);
     } finally {
-      setLoading(false);
+      if (loadMoreLevel) {
+        setLoadingMore(prev => ({ ...prev, [loadMoreLevel]: false }));
+      } else {
+        setLoading(false);
+      }
+    }
+  };
+
+  const loadMore = async (level) => {
+    try {
+      setLoadingMore(prev => ({ ...prev, [level]: true }));
+      
+      const currentPage = pagination[level].page;
+      const nextPage = currentPage + 1;
+      const paginationParams = {
+        [level]: {
+          page: nextPage,
+          limit: pagination[level].limit
+        }
+      };
+      
+      const response = await dashboardService.getTeam(paginationParams);
+      
+      if (response.success) {
+        setTeamData(prev => ({
+          ...prev,
+          [level]: [...(prev?.[level] || []), ...(response.data[level] || [])],
+          pagination: response.data.pagination,
+        }));
+        
+        setPagination(prev => ({
+          ...prev,
+          [level]: { ...prev[level], page: nextPage }
+        }));
+      }
+    } catch (error) {
+      console.error(`Error loading more ${level}:`, error);
+    } finally {
+      setLoadingMore(prev => ({ ...prev, [level]: false }));
     }
   };
 
@@ -70,6 +148,7 @@ const TeamPage = () => {
       key: 'level1',
       name: 'Level 1 (Direct)',
       members: teamData?.level1 || [],
+      pagination: teamData?.pagination?.level1,
       color: 'indigo',
       icon: Users,
     },
@@ -77,6 +156,7 @@ const TeamPage = () => {
       key: 'level2',
       name: 'Level 2',
       members: teamData?.level2 || [],
+      pagination: teamData?.pagination?.level2,
       color: 'purple',
       icon: TrendingUp,
     },
@@ -84,6 +164,7 @@ const TeamPage = () => {
       key: 'level3',
       name: 'Level 3',
       members: teamData?.level3 || [],
+      pagination: teamData?.pagination?.level3,
       color: 'emerald',
       icon: UserPlus,
     },
@@ -91,6 +172,7 @@ const TeamPage = () => {
       key: 'level4',
       name: 'Level 4',
       members: teamData?.level4 || [],
+      pagination: teamData?.pagination?.level4,
       color: 'blue',
       icon: Users,
     },
@@ -260,52 +342,76 @@ const TeamPage = () => {
                             No members in this level yet
                           </p>
                         ) : (
-                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-                            {level.members.map((member) => (
-                              <motion.div
-                                key={member._id}
-                                initial={{ opacity: 0, scale: 0.95 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                className={`bg-gray-50 dark:bg-slate-700 rounded-lg p-3 sm:p-4 border ${
-                                  member.isActive 
-                                    ? 'border-emerald-200 dark:border-emerald-800' 
-                                    : 'border-gray-200 dark:border-slate-600'
-                                }`}
-                              >
-                                <div className="flex items-start justify-between mb-2 sm:mb-3">
-                                  <div className="flex-1 min-w-0">
-                                    <div className="flex items-center gap-2 mb-1">
-                                      <h4 className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white truncate">
-                                        {member.fullName || 'N/A'}
-                                      </h4>
-                                      {member.isActive ? (
-                                        <CheckCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
-                                      ) : (
-                                        <XCircle className="w-4 h-4 text-red-600 dark:text-red-400 flex-shrink-0" />
-                                      )}
-                                    </div>
-                                    <div className="flex items-center gap-2 mb-1">
-                                      <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
-                                        member.isActive
-                                          ? 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400'
-                                          : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400'
-                                      }`}>
-                                        {member.isActive ? 'Active' : 'Inactive'}
-                                      </span>
-                                    </div>
-                                    <div className="flex items-center text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-2">
-                                      <Mail className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2 flex-shrink-0" />
-                                      <span className="truncate">{member.email || 'N/A'}</span>
-                                    </div>
-                                    <div className="flex items-center text-xs text-gray-500 dark:text-gray-500">
-                                      <Calendar className="w-3 h-3 mr-1 flex-shrink-0" />
-                                      <span className="truncate">Joined: {formatDate(member.joinDate || member.createdAt)}</span>
+                          <>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+                              {level.members.map((member) => (
+                                <motion.div
+                                  key={member._id}
+                                  initial={{ opacity: 0, scale: 0.95 }}
+                                  animate={{ opacity: 1, scale: 1 }}
+                                  className={`bg-gray-50 dark:bg-slate-700 rounded-lg p-3 sm:p-4 border ${
+                                    member.isActive 
+                                      ? 'border-emerald-200 dark:border-emerald-800' 
+                                      : 'border-gray-200 dark:border-slate-600'
+                                  }`}
+                                >
+                                  <div className="flex items-start justify-between mb-2 sm:mb-3">
+                                    <div className="flex-1 min-w-0">
+                                      <div className="flex items-center gap-2 mb-1">
+                                        <h4 className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white truncate">
+                                          {member.fullName || 'N/A'}
+                                        </h4>
+                                        {member.isActive ? (
+                                          <CheckCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
+                                        ) : (
+                                          <XCircle className="w-4 h-4 text-red-600 dark:text-red-400 flex-shrink-0" />
+                                        )}
+                                      </div>
+                                      <div className="flex items-center gap-2 mb-1">
+                                        <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
+                                          member.isActive
+                                            ? 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400'
+                                            : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400'
+                                        }`}>
+                                          {member.isActive ? 'Active' : 'Inactive'}
+                                        </span>
+                                      </div>
+                                      <div className="flex items-center text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-2">
+                                        <Mail className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2 flex-shrink-0" />
+                                        <span className="truncate">{member.email || 'N/A'}</span>
+                                      </div>
+                                      <div className="flex items-center text-xs text-gray-500 dark:text-gray-500">
+                                        <Calendar className="w-3 h-3 mr-1 flex-shrink-0" />
+                                        <span className="truncate">Joined: {formatDate(member.joinDate || member.createdAt)}</span>
+                                      </div>
                                     </div>
                                   </div>
-                                </div>
-                              </motion.div>
-                            ))}
-                          </div>
+                                </motion.div>
+                              ))}
+                            </div>
+                            {level.pagination && level.pagination.hasMore && (
+                              <div className="mt-4 sm:mt-6 flex justify-center">
+                                <button
+                                  onClick={() => loadMore(level.key)}
+                                  disabled={loadingMore[level.key]}
+                                  className={`px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-medium text-sm sm:text-base transition-colors ${
+                                    loadingMore[level.key]
+                                      ? 'bg-gray-300 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed'
+                                      : `${colorClasses[level.color].bg} ${colorClasses[level.color].text} ${colorClasses[level.color].border} border-2 hover:opacity-90`
+                                  }`}
+                                >
+                                  {loadingMore[level.key] ? (
+                                    <span className="flex items-center gap-2">
+                                      <Loader className="w-4 h-4 animate-spin" />
+                                      Loading...
+                                    </span>
+                                  ) : (
+                                    `Load More (${level.pagination.total - level.members.length} remaining)`
+                                  )}
+                                </button>
+                              </div>
+                            )}
+                          </>
                         )}
                       </div>
                     </motion.div>
