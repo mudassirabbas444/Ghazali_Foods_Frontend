@@ -149,6 +149,7 @@ const TeamPage = () => {
       name: 'Level 1 (Direct)',
       members: teamData?.level1 || [],
       pagination: teamData?.pagination?.level1,
+      stats: teamData?.levelStats?.level1,
       color: 'indigo',
       icon: Users,
     },
@@ -157,6 +158,7 @@ const TeamPage = () => {
       name: 'Level 2',
       members: teamData?.level2 || [],
       pagination: teamData?.pagination?.level2,
+      stats: teamData?.levelStats?.level2,
       color: 'purple',
       icon: TrendingUp,
     },
@@ -165,6 +167,7 @@ const TeamPage = () => {
       name: 'Level 3',
       members: teamData?.level3 || [],
       pagination: teamData?.pagination?.level3,
+      stats: teamData?.levelStats?.level3,
       color: 'emerald',
       icon: UserPlus,
     },
@@ -173,6 +176,7 @@ const TeamPage = () => {
       name: 'Level 4',
       members: teamData?.level4 || [],
       pagination: teamData?.pagination?.level4,
+      stats: teamData?.levelStats?.level4,
       color: 'blue',
       icon: Users,
     },
@@ -258,8 +262,10 @@ const TeamPage = () => {
         {/* Level Summary Cards */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
           {levels.map((level) => {
-            const activeCount = level.members.filter(m => m.isActive).length;
-            const inactiveCount = level.members.length - activeCount;
+            // Use stats from backend (all members) instead of calculating from paginated members
+            const activeCount = level.stats?.active || 0;
+            const inactiveCount = level.stats?.inactive || 0;
+            const totalCount = level.stats?.total || level.members.length;
             return (
               <motion.div
                 key={level.key}
@@ -270,7 +276,7 @@ const TeamPage = () => {
                 <div className="flex items-center justify-between mb-2">
                   <level.icon className={`w-5 h-5 sm:w-6 sm:h-6 ${colorClasses[level.color].icon}`} />
                   <span className={`text-xl sm:text-2xl font-bold ${colorClasses[level.color].text}`}>
-                    {level.members.length}
+                    {totalCount}
                   </span>
                 </div>
                 <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
