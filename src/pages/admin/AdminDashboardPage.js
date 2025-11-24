@@ -8,8 +8,6 @@ import {
   Clock,
   Wallet,
   ArrowRight,
-  BarChart3,
-  PieChart,
 } from 'lucide-react';
 import adminService from '../../services/admin';
 import { Button } from '../../components';
@@ -24,7 +22,6 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
   ResponsiveContainer,
 } from 'recharts';
 

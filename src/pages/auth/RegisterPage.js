@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { motion } from 'framer-motion';
-import { Eye, EyeOff, Mail, Lock, User, Phone, Wallet, Gift, AlertCircle, CheckCircle, ArrowRight, Sparkles, Shield } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, User, Phone, Wallet, Gift, AlertCircle, CheckCircle, ArrowRight, Shield } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { Button, Input } from '../../components';
 import GoogleAuth from '../../components/auth/GoogleAuth';
@@ -29,7 +29,6 @@ const RegisterPage = () => {
   } = useForm();
 
   const password = watch('password');
-  const email = watch('email');
   const watchedReferralCode = watch('referredBy');
 
   // Get referral code, username, and company from URL params

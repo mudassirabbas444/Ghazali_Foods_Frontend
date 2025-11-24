@@ -35,6 +35,7 @@ const SupportPage = () => {
 
   useEffect(() => {
     fetchTickets();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 
   const fetchTickets = async () => {

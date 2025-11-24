@@ -10,7 +10,6 @@ import {
   Award,
   ArrowRight,
   CheckCircle,
-  Star,
   Zap,
   Globe,
   Lock,

@@ -22,6 +22,7 @@ const AdminInvestmentsPage = () => {
 
   useEffect(() => {
     fetchInvestments();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filter, page]);
 
   const fetchInvestments = async () => {

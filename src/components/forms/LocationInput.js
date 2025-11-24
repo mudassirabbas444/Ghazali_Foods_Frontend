@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { MapPin, Search, X, Navigation } from 'lucide-react';
+import { MapPin, X, Navigation } from 'lucide-react';
 import { Button, Input } from '../ui';
 import toast from 'react-hot-toast';
 

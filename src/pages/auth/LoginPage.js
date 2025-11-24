@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { motion } from 'framer-motion';
-import { Eye, EyeOff, Mail, Lock, ArrowRight, Sparkles, Shield } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, ArrowRight, Shield } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { Button, Input } from '../../components';
 import GoogleAuth from '../../components/auth/GoogleAuth';
@@ -59,17 +59,6 @@ const LoginPage = () => {
       opacity: 1,
       y: 0,
       transition: { duration: 0.4 },
-    },
-  };
-
-  const floatingVariants = {
-    float: {
-      y: [-10, 10, -10],
-      transition: {
-        duration: 4,
-        repeat: Infinity,
-        ease: "easeInOut",
-      },
     },
   };
 

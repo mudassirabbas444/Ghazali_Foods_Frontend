@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Image, AlertCircle } from 'lucide-react';
+import { AlertCircle } from 'lucide-react';
 
 /**
  * Firebase Image Component with error handling and loading states

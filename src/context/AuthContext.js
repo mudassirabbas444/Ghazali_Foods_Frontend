@@ -52,7 +52,8 @@ export const AuthProvider = ({ children }) => {
     };
 
     checkAuth();
-  }, []); // Remove setUser from dependencies to prevent infinite loop
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Only run on mount
 
   // Login function
   const login = async (credentials) => {

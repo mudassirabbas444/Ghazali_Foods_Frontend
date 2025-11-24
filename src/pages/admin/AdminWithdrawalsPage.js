@@ -29,6 +29,7 @@ const AdminWithdrawalsPage = () => {
 
   useEffect(() => {
     fetchWithdrawals();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filter, page]);
 
   const fetchWithdrawals = async () => {

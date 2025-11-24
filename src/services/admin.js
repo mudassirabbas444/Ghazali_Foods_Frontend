@@ -1,4 +1,3 @@
-import apiService from './api';
 import { API_ENDPOINTS, API_CONFIG, STORAGE_KEYS } from '../constants';
 import axios from 'axios';
 import Cookies from 'js-cookie';

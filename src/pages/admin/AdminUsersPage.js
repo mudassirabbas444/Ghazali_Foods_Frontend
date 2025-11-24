@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Users,
   Search,
   Filter,
   Eye,
   X,
-  Calendar,
 } from 'lucide-react';
 import adminService from '../../services/admin';
 import { Button } from '../../components';
@@ -32,6 +30,7 @@ const AdminUsersPage = () => {
 
   useEffect(() => {
     fetchUsers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [usersPage, filters.search, filters.sortBy, filters.sortOrder, filters.minInvestment, filters.maxInvestment, filters.minEarnings, filters.maxEarnings]);
 
   const fetchUsers = async () => {

@@ -15,7 +15,6 @@ import {
   Copy,
   Award,
   Camera,
-  Upload,
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import authService from '../../services/auth';
@@ -23,7 +22,7 @@ import { Button, Input } from '../../components';
 import { toast } from 'react-toastify';
 
 const ProfilePage = () => {
-  const { user: authUser, updateProfile: updateUserProfile } = useAuth();
+  const { updateProfile: updateUserProfile } = useAuth();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
@@ -39,18 +38,17 @@ const ProfilePage = () => {
   const [changingPassword, setChangingPassword] = useState(false);
   const [avatarFile, setAvatarFile] = useState(null);
   const [avatarPreview, setAvatarPreview] = useState(null);
-  const [uploadingAvatar, setUploadingAvatar] = useState(false);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
-    watch,
   } = useForm();
 
   useEffect(() => {
     fetchProfile();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchProfile = async () => {

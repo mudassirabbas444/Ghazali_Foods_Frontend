@@ -32,6 +32,7 @@ const AdminSupportPage = () => {
   useEffect(() => {
     fetchTickets();
     fetchStats();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filter, page, search]);
 
   const fetchTickets = async () => {

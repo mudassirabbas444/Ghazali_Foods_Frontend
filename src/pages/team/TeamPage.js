@@ -33,6 +33,7 @@ const TeamPage = () => {
 
   useEffect(() => {
     fetchTeamData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchTeamData = async (loadMoreLevel = null) => {

@@ -242,7 +242,7 @@ export const UPLOAD_CONFIG = {
 // Validation Rules
 export const VALIDATION = {
   EMAIL_REGEX: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-  PHONE_REGEX: /^[\+]?[1-9][\d]{0,15}$/,
+  PHONE_REGEX: /^[+]?[1-9][\d]{0,15}$/,
   PASSWORD_MIN_LENGTH: 6,
   NAME_MIN_LENGTH: 2,
   NAME_MAX_LENGTH: 50,

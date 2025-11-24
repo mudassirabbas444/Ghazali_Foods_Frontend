@@ -24,6 +24,7 @@ const DailyEarningsPage = () => {
 
   useEffect(() => {
     fetchDailyEarnings();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filters]);
 
   const fetchDailyEarnings = async () => {

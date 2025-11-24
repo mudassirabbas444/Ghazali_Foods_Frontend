@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Coins, Plus, Edit, Trash2, X, Save } from 'lucide-react';
+import { Plus, Edit, Trash2, X, Save } from 'lucide-react';
 import adminService from '../../services/admin';
 import { Button } from '../../components';
 import { toast } from 'react-toastify';
