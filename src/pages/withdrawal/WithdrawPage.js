@@ -4,11 +4,14 @@ import { motion } from 'framer-motion';
 import { Wallet, ArrowRight, Clock, CheckCircle, XCircle, DollarSign, History, Eye, X, Info } from 'lucide-react';
 import withdrawalService from '../../services/withdrawal';
 import dashboardService from '../../services/dashboard';
+import investmentService from '../../services/investment';
 import { Button, Input } from '../../components';
 
 const WithdrawPage = () => {
   const [withdrawals, setWithdrawals] = useState([]);
   const [availableBalance, setAvailableBalance] = useState(0);
+  const [paymentAccounts, setPaymentAccounts] = useState([]);
+  const [selectedAccount, setSelectedAccount] = useState(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
@@ -20,7 +23,10 @@ const WithdrawPage = () => {
     handleSubmit,
     formState: { errors },
     reset,
+    watch,
   } = useForm();
+  
+  const selectedMethod = watch('method');
 
   useEffect(() => {
     fetchData();
@@ -29,9 +35,10 @@ const WithdrawPage = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const [dashboardRes, withdrawalsRes] = await Promise.all([
+      const [dashboardRes, withdrawalsRes, accountsRes] = await Promise.all([
         dashboardService.getDashboard(),
         withdrawalService.getMyWithdrawals(),
+        investmentService.getPaymentAccounts(),
       ]);
 
       if (dashboardRes.success) {
@@ -41,12 +48,26 @@ const WithdrawPage = () => {
       if (withdrawalsRes.success) {
         setWithdrawals(withdrawalsRes.withdrawals || []);
       }
+
+      if (accountsRes.success) {
+        setPaymentAccounts(accountsRes.accounts || []);
+      }
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
       setLoading(false);
     }
   };
+
+  // Update selected account when payment method changes
+  useEffect(() => {
+    if (selectedMethod) {
+      const account = paymentAccounts.find(acc => acc._id === selectedMethod);
+      setSelectedAccount(account || null);
+    } else {
+      setSelectedAccount(null);
+    }
+  }, [selectedMethod, paymentAccounts]);
 
   const onSubmit = async (data) => {
     const amount = parseFloat(data.amount);
@@ -61,10 +82,18 @@ const WithdrawPage = () => {
       return;
     }
 
-    // Check minimum withdrawal amount ($1)
-    const MIN_WITHDRAWAL_AMOUNT = 1;
-    if (amount < MIN_WITHDRAWAL_AMOUNT) {
-      setError(`Minimum withdrawal amount is $${MIN_WITHDRAWAL_AMOUNT}`);
+    // Get limits from selected account
+    const account = paymentAccounts.find(acc => acc._id === data.method);
+    const minLimit = account?.minLimit || 1;
+    const maxLimit = account?.maxLimit;
+
+    if (amount < minLimit) {
+      setError(`Minimum withdrawal amount is $${minLimit.toFixed(2)}`);
+      return;
+    }
+
+    if (maxLimit && amount > maxLimit) {
+      setError(`Maximum withdrawal amount is $${maxLimit.toFixed(2)}`);
       return;
     }
 
@@ -195,7 +224,18 @@ const WithdrawPage = () => {
                   <div className="text-sm text-blue-800 dark:text-blue-300">
                     <p className="font-semibold mb-1">Withdrawal Limits:</p>
                     <ul className="list-disc list-inside space-y-1 text-blue-700 dark:text-blue-400">
-                      <li>Minimum withdrawal amount: $1.00</li>
+                      {selectedAccount ? (
+                        <>
+                          <li>Minimum withdrawal amount: ${selectedAccount.minLimit?.toFixed(2) || '1.00'}</li>
+                          {selectedAccount.maxLimit ? (
+                            <li>Maximum withdrawal amount: ${selectedAccount.maxLimit.toFixed(2)}</li>
+                          ) : (
+                            <li>No maximum limit</li>
+                          )}
+                        </>
+                      ) : (
+                        <li>Select a payment method to see limits</li>
+                      )}
                       <li>One withdrawal request per 24 hours</li>
                     </ul>
                   </div>
@@ -254,12 +294,16 @@ const WithdrawPage = () => {
                   {...register('amount', {
                     required: 'Amount is required',
                     min: {
-                      value: 1,
-                      message: 'Minimum withdrawal amount is $1',
+                      value: selectedAccount?.minLimit || 1,
+                      message: `Minimum withdrawal amount is $${(selectedAccount?.minLimit || 1).toFixed(2)}`,
                     },
                     max: {
-                      value: availableBalance,
-                      message: `Amount cannot exceed available balance ($${availableBalance.toFixed(2)})`,
+                      value: selectedAccount?.maxLimit 
+                        ? Math.min(selectedAccount.maxLimit, availableBalance)
+                        : availableBalance,
+                      message: selectedAccount?.maxLimit
+                        ? `Amount cannot exceed $${Math.min(selectedAccount.maxLimit, availableBalance).toFixed(2)}`
+                        : `Amount cannot exceed available balance ($${availableBalance.toFixed(2)})`,
                     },
                   })}
                 />
@@ -273,13 +317,20 @@ const WithdrawPage = () => {
                     className="w-full px-4 py-3 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent min-h-[44px] text-base"
                   >
                     <option value="">Select payment method</option>
-                    <option value="binance">Binance</option>
-                    <option value="jazzcash">JazzCash</option>
-                    <option value="easypaisa">EasyPaisa</option>
-                    <option value="bank">Bank Transfer</option>
+                    {paymentAccounts.map((account) => (
+                      <option key={account._id} value={account._id}>
+                        {account.name} ({account.type})
+                      </option>
+                    ))}
                   </select>
                   {errors.method && (
                     <p className="mt-1 text-sm text-red-500">{errors.method.message}</p>
+                  )}
+                  {selectedAccount && (
+                    <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                      Account: {selectedAccount.accountNumber}
+                      {selectedAccount.accountHolderName && ` - ${selectedAccount.accountHolderName}`}
+                    </p>
                   )}
                 </div>
 

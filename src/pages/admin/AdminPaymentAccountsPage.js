@@ -17,6 +17,8 @@ const AdminPaymentAccountsPage = () => {
     type: 'Bank',
     isActive: true,
     displayOrder: 0,
+    minLimit: 1,
+    maxLimit: '',
   });
 
   useEffect(() => {
@@ -55,6 +57,8 @@ const AdminPaymentAccountsPage = () => {
       type: 'Bank',
       isActive: true,
       displayOrder: 0,
+      minLimit: 1,
+      maxLimit: '',
     });
     setShowModal(true);
   };
@@ -68,6 +72,8 @@ const AdminPaymentAccountsPage = () => {
       type: account.type || 'Bank',
       isActive: account.isActive !== undefined ? account.isActive : true,
       displayOrder: account.displayOrder || 0,
+      minLimit: account.minLimit !== undefined ? account.minLimit : 1,
+      maxLimit: account.maxLimit !== undefined && account.maxLimit !== null ? account.maxLimit : '',
     });
     setShowModal(true);
   };
@@ -82,6 +88,8 @@ const AdminPaymentAccountsPage = () => {
         type: formData.type,
         isActive: formData.isActive,
         displayOrder: parseInt(formData.displayOrder) || 0,
+        minLimit: parseFloat(formData.minLimit) || 1,
+        maxLimit: formData.maxLimit !== '' && formData.maxLimit !== null ? parseFloat(formData.maxLimit) : null,
       };
 
       if (editingAccount) {
@@ -181,6 +189,8 @@ const AdminPaymentAccountsPage = () => {
                   <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">Account Number</th>
                   <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">Holder Name</th>
                   <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">Status</th>
+                  <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">Min Limit</th>
+                  <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">Max Limit</th>
                   <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">Order</th>
                   <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">Actions</th>
                 </tr>
@@ -212,6 +222,12 @@ const AdminPaymentAccountsPage = () => {
                           Inactive
                         </span>
                       )}
+                    </td>
+                    <td className="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">
+                      ${account.minLimit !== undefined ? account.minLimit.toFixed(2) : '$1.00'}
+                    </td>
+                    <td className="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">
+                      {account.maxLimit !== undefined && account.maxLimit !== null ? `$${account.maxLimit.toFixed(2)}` : 'No limit'}
                     </td>
                     <td className="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">
                       {account.displayOrder}
@@ -357,6 +373,45 @@ const AdminPaymentAccountsPage = () => {
                     />
                     <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                       Lower numbers appear first
+                    </p>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Minimum Withdrawal Limit ($) *
+                    </label>
+                    <input
+                      type="number"
+                      name="minLimit"
+                      value={formData.minLimit}
+                      onChange={handleInputChange}
+                      min="0"
+                      step="0.01"
+                      required
+                      className="w-full px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500"
+                      placeholder="1.00"
+                    />
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                      Minimum amount users can withdraw using this account
+                    </p>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Maximum Withdrawal Limit ($)
+                    </label>
+                    <input
+                      type="number"
+                      name="maxLimit"
+                      value={formData.maxLimit}
+                      onChange={handleInputChange}
+                      min="0"
+                      step="0.01"
+                      className="w-full px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500"
+                      placeholder="Leave empty for no limit"
+                    />
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                      Maximum amount users can withdraw using this account (leave empty for no limit)
                     </p>
                   </div>
 
