@@ -14,9 +14,16 @@ const api = axios.create({
 // Request interceptor
 api.interceptors.request.use(
   (config) => {
-    // Get token from localStorage (simpler approach)
-    const token = localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN) || Cookies.get(STORAGE_KEYS.AUTH_TOKEN);
-    
+    // Prefer admin token when available, otherwise fall back to user token
+    const adminToken =
+      localStorage.getItem(STORAGE_KEYS.ADMIN_TOKEN) ||
+      Cookies.get(STORAGE_KEYS.ADMIN_TOKEN);
+    const userToken =
+      localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN) ||
+      Cookies.get(STORAGE_KEYS.AUTH_TOKEN);
+
+    const token = adminToken || userToken;
+
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
