@@ -14,7 +14,6 @@ import {
   CheckCircle,
 } from 'lucide-react';
 import dashboardService from '../../services/dashboard';
-import investmentService from '../../services/investment';
 import { Button } from '../../components';
 import { ROUTES } from '../../constants';
 import {
@@ -38,58 +37,13 @@ const DashboardPage = () => {
   const [referralInfo, setReferralInfo] = useState(null);
   const [dailyEarnings, setDailyEarnings] = useState([]);
   const [copied, setCopied] = useState(false);
-  const [showReinvestModal, setShowReinvestModal] = useState(false);
-  const [plans, setPlans] = useState([]);
-  const [selectedPlan, setSelectedPlan] = useState(null);
-  const [reinvesting, setReinvesting] = useState(false);
 
   useEffect(() => {
     fetchDashboardData();
     fetchEarnings();
     fetchReferralInfo();
     fetchDailyEarnings();
-    fetchPlans();
   }, []);
-
-  const fetchPlans = async () => {
-    try {
-      const response = await investmentService.getPlans();
-      if (response.success) {
-        setPlans(response.plans || []);
-      }
-    } catch (error) {
-      console.error('Error fetching plans:', error);
-    }
-  };
-
-  const handleReinvest = async () => {
-    if (!selectedPlan) {
-      alert('Please select a plan');
-      return;
-    }
-
-    if (dashboardData?.availableBalance < selectedPlan.amount) {
-      alert('Insufficient balance');
-      return;
-    }
-
-    try {
-      setReinvesting(true);
-      const response = await investmentService.reinvest(selectedPlan._id, selectedPlan.amount);
-      if (response.success) {
-        alert('Reinvestment successful!');
-        setShowReinvestModal(false);
-        setSelectedPlan(null);
-        fetchDashboardData();
-      } else {
-        alert(response.message || 'Reinvestment failed');
-      }
-    } catch (error) {
-      alert(error.message || 'Reinvestment failed');
-    } finally {
-      setReinvesting(false);
-    }
-  };
 
   const fetchDashboardData = async () => {
     try {
@@ -221,23 +175,13 @@ const DashboardPage = () => {
     <div className="min-h-screen bg-gray-50 dark:bg-slate-900 py-8 sm:py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="mb-6 sm:mb-8 flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-2">
-              Dashboard
-            </h1>
-            <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
-              Overview of your investment portfolio and earnings
-            </p>
-          </div>
-          {dashboardData?.availableBalance > 0 && (
-            <Button
-              onClick={() => setShowReinvestModal(true)}
-              className="bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white"
-            >
-              Reinvest
-            </Button>
-          )}
+        <div className="mb-6 sm:mb-8">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-2">
+            Dashboard
+          </h1>
+          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
+            Overview of your investment portfolio and earnings
+          </p>
         </div>
 
         {/* Stats Grid */}
@@ -495,74 +439,6 @@ const DashboardPage = () => {
         </div>
       </div>
 
-      {/* Reinvest Modal */}
-      {showReinvestModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="bg-white dark:bg-slate-800 rounded-xl shadow-2xl max-w-md w-full p-6"
-          >
-            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
-              Reinvest from Available Balance
-            </h3>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-              Available Balance: ${Number(dashboardData?.availableBalance || 0).toFixed(2)}
-            </p>
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Select Plan
-                </label>
-                <select
-                  value={selectedPlan?._id || ''}
-                  onChange={(e) => {
-                    const plan = plans.find(p => p._id === e.target.value);
-                    setSelectedPlan(plan || null);
-                  }}
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-white"
-                >
-                  <option value="">Select a plan</option>
-                  {plans
-                    .filter(plan => plan.amount <= (dashboardData?.availableBalance || 0))
-                    .map(plan => (
-                      <option key={plan._id} value={plan._id}>
-                        ${plan.amount} - {plan.name}
-                      </option>
-                    ))}
-                </select>
-              </div>
-              {selectedPlan && (
-                <div className="bg-gray-50 dark:bg-slate-700/50 rounded-lg p-4">
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Plan Amount:</p>
-                  <p className="text-lg font-bold text-gray-900 dark:text-white">
-                    ${selectedPlan.amount}
-                  </p>
-                </div>
-              )}
-              <div className="flex gap-3">
-                <Button
-                  onClick={handleReinvest}
-                  disabled={!selectedPlan || reinvesting}
-                  loading={reinvesting}
-                  className="flex-1 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white"
-                >
-                  Reinvest
-                </Button>
-                <Button
-                  onClick={() => {
-                    setShowReinvestModal(false);
-                    setSelectedPlan(null);
-                  }}
-                  className="flex-1 bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-slate-600"
-                >
-                  Cancel
-                </Button>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      )}
     </div>
   );
 };

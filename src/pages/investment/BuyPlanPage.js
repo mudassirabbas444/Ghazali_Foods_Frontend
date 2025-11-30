@@ -2,8 +2,9 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { motion } from 'framer-motion';
-import { Upload, DollarSign, FileText, ArrowLeft, CheckCircle, AlertCircle, Clock } from 'lucide-react';
+import { Upload, DollarSign, FileText, ArrowLeft, CheckCircle, AlertCircle, Clock, Wallet, RefreshCw } from 'lucide-react';
 import investmentService from '../../services/investment';
+import dashboardService from '../../services/dashboard';
 import { Button, Input } from '../../components';
 import { ROUTES } from '../../constants';
 import { formatCurrency, formatPackageCurrency } from '../../utils/currency';
@@ -18,6 +19,8 @@ const BuyPlanPage = () => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
   const [receiptFile, setReceiptFile] = useState(null);
+  const [investmentType, setInvestmentType] = useState('manual'); // 'manual' or 'reinvest'
+  const [availableBalance, setAvailableBalance] = useState(0);
 
   const {
     register,
@@ -28,9 +31,10 @@ const BuyPlanPage = () => {
   const fetchPlan = useCallback(async () => {
     try {
       setLoading(true);
-      const [plansResponse, accountsResponse] = await Promise.all([
+      const [plansResponse, accountsResponse, dashboardResponse] = await Promise.all([
         investmentService.getPlans(),
-        investmentService.getPaymentAccounts()
+        investmentService.getPaymentAccounts(),
+        dashboardService.getDashboard()
       ]);
       
       if (plansResponse.success) {
@@ -44,6 +48,10 @@ const BuyPlanPage = () => {
 
       if (accountsResponse.success) {
         setPaymentAccounts(accountsResponse.accounts || []);
+      }
+
+      if (dashboardResponse.success) {
+        setAvailableBalance(dashboardResponse.data?.availableBalance || 0);
       }
     } catch (err) {
       setError(err.message || 'Failed to fetch plan');
@@ -76,11 +84,6 @@ const BuyPlanPage = () => {
   };
 
   const onSubmit = async (data) => {
-    if (!receiptFile) {
-      setError('Please upload a payment receipt');
-      return;
-    }
-
     if (parseFloat(data.amount) !== plan.amount) {
       setError(`Investment amount must be exactly $${plan.amount}`);
       return;
@@ -90,11 +93,31 @@ const BuyPlanPage = () => {
       setSubmitting(true);
       setError(null);
 
-      const response = await investmentService.createInvestment(
-        plan._id,
-        data.amount,
-        receiptFile
-      );
+      let response;
+
+      if (investmentType === 'reinvest') {
+        // Reinvest from available balance
+        if (availableBalance < plan.amount) {
+          setError('Insufficient available balance');
+          setSubmitting(false);
+          return;
+        }
+
+        response = await investmentService.reinvest(plan._id, data.amount);
+      } else {
+        // Manual investment with receipt
+        if (!receiptFile) {
+          setError('Please upload a payment receipt');
+          setSubmitting(false);
+          return;
+        }
+
+        response = await investmentService.createInvestment(
+          plan._id,
+          data.amount,
+          receiptFile
+        );
+      }
 
       if (response.success) {
         setSuccess(true);
@@ -230,51 +253,155 @@ const BuyPlanPage = () => {
             </div>
           </div>
 
+          {/* Investment Type Selection */}
+          <div className="bg-white dark:bg-slate-700 rounded-lg p-4 mb-4 sm:mb-6 border-2 border-gray-200 dark:border-slate-600">
+            <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">
+              Choose Investment Method
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {/* Manual Investment */}
+              <motion.button
+                type="button"
+                onClick={() => setInvestmentType('manual')}
+                className={`p-4 rounded-lg border-2 transition-all ${
+                  investmentType === 'manual'
+                    ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20'
+                    : 'border-gray-300 dark:border-slate-600 hover:border-indigo-300 dark:hover:border-indigo-700'
+                }`}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <div className="flex items-center mb-2">
+                  <Upload className={`w-5 h-5 mr-2 ${
+                    investmentType === 'manual'
+                      ? 'text-indigo-600 dark:text-indigo-400'
+                      : 'text-gray-400'
+                  }`} />
+                  <span className={`font-semibold ${
+                    investmentType === 'manual'
+                      ? 'text-indigo-600 dark:text-indigo-400'
+                      : 'text-gray-700 dark:text-gray-300'
+                  }`}>
+                    Manual Investment
+                  </span>
+                </div>
+                <p className="text-xs text-gray-600 dark:text-gray-400 text-left">
+                  Upload payment receipt. Requires admin approval.
+                </p>
+              </motion.button>
+
+              {/* Reinvest from Balance */}
+              <motion.button
+                type="button"
+                onClick={() => setInvestmentType('reinvest')}
+                disabled={availableBalance < plan.amount}
+                className={`p-4 rounded-lg border-2 transition-all ${
+                  investmentType === 'reinvest'
+                    ? 'border-emerald-500 bg-emerald-50 dark:bg-emerald-900/20'
+                    : 'border-gray-300 dark:border-slate-600 hover:border-emerald-300 dark:hover:border-emerald-700'
+                } ${
+                  availableBalance < plan.amount ? 'opacity-50 cursor-not-allowed' : ''
+                }`}
+                whileHover={availableBalance >= plan.amount ? { scale: 1.02 } : {}}
+                whileTap={availableBalance >= plan.amount ? { scale: 0.98 } : {}}
+              >
+                <div className="flex items-center mb-2">
+                  <RefreshCw className={`w-5 h-5 mr-2 ${
+                    investmentType === 'reinvest'
+                      ? 'text-emerald-600 dark:text-emerald-400'
+                      : 'text-gray-400'
+                  }`} />
+                  <span className={`font-semibold ${
+                    investmentType === 'reinvest'
+                      ? 'text-emerald-600 dark:text-emerald-400'
+                      : 'text-gray-700 dark:text-gray-300'
+                  }`}>
+                    Reinvest from Balance
+                  </span>
+                </div>
+                <p className="text-xs text-gray-600 dark:text-gray-400 text-left">
+                  Auto-approved. No receipt needed.
+                </p>
+                {availableBalance < plan.amount && (
+                  <p className="text-xs text-red-500 mt-1">
+                    Insufficient balance (${availableBalance.toFixed(2)})
+                  </p>
+                )}
+              </motion.button>
+            </div>
+            {investmentType === 'reinvest' && (
+              <div className="mt-4 p-3 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-lg">
+                <div className="flex items-center">
+                  <Wallet className="w-4 h-4 text-emerald-600 dark:text-emerald-400 mr-2" />
+                  <p className="text-sm text-emerald-700 dark:text-emerald-400">
+                    Available Balance: <span className="font-bold">${availableBalance.toFixed(2)}</span>
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
+
           {/* Approval Notice */}
-          <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4 mb-4 sm:mb-6">
-            <div className="flex items-start">
-              <Clock className="w-5 h-5 text-amber-600 dark:text-amber-400 mr-2 mt-0.5 flex-shrink-0" />
-              <div className="text-sm text-amber-800 dark:text-amber-300">
-                <p className="font-semibold mb-1">Processing Time:</p>
-                <p className="text-amber-700 dark:text-amber-400">
-                  Your investment will be reviewed and approved within 24 hours after payment receipt verification.
+          {investmentType === 'manual' ? (
+            <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4 mb-4 sm:mb-6">
+              <div className="flex items-start">
+                <Clock className="w-5 h-5 text-amber-600 dark:text-amber-400 mr-2 mt-0.5 flex-shrink-0" />
+                <div className="text-sm text-amber-800 dark:text-amber-300">
+                  <p className="font-semibold mb-1">Processing Time:</p>
+                  <p className="text-amber-700 dark:text-amber-400">
+                    Your investment will be reviewed and approved within 24 hours after payment receipt verification.
+                  </p>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-lg p-4 mb-4 sm:mb-6">
+              <div className="flex items-start">
+                <CheckCircle className="w-5 h-5 text-emerald-600 dark:text-emerald-400 mr-2 mt-0.5 flex-shrink-0" />
+                <div className="text-sm text-emerald-800 dark:text-emerald-300">
+                  <p className="font-semibold mb-1">Instant Approval:</p>
+                  <p className="text-emerald-700 dark:text-emerald-400">
+                    Your reinvestment will be automatically approved. No receipt upload required. Admin will see status as "Reinvested from balance".
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Payment Account Details - Only show for manual investment */}
+          {investmentType === 'manual' && (
+            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 sm:p-6 mb-4 sm:mb-6">
+              <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center">
+                <DollarSign className="w-5 h-5 mr-2 text-blue-600 dark:text-blue-400" />
+                Payment Account Details
+              </h3>
+              <div className="space-y-3">
+                {paymentAccounts.length > 0 ? (
+                  paymentAccounts.map((account) => (
+                    <div key={account._id} className="bg-white dark:bg-slate-800 rounded-lg p-3">
+                      <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-1">
+                        {account.name}
+                      </p>
+                      <p className={`text-sm sm:text-base font-semibold text-gray-900 dark:text-white break-all ${
+                        account.type === 'Binance' ? 'font-mono' : ''
+                      }`}>
+                        {account.accountNumber}
+                      </p>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-sm text-gray-500 dark:text-gray-400 text-center py-4">
+                    No payment accounts available
+                  </p>
+                )}
+              </div>
+              <div className="mt-4 p-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg">
+                <p className="text-xs sm:text-sm text-amber-700 dark:text-amber-400">
+                  <strong>Important:</strong> Please make sure to send the exact amount (${plan.amount}) and upload a clear receipt/screenshot of your payment.
                 </p>
               </div>
             </div>
-          </div>
-
-          {/* Payment Account Details */}
-          <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 sm:p-6 mb-4 sm:mb-6">
-            <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center">
-              <DollarSign className="w-5 h-5 mr-2 text-blue-600 dark:text-blue-400" />
-              Payment Account Details
-            </h3>
-            <div className="space-y-3">
-              {paymentAccounts.length > 0 ? (
-                paymentAccounts.map((account) => (
-                  <div key={account._id} className="bg-white dark:bg-slate-800 rounded-lg p-3">
-                    <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-1">
-                      {account.name}
-                    </p>
-                    <p className={`text-sm sm:text-base font-semibold text-gray-900 dark:text-white break-all ${
-                      account.type === 'Binance' ? 'font-mono' : ''
-                    }`}>
-                      {account.accountNumber}
-                    </p>
-                  </div>
-                ))
-              ) : (
-                <p className="text-sm text-gray-500 dark:text-gray-400 text-center py-4">
-                  No payment accounts available
-                </p>
-              )}
-            </div>
-            <div className="mt-4 p-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg">
-              <p className="text-xs sm:text-sm text-amber-700 dark:text-amber-400">
-                <strong>Important:</strong> Please make sure to send the exact amount (${plan.amount}) and upload a clear receipt/screenshot of your payment.
-              </p>
-            </div>
-          </div>
+          )}
 
           {/* Form */}
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 sm:space-y-6">
@@ -292,50 +419,60 @@ const BuyPlanPage = () => {
               })}
             />
 
-            {/* File Upload */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Payment Receipt <span className="text-red-500">*</span>
-              </label>
-              <div className="mt-1 flex justify-center px-4 sm:px-6 pt-4 sm:pt-5 pb-4 sm:pb-6 border-2 border-gray-300 dark:border-slate-600 border-dashed rounded-lg hover:border-indigo-500 dark:hover:border-indigo-400 transition-colors">
-                <div className="space-y-1 text-center w-full">
-                  <Upload className="mx-auto h-10 w-10 sm:h-12 sm:w-12 text-gray-400" />
-                  <div className="flex flex-col sm:flex-row text-xs sm:text-sm text-gray-600 dark:text-gray-400 items-center justify-center">
-                    <label className="relative cursor-pointer rounded-md font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-500">
-                      <span>Upload a file</span>
-                      <input
-                        type="file"
-                        className="sr-only"
-                        accept="image/jpeg,image/jpg,image/png,image/webp,application/pdf"
-                        onChange={handleFileChange}
-                      />
-                    </label>
-                    <p className="pl-0 sm:pl-1 mt-1 sm:mt-0">or drag and drop</p>
-                  </div>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 px-2">
-                    PNG, JPG, WebP, PDF up to 5MB
-                  </p>
-                  {receiptFile && (
-                    <div className="flex items-center justify-center mt-2 px-2">
-                      <FileText className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
-                      <span className="text-xs sm:text-sm text-green-600 dark:text-green-400 truncate max-w-full">
-                        {receiptFile.name}
-                      </span>
+            {/* File Upload - Only show for manual investment */}
+            {investmentType === 'manual' && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Payment Receipt <span className="text-red-500">*</span>
+                </label>
+                <div className="mt-1 flex justify-center px-4 sm:px-6 pt-4 sm:pt-5 pb-4 sm:pb-6 border-2 border-gray-300 dark:border-slate-600 border-dashed rounded-lg hover:border-indigo-500 dark:hover:border-indigo-400 transition-colors">
+                  <div className="space-y-1 text-center w-full">
+                    <Upload className="mx-auto h-10 w-10 sm:h-12 sm:w-12 text-gray-400" />
+                    <div className="flex flex-col sm:flex-row text-xs sm:text-sm text-gray-600 dark:text-gray-400 items-center justify-center">
+                      <label className="relative cursor-pointer rounded-md font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-500">
+                        <span>Upload a file</span>
+                        <input
+                          type="file"
+                          className="sr-only"
+                          accept="image/jpeg,image/jpg,image/png,image/webp,application/pdf"
+                          onChange={handleFileChange}
+                        />
+                      </label>
+                      <p className="pl-0 sm:pl-1 mt-1 sm:mt-0">or drag and drop</p>
                     </div>
-                  )}
+                    <p className="text-xs text-gray-500 dark:text-gray-400 px-2">
+                      PNG, JPG, WebP, PDF up to 5MB
+                    </p>
+                    {receiptFile && (
+                      <div className="flex items-center justify-center mt-2 px-2">
+                        <FileText className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
+                        <span className="text-xs sm:text-sm text-green-600 dark:text-green-400 truncate max-w-full">
+                          {receiptFile.name}
+                        </span>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
 
             <Button
               type="submit"
               size="lg"
               fullWidth
               loading={submitting}
-              disabled={submitting || !receiptFile}
-              className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white min-h-[44px] text-sm sm:text-base"
+              disabled={
+                submitting || 
+                (investmentType === 'manual' && !receiptFile) ||
+                (investmentType === 'reinvest' && availableBalance < plan.amount)
+              }
+              className={
+                investmentType === 'reinvest'
+                  ? 'bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white min-h-[44px] text-sm sm:text-base'
+                  : 'bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white min-h-[44px] text-sm sm:text-base'
+              }
             >
-              Submit Investment Request
+              {investmentType === 'reinvest' ? 'Reinvest Now' : 'Submit Investment Request'}
             </Button>
           </form>
         </motion.div>

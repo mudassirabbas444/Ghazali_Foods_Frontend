@@ -7,6 +7,7 @@ import {
   DollarSign,
   Eye,
   RefreshCw,
+  Wallet,
 } from 'lucide-react';
 import adminService from '../../services/admin';
 import { Button } from '../../components';
@@ -230,7 +231,7 @@ const AdminInvestmentsPage = () => {
                     </div>
                   </div>
                   <div className="flex gap-2">
-                    {investment.paymentProof && (
+                    {investment.paymentProof && investment.paymentProof !== 'Reinvested from available balance' && (
                       <Button
                         onClick={() => setSelectedInvestment(investment)}
                         variant="outline"
@@ -240,6 +241,12 @@ const AdminInvestmentsPage = () => {
                         <Eye className="w-3 h-3 mr-1" />
                         Receipt
                       </Button>
+                    )}
+                    {investment.paymentProof === 'Reinvested from available balance' && (
+                      <div className="flex items-center gap-1 px-3 py-1.5 bg-emerald-100 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 rounded-lg text-xs font-medium">
+                        <Wallet className="w-3 h-3" />
+                        Reinvested
+                      </div>
                     )}
                     {investment.status === 'Pending' && (
                       <>
@@ -330,7 +337,7 @@ const AdminInvestmentsPage = () => {
                       </td>
                       <td className="px-4 lg:px-6 py-4 whitespace-nowrap text-sm">
                         <div className="flex items-center gap-2">
-                          {investment.paymentProof && (
+                          {investment.paymentProof && investment.paymentProof !== 'Reinvested from available balance' && (
                             <Button
                               onClick={() => setSelectedInvestment(investment)}
                               variant="outline"
@@ -340,6 +347,12 @@ const AdminInvestmentsPage = () => {
                               <Eye className="w-4 h-4 mr-1" />
                               Receipt
                             </Button>
+                          )}
+                          {investment.paymentProof === 'Reinvested from available balance' && (
+                            <div className="flex items-center gap-1 px-3 py-1.5 bg-emerald-100 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 rounded-lg text-sm font-medium">
+                              <Wallet className="w-4 h-4" />
+                              Reinvested
+                            </div>
                           )}
                           {investment.status === 'Pending' && (
                             <>
@@ -398,7 +411,7 @@ const AdminInvestmentsPage = () => {
       )}
 
       {/* Receipt Modal */}
-      {selectedInvestment && (
+      {selectedInvestment && selectedInvestment.paymentProof && selectedInvestment.paymentProof !== 'Reinvested from available balance' && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
@@ -417,11 +430,19 @@ const AdminInvestmentsPage = () => {
                 <XCircle className="w-5 h-5" />
               </Button>
             </div>
-            <img
-              src={selectedInvestment.paymentProof}
-              alt="Receipt"
-              className="w-full rounded-lg"
-            />
+            {selectedInvestment.paymentProof.endsWith('.pdf') ? (
+              <iframe
+                src={selectedInvestment.paymentProof}
+                className="w-full h-[600px] rounded-lg"
+                title="Receipt PDF"
+              />
+            ) : (
+              <img
+                src={selectedInvestment.paymentProof}
+                alt="Receipt"
+                className="w-full rounded-lg"
+              />
+            )}
           </motion.div>
         </div>
       )}

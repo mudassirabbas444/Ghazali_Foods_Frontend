@@ -138,6 +138,12 @@ const Home = () => {
               </Link>
             </div>
             <div className="flex items-center gap-2 sm:gap-4">
+              <Link
+                to={ROUTES.ABOUT}
+                className="text-sm sm:text-base text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium transition-colors px-2 sm:px-0"
+              >
+                About Us
+              </Link>
               <ThemeToggle />
               <Link
                 to={ROUTES.LOGIN}
@@ -169,44 +175,60 @@ const Home = () => {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
             <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="relative rounded-2xl overflow-hidden shadow-2xl"
+              initial={{ opacity: 0, y: 50, scale: 0.9 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+              whileHover={{ scale: 1.05, y: -10 }}
+              className="relative rounded-2xl overflow-hidden shadow-2xl cursor-pointer group"
             >
-              <img
+              <motion.img
                 src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop&q=80"
                 alt="Investment Growth"
-                className="w-full h-64 md:h-80 object-cover animate-pulse"
+                className="w-full h-64 md:h-80 object-cover"
+                whileHover={{ scale: 1.1 }}
+                transition={{ duration: 0.5 }}
                 onError={(e) => {
                   e.target.src = 'https://via.placeholder.com/800x600?text=Investment+Growth';
                 }}
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-              <div className="absolute bottom-4 left-4 right-4">
-                <h3 className="text-white font-bold text-xl mb-2">Grow Your Wealth</h3>
-                <p className="text-white/90 text-sm">Smart investment strategies for financial freedom</p>
-              </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent group-hover:from-black/80 transition-all duration-300"></div>
+              <motion.div 
+                className="absolute bottom-4 left-4 right-4"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6 }}
+              >
+                <h3 className="text-white font-bold text-xl mb-2 group-hover:text-yellow-300 transition-colors">Grow Your Wealth</h3>
+                <p className="text-white/90 text-sm group-hover:text-white transition-colors">Smart investment strategies for financial freedom</p>
+              </motion.div>
             </motion.div>
             <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              className="relative rounded-2xl overflow-hidden shadow-2xl"
+              initial={{ opacity: 0, y: 50, scale: 0.9 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+              whileHover={{ scale: 1.05, y: -10 }}
+              className="relative rounded-2xl overflow-hidden shadow-2xl cursor-pointer group"
             >
-              <img
+              <motion.img
                 src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop&q=80"
                 alt="Success Stories"
-                className="w-full h-64 md:h-80 object-cover animate-pulse"
+                className="w-full h-64 md:h-80 object-cover"
+                whileHover={{ scale: 1.1 }}
+                transition={{ duration: 0.5 }}
                 onError={(e) => {
                   e.target.src = 'https://via.placeholder.com/800x600?text=Success+Stories';
                 }}
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-              <div className="absolute bottom-4 left-4 right-4">
-                <h3 className="text-white font-bold text-xl mb-2">Join Thousands</h3>
-                <p className="text-white/90 text-sm">Be part of a thriving investment community</p>
-              </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent group-hover:from-black/80 transition-all duration-300"></div>
+              <motion.div 
+                className="absolute bottom-4 left-4 right-4"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.8 }}
+              >
+                <h3 className="text-white font-bold text-xl mb-2 group-hover:text-yellow-300 transition-colors">Join Thousands</h3>
+                <p className="text-white/90 text-sm group-hover:text-white transition-colors">Be part of a thriving investment community</p>
+              </motion.div>
             </motion.div>
           </div>
         </div>
