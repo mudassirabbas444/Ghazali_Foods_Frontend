@@ -112,6 +112,7 @@ export const API_ENDPOINTS = {
   INVESTMENT: {
     GET_PLANS: '/plans',
     CREATE_INVESTMENT: '/invest',
+    REINVEST: '/reinvest',
     MY_INVESTMENTS: '/my/investments',
     PAYMENT_ACCOUNTS: '/payment-accounts',
   },
@@ -143,6 +144,7 @@ export const API_ENDPOINTS = {
     SEED_RANKS: '/admin/seed-ranks',
     GET_USERS: '/admin/users',
     GET_USER_EARNINGS: '/admin/users/:id/earnings',
+    GET_USER_TEAM: '/admin/users/:id/team',
     PLANS: '/admin/plans',
     CREATE_PLAN: '/admin/plans',
     UPDATE_PLAN: '/admin/plans/:id',

@@ -165,6 +165,52 @@ const Home = () => {
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-pink-200 dark:bg-pink-900 rounded-full mix-blend-multiply filter blur-xl"></div>
         </div>
 
+        {/* Animated Images/Videos Section */}
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="relative rounded-2xl overflow-hidden shadow-2xl"
+            >
+              <img
+                src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop&q=80"
+                alt="Investment Growth"
+                className="w-full h-64 md:h-80 object-cover animate-pulse"
+                onError={(e) => {
+                  e.target.src = 'https://via.placeholder.com/800x600?text=Investment+Growth';
+                }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+              <div className="absolute bottom-4 left-4 right-4">
+                <h3 className="text-white font-bold text-xl mb-2">Grow Your Wealth</h3>
+                <p className="text-white/90 text-sm">Smart investment strategies for financial freedom</p>
+              </div>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="relative rounded-2xl overflow-hidden shadow-2xl"
+            >
+              <img
+                src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop&q=80"
+                alt="Success Stories"
+                className="w-full h-64 md:h-80 object-cover animate-pulse"
+                onError={(e) => {
+                  e.target.src = 'https://via.placeholder.com/800x600?text=Success+Stories';
+                }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+              <div className="absolute bottom-4 left-4 right-4">
+                <h3 className="text-white font-bold text-xl mb-2">Join Thousands</h3>
+                <p className="text-white/90 text-sm">Be part of a thriving investment community</p>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

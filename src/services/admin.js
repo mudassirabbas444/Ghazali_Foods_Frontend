@@ -205,6 +205,17 @@ class AdminService {
     }
   }
 
+  // Get user team data
+  async getUserTeam(userId) {
+    try {
+      const url = API_ENDPOINTS.ADMIN.GET_USER_TEAM.replace(':id', userId);
+      const response = await adminApi.get(url);
+      return response.data;
+    } catch (error) {
+      throw this.handleError(error);
+    }
+  }
+
   // Get all plans
   async getPlans() {
     try {

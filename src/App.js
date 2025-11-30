@@ -10,6 +10,7 @@ import { ROUTES } from './constants';
 
 // Home Page
 import Home from './pages/Home';
+import AboutUsPage from './pages/AboutUsPage';
 
 // Auth Pages
 import LoginPage from './pages/auth/LoginPage';
@@ -119,6 +120,7 @@ function App() {
             <Routes>
               {/* Public Routes */}
               <Route path="/" element={<Home />} />
+              <Route path={ROUTES.ABOUT} element={<AboutUsPage />} />
               <Route
                 path={ROUTES.LOGIN}
                 element={

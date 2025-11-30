@@ -54,6 +54,19 @@ class InvestmentService {
       throw error;
     }
   }
+
+  // Reinvest from available balance
+  async reinvest(planId, amount) {
+    try {
+      const response = await apiService.post(API_ENDPOINTS.INVESTMENT.REINVEST, {
+        planId,
+        amount
+      });
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 const investmentService = new InvestmentService();

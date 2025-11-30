@@ -27,6 +27,8 @@ const AdminUsersPage = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [userEarnings, setUserEarnings] = useState(null);
   const [showEarningsModal, setShowEarningsModal] = useState(false);
+  const [userTeam, setUserTeam] = useState(null);
+  const [showTeamModal, setShowTeamModal] = useState(false);
 
   useEffect(() => {
     fetchUsers();
@@ -86,6 +88,26 @@ const AdminUsersPage = () => {
     } catch (err) {
       console.error('Error fetching user earnings:', err);
       alert(err.message || 'Failed to fetch user earnings');
+    }
+  };
+
+  const handleViewTeam = async (user) => {
+    try {
+      if (!user || !user._id) {
+        alert('Invalid user data');
+        return;
+      }
+      setSelectedUser(user);
+      const response = await adminService.getUserTeam(user._id);
+      if (response.success) {
+        setUserTeam(response.data);
+        setShowTeamModal(true);
+      } else {
+        alert(response.message || 'Failed to fetch user team');
+      }
+    } catch (err) {
+      console.error('Error fetching user team:', err);
+      alert(err.message || 'Failed to fetch user team');
     }
   };
 
@@ -276,7 +298,14 @@ const AdminUsersPage = () => {
                       {user.teamCount || 0}
                     </td>
                     <td className="px-4 py-3">
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <button
+                          onClick={() => handleViewTeam(user)}
+                          className="flex items-center gap-1 px-3 py-1.5 bg-purple-100 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400 rounded-lg hover:bg-purple-200 dark:hover:bg-purple-900/30 transition-colors text-sm"
+                        >
+                          <Eye className="w-4 h-4" />
+                          View Team
+                        </button>
                         <button
                           onClick={() => handleViewEarnings(user)}
                           className="flex items-center gap-1 px-3 py-1.5 bg-indigo-100 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 rounded-lg hover:bg-indigo-200 dark:hover:bg-indigo-900/30 transition-colors text-sm"
@@ -483,6 +512,176 @@ const AdminUsersPage = () => {
                     Loading earnings data...
                   </div>
                 )}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* User Team Modal */}
+      <AnimatePresence>
+        {showTeamModal && selectedUser && userTeam && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+            onClick={() => setShowTeamModal(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
+              className="bg-white dark:bg-slate-800 rounded-xl shadow-2xl max-w-6xl w-full max-h-[90vh] overflow-hidden flex flex-col"
+            >
+              {/* Modal Header */}
+              <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-slate-700">
+                <div>
+                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
+                    Team Details
+                  </h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                    {selectedUser?.fullName || 'N/A'} ({selectedUser?.email || 'N/A'})
+                  </p>
+                </div>
+                <button
+                  onClick={() => setShowTeamModal(false)}
+                  className="p-2 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
+                >
+                  <X className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                </button>
+              </div>
+
+              {/* Modal Content */}
+              <div className="flex-1 overflow-y-auto p-6">
+                <div className="space-y-6">
+                  {/* Direct Upline */}
+                  {userTeam.directUpline && (
+                    <div className="bg-indigo-50 dark:bg-indigo-900/20 rounded-lg p-4 border border-indigo-200 dark:border-indigo-800">
+                      <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+                        Direct Upline
+                      </h4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div>
+                          <p className="text-sm text-gray-600 dark:text-gray-400">Name</p>
+                          <p className="font-medium text-gray-900 dark:text-white">{userTeam.directUpline.fullName}</p>
+                        </div>
+                        <div>
+                          <p className="text-sm text-gray-600 dark:text-gray-400">Email</p>
+                          <p className="font-medium text-gray-900 dark:text-white">{userTeam.directUpline.email}</p>
+                        </div>
+                        <div>
+                          <p className="text-sm text-gray-600 dark:text-gray-400">Ref Code</p>
+                          <p className="font-mono font-medium text-gray-900 dark:text-white">{userTeam.directUpline.refCode}</p>
+                        </div>
+                        {userTeam.directUpline.phone && (
+                          <div>
+                            <p className="text-sm text-gray-600 dark:text-gray-400">Phone</p>
+                            <p className="font-medium text-gray-900 dark:text-white">{userTeam.directUpline.phone}</p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Team Summary */}
+                  {userTeam.summary && (
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4">
+                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Total Team</p>
+                        <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                          {userTeam.summary.total || 0}
+                        </p>
+                      </div>
+                      <div className="bg-emerald-50 dark:bg-emerald-900/20 rounded-lg p-4">
+                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Active Members</p>
+                        <p className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">
+                          {userTeam.summary.active || 0}
+                        </p>
+                      </div>
+                      <div className="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4">
+                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Inactive Members</p>
+                        <p className="text-2xl font-bold text-gray-600 dark:text-gray-400">
+                          {userTeam.summary.inactive || 0}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Level Stats */}
+                  {userTeam.levelStats && (
+                    <div>
+                      <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                        Level Statistics
+                      </h4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        {['level1', 'level2', 'level3', 'level4'].map((level) => {
+                          const stats = userTeam.levelStats[level] || { total: 0, active: 0, inactive: 0 };
+                          return (
+                            <div key={level} className="bg-gray-50 dark:bg-slate-700/50 rounded-lg p-4">
+                              <p className="text-sm font-semibold text-gray-900 dark:text-white mb-2 capitalize">
+                                {level.replace('level', 'Level ')}
+                              </p>
+                              <div className="space-y-1 text-xs">
+                                <div className="flex justify-between">
+                                  <span className="text-gray-600 dark:text-gray-400">Total:</span>
+                                  <span className="font-medium text-gray-900 dark:text-white">{stats.total}</span>
+                                </div>
+                                <div className="flex justify-between">
+                                  <span className="text-emerald-600 dark:text-emerald-400">Active:</span>
+                                  <span className="font-medium text-emerald-600 dark:text-emerald-400">{stats.active}</span>
+                                </div>
+                                <div className="flex justify-between">
+                                  <span className="text-gray-500 dark:text-gray-500">Inactive:</span>
+                                  <span className="font-medium text-gray-500 dark:text-gray-500">{stats.inactive}</span>
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Team Members by Level */}
+                  {['level1', 'level2', 'level3', 'level4'].map((level) => {
+                    const levelData = userTeam[level];
+                    if (!levelData || !levelData.members || levelData.members.length === 0) return null;
+
+                    return (
+                      <div key={level} className="border border-gray-200 dark:border-slate-700 rounded-lg p-4">
+                        <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 capitalize">
+                          {level.replace('level', 'Level ')} Members ({levelData.members.length})
+                        </h4>
+                        <div className="space-y-2 max-h-64 overflow-y-auto">
+                          {levelData.members.map((member, index) => (
+                            <div
+                              key={member._id || index}
+                              className="flex items-center justify-between p-3 bg-gray-50 dark:bg-slate-700/50 rounded-lg"
+                            >
+                              <div className="flex-1">
+                                <p className="text-sm font-medium text-gray-900 dark:text-white">
+                                  {member.fullName || 'N/A'}
+                                </p>
+                                <p className="text-xs text-gray-600 dark:text-gray-400">
+                                  {member.email || 'N/A'} • Joined: {member.joinDate ? new Date(member.joinDate).toLocaleDateString() : 'N/A'}
+                                </p>
+                              </div>
+                              <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                member.isActive
+                                  ? 'bg-emerald-100 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400'
+                                  : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-400'
+                              }`}>
+                                {member.isActive ? 'Active' : 'Inactive'}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             </motion.div>
           </motion.div>

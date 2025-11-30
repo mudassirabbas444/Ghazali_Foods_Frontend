@@ -69,7 +69,36 @@ const WithdrawPage = () => {
     }
   }, [selectedMethod, paymentAccounts]);
 
+  const checkWithdrawalRestrictions = () => {
+    const now = new Date();
+    const dayOfWeek = now.getDay(); // 0 = Sunday
+    
+    // Check if it's Sunday
+    if (dayOfWeek === 0) {
+      return 'Withdrawals are not allowed on Sundays. Please try again on Monday.';
+    }
+
+    // Check withdrawal time (9 AM to 12 AM)
+    const currentHour = now.getHours();
+    const currentMinute = now.getMinutes();
+    const currentTimeInMinutes = currentHour * 60 + currentMinute;
+    const startTimeInMinutes = 9 * 60; // 9 AM = 540 minutes
+
+    if (currentTimeInMinutes < startTimeInMinutes) {
+      return 'Withdrawals are only allowed from 9 AM to 12 AM (midnight). Please try again after 9 AM.';
+    }
+
+    return null;
+  };
+
   const onSubmit = async (data) => {
+    // Check withdrawal restrictions
+    const restrictionError = checkWithdrawalRestrictions();
+    if (restrictionError) {
+      setError(restrictionError);
+      return;
+    }
+
     const amount = parseFloat(data.amount);
     
     if (amount > availableBalance) {
@@ -237,6 +266,8 @@ const WithdrawPage = () => {
                         <li>Select a payment method to see limits</li>
                       )}
                       <li>One withdrawal request per 24 hours</li>
+                      <li>Withdrawals allowed: Monday to Saturday, 9 AM to 12 AM (midnight)</li>
+                      <li>No withdrawals on Sundays</li>
                     </ul>
                   </div>
                 </div>
