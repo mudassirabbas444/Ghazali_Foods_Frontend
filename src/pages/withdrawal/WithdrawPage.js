@@ -70,22 +70,54 @@ const WithdrawPage = () => {
   }, [selectedMethod, paymentAccounts]);
 
   const checkWithdrawalRestrictions = () => {
+    // Get current time in Pakistani time zone (Asia/Karachi, UTC+5)
     const now = new Date();
-    const dayOfWeek = now.getDay(); // 0 = Sunday
+    
+    // Convert to Pakistani time using Intl.DateTimeFormat
+    const pakistaniTimeFormatter = new Intl.DateTimeFormat('en-US', {
+      timeZone: 'Asia/Karachi',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false
+    });
+    
+    const parts = pakistaniTimeFormatter.formatToParts(now);
+    const pakistaniDate = {
+      year: parseInt(parts.find(p => p.type === 'year').value),
+      month: parseInt(parts.find(p => p.type === 'month').value) - 1, // Month is 0-indexed
+      day: parseInt(parts.find(p => p.type === 'day').value),
+      hour: parseInt(parts.find(p => p.type === 'hour').value),
+      minute: parseInt(parts.find(p => p.type === 'minute').value),
+    };
+    
+    // Create a date object from Pakistani time components to get day of week
+    const pakistaniDateObj = new Date(
+      pakistaniDate.year,
+      pakistaniDate.month,
+      pakistaniDate.day,
+      pakistaniDate.hour,
+      pakistaniDate.minute
+    );
+    
+    const dayOfWeek = pakistaniDateObj.getDay(); // 0 = Sunday
     
     // Check if it's Sunday
     if (dayOfWeek === 0) {
       return 'Withdrawals are not allowed on Sundays. Please try again on Monday.';
     }
 
-    // Check withdrawal time (9 AM to 12 AM)
-    const currentHour = now.getHours();
-    const currentMinute = now.getMinutes();
+    // Check withdrawal time (9 AM to 12 AM) in Pakistani time zone
+    const currentHour = pakistaniDate.hour;
+    const currentMinute = pakistaniDate.minute;
     const currentTimeInMinutes = currentHour * 60 + currentMinute;
     const startTimeInMinutes = 9 * 60; // 9 AM = 540 minutes
 
     if (currentTimeInMinutes < startTimeInMinutes) {
-      return 'Withdrawals are only allowed from 9 AM to 12 AM (midnight). Please try again after 9 AM.';
+      return 'Withdrawals are only allowed from 9 AM to 12 AM (midnight) Pakistan Standard Time. Please try again after 9 AM PKT.';
     }
 
     return null;
@@ -266,7 +298,7 @@ const WithdrawPage = () => {
                         <li>Select a payment method to see limits</li>
                       )}
                       <li>One withdrawal request per 24 hours</li>
-                      <li>Withdrawals allowed: Monday to Saturday, 9 AM to 12 AM (midnight)</li>
+                      <li>Withdrawals allowed: Monday to Saturday, 9 AM to 12 AM (midnight) Pakistan Standard Time (PKT)</li>
                       <li>No withdrawals on Sundays</li>
                     </ul>
                   </div>
