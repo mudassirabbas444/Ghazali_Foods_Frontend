@@ -157,13 +157,13 @@ export const AppProvider = ({ children }) => {
         }
 
         // Load theme from localStorage
-        const savedTheme = localStorage.getItem('dreamslife_theme');
+        const savedTheme = localStorage.getItem('dealistaan_theme');
         if (savedTheme) {
           dispatch({ type: ACTION_TYPES.SET_THEME, payload: savedTheme });
         }
 
         // Load language from localStorage
-        const savedLanguage = localStorage.getItem('dreamslife_language');
+        const savedLanguage = localStorage.getItem('dealistaan_language');
         if (savedLanguage) {
           dispatch({ type: ACTION_TYPES.SET_LANGUAGE, payload: savedLanguage });
         }
@@ -195,12 +195,12 @@ export const AppProvider = ({ children }) => {
     },
 
     setTheme: (theme) => {
-      localStorage.setItem('dreamslife_theme', theme);
+      localStorage.setItem('dealistaan_theme', theme);
       dispatch({ type: ACTION_TYPES.SET_THEME, payload: theme });
     },
 
     setLanguage: (language) => {
-      localStorage.setItem('dreamslife_language', language);
+      localStorage.setItem('dealistaan_language', language);
       dispatch({ type: ACTION_TYPES.SET_LANGUAGE, payload: language });
     },
 

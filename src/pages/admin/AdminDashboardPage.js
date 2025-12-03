@@ -1,242 +1,304 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
-  Users,
   DollarSign,
+  ShoppingCart,
+  Users,
+  Package,
   TrendingUp,
-  Clock,
-  Wallet,
-  ArrowRight,
+  TrendingDown,
+  AlertCircle,
+  ArrowUpRight,
+  ArrowDownRight,
 } from 'lucide-react';
 import adminService from '../../services/admin';
-import { Button } from '../../components';
+import { Link } from 'react-router-dom';
 import { ROUTES } from '../../constants';
-import {
-  BarChart,
-  Bar,
-  PieChart as RechartsPieChart,
-  Pie,
-  Cell,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-} from 'recharts';
+import { toast } from 'react-toastify';
 
 const AdminDashboardPage = () => {
-  const navigate = useNavigate();
-  const [overview, setOverview] = useState(null);
+  const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [lowStockProducts, setLowStockProducts] = useState([]);
+  const [recentOrders, setRecentOrders] = useState([]);
 
   useEffect(() => {
-    fetchOverview();
+    fetchDashboardData();
   }, []);
 
-  const fetchOverview = async () => {
+  const fetchDashboardData = async () => {
     try {
       setLoading(true);
-      const response = await adminService.getOverview();
-      if (response.success) {
-        setOverview(response.data);
-      } else {
-        setError(response.message || 'Failed to fetch overview');
+      const [statsResponse, lowStockResponse, ordersResponse] = await Promise.all([
+        adminService.getDashboardStats(),
+        adminService.getLowStockProducts(),
+        adminService.getAllOrders({ limit: 5 }),
+      ]);
+
+      if (statsResponse.success) {
+        setStats(statsResponse.data);
       }
-    } catch (err) {
-      setError(err.message || 'Failed to fetch overview');
+      if (lowStockResponse.success) {
+        setLowStockProducts(lowStockResponse.products || []);
+      }
+      if (ordersResponse.success) {
+        setRecentOrders(ordersResponse.orders || []);
+      }
+    } catch (error) {
+      console.error('Error fetching dashboard data:', error);
+      toast.error('Failed to load dashboard data');
     } finally {
       setLoading(false);
     }
   };
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
-        <p className="text-red-700 dark:text-red-400">{error}</p>
-        <Button onClick={fetchOverview} className="mt-4">Retry</Button>
-      </div>
-    );
-  }
-
-  const stats = [
+  const statCards = [
     {
-      name: 'Total Users',
-      value: overview?.totalUsers || 0,
-      icon: Users,
-      color: 'indigo',
-      link: '/admin/users',
-    },
-    {
-      name: 'Total Investments',
-      value: `$${(overview?.totalInvestments || 0).toLocaleString()}`,
+      title: 'Total Revenue',
+      value: stats?.totalRevenue || 0,
       icon: DollarSign,
-      color: 'emerald',
-      link: ROUTES.ADMIN_INVESTMENTS,
+      color: 'green',
+      change: stats?.revenueChange || 0,
+      prefix: 'Rs. ',
     },
     {
-      name: 'Total Payouts',
-      value: `$${(overview?.totalPayouts || 0).toLocaleString()}`,
-      icon: Wallet,
-      color: 'purple',
-      link: ROUTES.ADMIN_WITHDRAWALS,
-    },
-    {
-      name: 'Total Earnings',
-      value: `$${(overview?.totalEarnings || 0).toLocaleString()}`,
-      icon: TrendingUp,
+      title: 'Total Orders',
+      value: stats?.totalOrders || 0,
+      icon: ShoppingCart,
       color: 'blue',
-      link: null,
+      change: stats?.ordersChange || 0,
     },
     {
-      name: 'Pending Investments',
-      value: overview?.pendingInvestments || 0,
-      icon: Clock,
-      color: 'amber',
-      link: ROUTES.ADMIN_INVESTMENTS,
+      title: 'Total Customers',
+      value: stats?.totalCustomers || 0,
+      icon: Users,
+      color: 'purple',
+      change: stats?.customersChange || 0,
     },
     {
-      name: 'Pending Withdrawals',
-      value: overview?.pendingWithdrawals || 0,
-      icon: Clock,
-      color: 'red',
-      link: ROUTES.ADMIN_WITHDRAWALS,
+      title: 'Total Products',
+      value: stats?.totalProducts || 0,
+      icon: Package,
+      color: 'orange',
+      change: stats?.productsChange || 0,
     },
   ];
 
-  const colorClasses = {
-    indigo: 'bg-indigo-100 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400',
-    emerald: 'bg-emerald-100 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400',
-    purple: 'bg-purple-100 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400',
-    blue: 'bg-blue-100 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400',
-    amber: 'bg-amber-100 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400',
-    red: 'bg-red-100 dark:bg-red-900/20 text-red-600 dark:text-red-400',
+  const formatNumber = (num) => {
+    if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+    if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+    return num?.toLocaleString() || 0;
   };
 
-  const chartData = [
-    { name: 'Investments', value: overview?.totalInvestments || 0 },
-    { name: 'Payouts', value: overview?.totalPayouts || 0 },
-    { name: 'Earnings', value: overview?.totalEarnings || 0 },
-  ];
-
-  const COLORS = ['#4F46E5', '#10B981', '#3B82F6'];
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-96">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
-      {/* Header */}
+      {/* Page Header */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-          Admin Dashboard
-        </h1>
-        <p className="text-gray-600 dark:text-gray-400">
-          Overview of platform statistics and pending actions
-        </p>
+        <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
+        <p className="text-gray-600 mt-1">Welcome back! Here's what's happening with your store.</p>
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {stats.map((stat, index) => {
-          const Icon = stat.icon;
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {statCards.map((card, index) => {
+          const Icon = card.icon;
+          const isPositive = card.change >= 0;
           return (
             <motion.div
-              key={stat.name}
+              key={card.title}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className={`bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 ${
-                stat.link ? 'cursor-pointer hover:shadow-xl transition-shadow' : ''
-              }`}
-              onClick={() => stat.link && navigate(stat.link)}
+              className="bg-white rounded-lg shadow-sm p-6 border border-gray-200"
             >
-              <div className="flex items-center justify-between mb-4">
-                <div className={`p-3 rounded-lg ${colorClasses[stat.color]}`}>
-                  <Icon className="w-6 h-6" />
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-gray-600 mb-1">{card.title}</p>
+                  <p className="text-2xl font-bold text-gray-900">
+                    {card.prefix}
+                    {formatNumber(card.value)}
+                  </p>
+                  <div className="flex items-center gap-1 mt-2">
+                    {isPositive ? (
+                      <ArrowUpRight className="w-4 h-4 text-green-500" />
+                    ) : (
+                      <ArrowDownRight className="w-4 h-4 text-red-500" />
+                    )}
+                    <span
+                      className={`text-sm font-medium ${
+                        isPositive ? 'text-green-600' : 'text-red-600'
+                      }`}
+                    >
+                      {Math.abs(card.change)}%
+                    </span>
+                    <span className="text-sm text-gray-500">vs last month</span>
+                  </div>
                 </div>
-                {stat.link && (
-                  <ArrowRight className="w-5 h-5 text-gray-400" />
-                )}
+                <div
+                  className={`p-3 rounded-lg bg-${card.color}-100`}
+                >
+                  <Icon className={`w-6 h-6 text-${card.color}-600`} />
+                </div>
               </div>
-              <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
-                {stat.name}
-              </h3>
-              <p className="text-2xl font-bold text-gray-900 dark:text-white">
-                {stat.value}
-              </p>
             </motion.div>
           );
         })}
       </div>
 
-      {/* Charts Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Financial Overview Chart */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6"
-        >
-          <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
-            Financial Overview
-          </h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={chartData}>
-              <CartesianGrid strokeDasharray="3 3" className="stroke-gray-300 dark:stroke-slate-600" />
-              <XAxis dataKey="name" className="text-gray-600 dark:text-gray-400" />
-              <YAxis className="text-gray-600 dark:text-gray-400" />
-              <Tooltip
-                contentStyle={{
-                  backgroundColor: 'white',
-                  border: '1px solid #e5e7eb',
-                  borderRadius: '8px',
-                }}
-                formatter={(value) => `$${value.toLocaleString()}`}
-              />
-              <Bar dataKey="value" fill="#4F46E5" name="Amount ($)" />
-            </BarChart>
-          </ResponsiveContainer>
-        </motion.div>
+      {/* Charts and Tables Row */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Recent Orders */}
+        <div className="lg:col-span-2 bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-bold text-gray-900">Recent Orders</h2>
+            <Link
+              to={ROUTES.ADMIN_ORDERS}
+              className="text-sm text-orange-600 hover:text-orange-700 font-medium"
+            >
+              View All
+            </Link>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-gray-200">
+                  <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Order #</th>
+                  <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Customer</th>
+                  <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Amount</th>
+                  <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {recentOrders.length === 0 ? (
+                  <tr>
+                    <td colSpan={4} className="text-center py-8 text-gray-500">
+                      No recent orders
+                    </td>
+                  </tr>
+                ) : (
+                  recentOrders.map((order) => (
+                    <tr key={order._id} className="border-b border-gray-100 hover:bg-gray-50">
+                      <td className="py-3 px-4 text-sm font-medium text-gray-900">
+                        {order.orderNumber}
+                      </td>
+                      <td className="py-3 px-4 text-sm text-gray-600">
+                        {order.user?.fullName || 'N/A'}
+                      </td>
+                      <td className="py-3 px-4 text-sm font-semibold text-gray-900">
+                        Rs. {order.total?.toLocaleString()}
+                      </td>
+                      <td className="py-3 px-4">
+                        <span
+                          className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                            order.status === 'delivered'
+                              ? 'bg-green-100 text-green-800'
+                              : order.status === 'pending'
+                              ? 'bg-yellow-100 text-yellow-800'
+                              : 'bg-blue-100 text-blue-800'
+                          }`}
+                        >
+                          {order.status}
+                        </span>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
 
-        {/* Distribution Pie Chart */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6"
-        >
-          <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
-            Distribution
-          </h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <RechartsPieChart>
-              <Pie
-                data={chartData}
-                cx="50%"
-                cy="50%"
-                labelLine={false}
-                label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
-                outerRadius={80}
-                fill="#8884d8"
-                dataKey="value"
+        {/* Low Stock Alerts */}
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-bold text-gray-900">Low Stock</h2>
+            <AlertCircle className="w-5 h-5 text-orange-500" />
+          </div>
+          <div className="space-y-3">
+            {lowStockProducts.length === 0 ? (
+              <p className="text-sm text-gray-500 text-center py-4">All products in stock</p>
+            ) : (
+              lowStockProducts.slice(0, 5).map((product) => (
+                <div
+                  key={product._id}
+                  className="flex items-center justify-between p-3 bg-orange-50 rounded-lg"
+                >
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-gray-900 truncate">{product.name}</p>
+                    <p className="text-xs text-gray-600">
+                      Stock: {product.stock || product.variants?.[0]?.stock || 0}
+                    </p>
+                  </div>
+                  <Link
+                    to={`${ROUTES.ADMIN_PRODUCTS}?edit=${product._id}`}
+                    className="text-xs text-orange-600 hover:text-orange-700 font-medium"
+                  >
+                    Update
+                  </Link>
+                </div>
+              ))
+            )}
+            {lowStockProducts.length > 5 && (
+              <Link
+                to={ROUTES.ADMIN_PRODUCTS}
+                className="block text-center text-sm text-orange-600 hover:text-orange-700 font-medium pt-2"
               >
-                {chartData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                ))}
-              </Pie>
-              <Tooltip formatter={(value) => `$${value.toLocaleString()}`} />
-            </RechartsPieChart>
-          </ResponsiveContainer>
-        </motion.div>
+                View All ({lowStockProducts.length})
+              </Link>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Quick Stats */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-600 mb-1">Pending Orders</p>
+              <p className="text-2xl font-bold text-gray-900">
+                {stats?.pendingOrders || 0}
+              </p>
+            </div>
+            <ShoppingCart className="w-8 h-8 text-yellow-500" />
+          </div>
+        </div>
+
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-600 mb-1">Average Order Value</p>
+              <p className="text-2xl font-bold text-gray-900">
+                Rs. {formatNumber(stats?.averageOrderValue || 0)}
+              </p>
+            </div>
+            <TrendingUp className="w-8 h-8 text-green-500" />
+          </div>
+        </div>
+
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-600 mb-1">Conversion Rate</p>
+              <p className="text-2xl font-bold text-gray-900">
+                {(stats?.conversionRate || 0).toFixed(1)}%
+              </p>
+            </div>
+            <TrendingDown className="w-8 h-8 text-blue-500" />
+          </div>
+        </div>
       </div>
     </div>
   );
 };
 
 export default AdminDashboardPage;
+

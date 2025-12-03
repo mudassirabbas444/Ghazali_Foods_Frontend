@@ -44,12 +44,24 @@ const FirebaseImage = ({
             <AlertCircle className='h-8 w-8 text-gray-400 mx-auto mb-2' />
           )}
           <p className='text-sm text-gray-500 mb-2'>Failed to load image</p>
-          <button
-            onClick={handleRetry}
-            className='text-xs text-primary-600 hover:text-primary-700'
+          <span
+            onClick={(e) => {
+              e.stopPropagation(); // Prevent parent button click
+              handleRetry();
+            }}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                e.stopPropagation();
+                handleRetry();
+              }
+            }}
+            className='text-xs text-primary-600 hover:text-primary-700 cursor-pointer underline'
           >
             Retry
-          </button>
+          </span>
         </div>
       </div>
     );

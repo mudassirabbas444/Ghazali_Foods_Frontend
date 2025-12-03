@@ -13,7 +13,6 @@ import {
   CheckCircle,
   AlertCircle,
   Copy,
-  Award,
   Camera,
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
@@ -212,7 +211,7 @@ const ProfilePage = () => {
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-slate-900 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div>
       </div>
     );
   }
@@ -291,15 +290,15 @@ const ProfilePage = () => {
                       <img
                         src={avatarPreview || user.avatar}
                         alt={user.fullName || 'User'}
-                        className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover border-2 border-indigo-500 dark:border-indigo-400"
+                        className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover border-2 border-orange-500 dark:border-orange-400"
                       />
                     ) : (
-                      <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-2xl sm:text-3xl font-bold border-2 border-indigo-500 dark:border-indigo-400">
+                      <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center text-white text-2xl sm:text-3xl font-bold border-2 border-orange-500 dark:border-orange-400">
                         {user.fullName?.charAt(0)?.toUpperCase() || 'U'}
                       </div>
                     )}
                     {isEditing && (
-                      <label className="absolute bottom-0 right-0 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full p-1.5 sm:p-2 cursor-pointer shadow-lg transition-colors">
+                      <label className="absolute bottom-0 right-0 bg-orange-500 hover:bg-orange-600 text-white rounded-full p-1.5 sm:p-2 cursor-pointer shadow-lg transition-colors">
                         <Camera className="w-3 h-3 sm:w-4 sm:h-4" />
                         <input
                           type="file"
@@ -322,7 +321,7 @@ const ProfilePage = () => {
                 {!isEditing && (
                   <Button
                     onClick={handleEdit}
-                    className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white w-full sm:w-auto flex-shrink-0"
+                    className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white w-full sm:w-auto flex-shrink-0"
                   >
                     <Edit3 className="w-4 h-4" />
                     Edit Profile
@@ -391,7 +390,7 @@ const ProfilePage = () => {
                     <Button
                       type="submit"
                       loading={submitting}
-                      className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white flex-1"
+                      className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white flex-1"
                     >
                       <Save className="w-4 h-4" />
                       Save Changes
@@ -511,7 +510,7 @@ const ProfilePage = () => {
                           <Button
                             onClick={handleChangePassword}
                             loading={changingPassword}
-                            className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white"
+                            className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white"
                           >
                             <Save className="w-4 h-4" />
                             Update Password
@@ -548,43 +547,22 @@ const ProfilePage = () => {
               animate={{ opacity: 1, y: 0 }}
               className="space-y-4 sm:space-y-6"
             >
-              {/* Account Stats */}
+              {/* Account Information */}
               <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-4 sm:p-6">
                 <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">
                   Account Information
                 </h3>
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600 dark:text-gray-400">Rank</span>
-                    <div className="flex items-center gap-2">
-                      <Award className="w-4 h-4 text-amber-500" />
-                      <span className="text-sm font-semibold text-gray-900 dark:text-white">
-                        {user.rank || 'No Rank'}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600 dark:text-gray-400">Team Count</span>
+                    <span className="text-sm text-gray-600 dark:text-gray-400">Member Since</span>
                     <span className="text-sm font-semibold text-gray-900 dark:text-white">
-                      {user.teamCount || 0}
+                      {user.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'N/A'}
                     </span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600 dark:text-gray-400">Total Investment</span>
-                    <span className="text-sm font-semibold text-emerald-600 dark:text-emerald-400">
-                      ${(user.totalInvestment || 0).toFixed(2)}
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600 dark:text-gray-400">Total Earnings</span>
-                    <span className="text-sm font-semibold text-emerald-600 dark:text-emerald-400">
-                      ${(user.totalEarnings || 0).toFixed(2)}
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600 dark:text-gray-400">Available Balance</span>
-                    <span className="text-sm font-semibold text-indigo-600 dark:text-indigo-400">
-                      ${(user.availableBalance || 0).toFixed(2)}
+                    <span className="text-sm text-gray-600 dark:text-gray-400">Account Status</span>
+                    <span className={`text-sm font-semibold ${user.isActive ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
+                      {user.isActive ? 'Active' : 'Inactive'}
                     </span>
                   </div>
                 </div>

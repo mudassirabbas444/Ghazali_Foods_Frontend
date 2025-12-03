@@ -1,5 +1,10 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import adminAuthService from '../services/adminAuth';
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
+import apiService from '../services/api';
+import { API_ENDPOINTS } from '../constants';
+import { STORAGE_KEYS } from '../constants';
+import { toast } from 'react-toastify';
 
 const AdminAuthContext = createContext();
 
@@ -13,102 +18,86 @@ export const useAdminAuth = () => {
 
 export const AdminAuthProvider = ({ children }) => {
   const [admin, setAdmin] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Initialize admin authentication state
   useEffect(() => {
-    const initAdminAuth = async () => {
-      try {
-        const token = adminAuthService.getAdminToken();
-        const adminData = adminAuthService.getAdminData();
-
-        if (token && adminData) {
-          // Verify token is still valid by fetching profile
-          try {
-            const profileResponse = await adminAuthService.getProfile();
-            if (profileResponse.success) {
-              setAdmin(profileResponse.user);
-              setIsAuthenticated(true);
-              setIsAdmin(profileResponse.user?.isAdmin === true);
-            } else {
-              // Token is invalid, clear auth data
-              adminAuthService.logout();
-              setAdmin(null);
-              setIsAuthenticated(false);
-              setIsAdmin(false);
-            }
-          } catch (error) {
-            // Token is invalid, clear auth data
-            adminAuthService.logout();
-            setAdmin(null);
-            setIsAuthenticated(false);
-            setIsAdmin(false);
-          }
-        } else {
-          setAdmin(null);
-          setIsAuthenticated(false);
-          setIsAdmin(false);
-        }
-      } catch (error) {
-        console.error('Error initializing admin auth:', error);
-        setAdmin(null);
-        setIsAuthenticated(false);
-        setIsAdmin(false);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    initAdminAuth();
+    checkAdminAuth();
   }, []);
 
-  const login = async (credentials) => {
+  const checkAdminAuth = async () => {
     try {
       setIsLoading(true);
-      const response = await adminAuthService.login(credentials);
+      const token =
+        localStorage.getItem(STORAGE_KEYS.ADMIN_TOKEN) ||
+        Cookies.get(STORAGE_KEYS.ADMIN_TOKEN);
+
+      if (!token) {
+        setIsAuthenticated(false);
+        setAdmin(null);
+        return;
+      }
+
+      // Verify token by getting profile
+      const response = await apiService.get(API_ENDPOINTS.AUTH.PROFILE);
       
-      if (response.success && response.user) {
+      if (response.success && response.user?.isAdmin) {
         setAdmin(response.user);
         setIsAuthenticated(true);
-        setIsAdmin(response.user?.isAdmin === true);
-        return response;
       } else {
-        throw new Error(response.message || 'Login failed');
+        logout();
       }
     } catch (error) {
-      console.error('Admin login error:', error);
-      throw error;
+      console.error('Admin auth check failed:', error);
+      logout();
     } finally {
       setIsLoading(false);
     }
   };
 
-  const logout = () => {
+  const login = async (credentials) => {
     try {
-      adminAuthService.logout();
-      setAdmin(null);
-      setIsAuthenticated(false);
-      setIsAdmin(false);
+      const response = await apiService.post(API_ENDPOINTS.AUTH.LOGIN, credentials);
+      
+      if (response.success && response.user?.isAdmin) {
+        const token = response.token;
+        
+        // Store admin token separately
+        localStorage.setItem(STORAGE_KEYS.ADMIN_TOKEN, token);
+        Cookies.set(STORAGE_KEYS.ADMIN_TOKEN, token, { expires: 7 });
+        
+        setAdmin(response.user);
+        setIsAuthenticated(true);
+        
+        return { success: true, user: response.user };
+      } else {
+        return {
+          success: false,
+          message: response.message || 'Invalid credentials or not an admin',
+        };
+      }
     } catch (error) {
-      console.error('Admin logout error:', error);
+      return {
+        success: false,
+        message: error.message || 'Login failed',
+      };
     }
   };
 
-  const updateAdmin = (adminData) => {
-    setAdmin(adminData);
-    adminAuthService.setAdminData(adminData);
+  const logout = () => {
+    localStorage.removeItem(STORAGE_KEYS.ADMIN_TOKEN);
+    Cookies.remove(STORAGE_KEYS.ADMIN_TOKEN);
+    setAdmin(null);
+    setIsAuthenticated(false);
   };
 
   const value = {
     admin,
-    isLoading,
     isAuthenticated,
-    isAdmin,
+    isLoading,
     login,
     logout,
-    updateAdmin,
+    checkAdminAuth,
   };
 
   return (
@@ -117,3 +106,4 @@ export const AdminAuthProvider = ({ children }) => {
     </AdminAuthContext.Provider>
   );
 };
+

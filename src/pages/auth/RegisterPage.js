@@ -6,7 +6,6 @@ import { Eye, EyeOff, Mail, Lock, User, Phone, Wallet, Gift, AlertCircle, CheckC
 import { useAuth } from '../../context/AuthContext';
 import { Button, Input } from '../../components';
 import GoogleAuth from '../../components/auth/GoogleAuth';
-import NotificationContainer from '../../components/common/NotificationContainer';
 import { VALIDATION, ROUTES } from '../../constants';
 
 const RegisterPage = () => {
@@ -87,13 +86,8 @@ const RegisterPage = () => {
     if (isBlocked) return;
 
     // Prepare registration data matching backend format
-    // Referral code is now required - use from URL param or form input
+    // Referral code is optional for ecommerce
     const finalReferralCode = referralCode || data.referredBy;
-    if (!finalReferralCode) {
-      // This should not happen if validation is working, but add safety check
-      console.error('Referral code is missing');
-      return;
-    }
 
     const registrationData = {
       fullName: data.name, // Map name to fullName for backend
@@ -101,7 +95,7 @@ const RegisterPage = () => {
       phone: data.phone,
       password: data.password,
       walletInfo: data.walletInfo || '', // Optional wallet info
-      referredBy: finalReferralCode // Required referral code
+      referredBy: finalReferralCode || undefined // Optional referral code
     };
 
     console.log('Registration attempt:', registrationData);
@@ -110,8 +104,8 @@ const RegisterPage = () => {
     
     if (result.success) {
       // Backend returns token and user data directly (no email verification in investment system)
-      console.log('Registration successful, redirecting to dashboard');
-      navigate('/dashboard');
+      console.log('Registration successful, redirecting to home');
+      navigate(ROUTES.HOME);
     } else {
       console.log('Registration failed:', result.message || result.error);
       // Handle failed registration attempts
@@ -151,7 +145,7 @@ const RegisterPage = () => {
     <div className='min-h-screen bg-white dark:bg-gray-900 flex items-center justify-center p-4 relative overflow-hidden'>
       {/* Subtle Background Pattern */}
       <div className='absolute inset-0 overflow-hidden opacity-5'>
-        <div className='absolute top-0 left-0 w-full h-full bg-gradient-to-br from-indigo-100 via-purple-100 to-pink-100 dark:from-indigo-900 dark:via-purple-900 dark:to-pink-900'></div>
+        <div className='absolute top-0 left-0 w-full h-full bg-gradient-to-br from-orange-100 via-red-100 to-pink-100 dark:from-orange-900 dark:via-red-900 dark:to-pink-900'></div>
       </div>
 
       <motion.div
@@ -168,13 +162,13 @@ const RegisterPage = () => {
           {/* Header */}
           <motion.div className='text-center mb-8' variants={itemVariants}>
             <motion.div
-              className='w-20 h-20 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg'
+              className='w-20 h-20 bg-gradient-to-br from-orange-500 to-red-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg'
               whileHover={{ scale: 1.05, rotate: 5 }}
               transition={{ duration: 0.2 }}
             >
               <Shield className='w-10 h-10 text-white' />
             </motion.div>
-            <h1 className='text-4xl font-bold text-gray-900 dark:text-white mb-2'>Join Dreams Life Traders</h1>
+            <h1 className='text-4xl font-bold text-gray-900 dark:text-white mb-2'>Join Ghazali Foods</h1>
             <p className='text-gray-600 dark:text-gray-400'>Create your account to get started</p>
           </motion.div>
 
@@ -230,7 +224,7 @@ const RegisterPage = () => {
                 placeholder='Enter your full name'
                 leftIcon={<User className='h-5 w-5 text-gray-400' />}
                 error={errors.name?.message}
-                className='bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 focus:bg-white dark:focus:bg-gray-600 focus:border-indigo-500 dark:focus:border-indigo-400'
+                className='bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 focus:bg-white dark:focus:bg-gray-600 focus:border-orange-500 dark:focus:border-orange-400'
                 {...register('name', {
                   required: 'Full name is required',
                   minLength: {
@@ -255,7 +249,7 @@ const RegisterPage = () => {
                 placeholder='Enter your email'
                 leftIcon={<Mail className='h-5 w-5 text-gray-400' />}
                 error={errors.email?.message}
-                className='bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 focus:bg-white dark:focus:bg-gray-600 focus:border-indigo-500 dark:focus:border-indigo-400'
+                className='bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 focus:bg-white dark:focus:bg-gray-600 focus:border-orange-500 dark:focus:border-orange-400'
                 {...register('email', {
                   required: 'Email is required',
                   pattern: {
@@ -279,7 +273,7 @@ const RegisterPage = () => {
                 placeholder='Enter your phone number'
                 leftIcon={<Phone className='h-5 w-5 text-gray-400' />}
                 error={errors.phone?.message}
-                className='bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 focus:bg-white dark:focus:bg-gray-600 focus:border-indigo-500 dark:focus:border-indigo-400'
+                className='bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 focus:bg-white dark:focus:bg-gray-600 focus:border-orange-500 dark:focus:border-orange-400'
                 {...register('phone', {
                   required: 'Phone number is required',
                   pattern: {
@@ -304,25 +298,25 @@ const RegisterPage = () => {
                 placeholder='Enter wallet address or payment method'
                 leftIcon={<Wallet className='h-5 w-5 text-gray-400' />}
                 error={errors.walletInfo?.message}
-                className='bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 focus:bg-white dark:focus:bg-gray-600 focus:border-indigo-500 dark:focus:border-indigo-400'
+                className='bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 focus:bg-white dark:focus:bg-gray-600 focus:border-orange-500 dark:focus:border-orange-400'
                 {...register('walletInfo', {
                   required: false,
                 })}
               />
 
               <Input
-                label='Referral Code'
+                label='Referral Code (Optional)'
                 type='text'
                 autoComplete='off'
-                placeholder='Enter referral code (8 characters)'
+                placeholder='Enter referral code (optional)'
                 leftIcon={<Gift className='h-5 w-5 text-gray-400' />}
                 error={errors.referredBy?.message}
-                className='bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 focus:bg-white dark:focus:bg-gray-600 focus:border-indigo-500 dark:focus:border-indigo-400 uppercase'
+                className='bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 focus:bg-white dark:focus:bg-gray-600 focus:border-orange-500 dark:focus:border-orange-400 uppercase'
                 {...register('referredBy', {
-                  required: 'Referral code is required',
+                  required: false,
                   pattern: {
-                    value: /^[A-Za-z0-9]{8}$/,
-                    message: 'Referral code must be exactly 8 alphanumeric characters',
+                    value: /^[A-Za-z0-9]{0,8}$/,
+                    message: 'Referral code must be up to 8 alphanumeric characters',
                   },
                   onChange: (e) => {
                     // Convert to uppercase automatically
@@ -348,7 +342,7 @@ const RegisterPage = () => {
                     </span>
                   </div>
                   <p className='text-xs text-green-700 dark:text-green-400 mt-1'>
-                    You'll be added to your referrer's team and they'll earn bonuses from your investments!
+                    Referral code applied successfully!
                   </p>
                 </motion.div>
               )}
@@ -374,7 +368,7 @@ const RegisterPage = () => {
                     </button>
                   }
                   error={errors.password?.message}
-                  className='bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 focus:bg-white dark:focus:bg-gray-600 focus:border-indigo-500 dark:focus:border-indigo-400 pr-12'
+                  className='bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 focus:bg-white dark:focus:bg-gray-600 focus:border-orange-500 dark:focus:border-orange-400 pr-12'
                   {...register('password', {
                     required: 'Password is required',
                     minLength: {
@@ -428,7 +422,7 @@ const RegisterPage = () => {
                 placeholder='Confirm your password'
                 leftIcon={<Lock className='h-5 w-5 text-gray-400' />}
                 error={errors.confirmPassword?.message}
-                className='bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 focus:bg-white dark:focus:bg-gray-600 focus:border-indigo-500 dark:focus:border-indigo-400'
+                className='bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 focus:bg-white dark:focus:bg-gray-600 focus:border-orange-500 dark:focus:border-orange-400'
                 {...register('confirmPassword', {
                   required: 'Please confirm your password',
                   validate: (value) =>
@@ -442,7 +436,7 @@ const RegisterPage = () => {
                 id='terms'
                 name='terms'
                 type='checkbox'
-                className='h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700'
+                className='h-4 w-4 text-orange-600 focus:ring-orange-500 border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700'
                 {...register('terms', {
                   required: 'You must accept the terms and conditions',
                 })}
@@ -451,14 +445,14 @@ const RegisterPage = () => {
                 I agree to the{' '}
                 <Link
                   to='/terms'
-                  className='font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors duration-200'
+                  className='font-medium text-orange-600 dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300 transition-colors duration-200'
                 >
                   Terms of Service
                 </Link>{' '}
                 and{' '}
                 <Link
                   to='/privacy'
-                  className='font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors duration-200'
+                  className='font-medium text-orange-600 dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300 transition-colors duration-200'
                 >
                   Privacy Policy
                 </Link>
@@ -478,7 +472,7 @@ const RegisterPage = () => {
                 fullWidth
                 loading={isLoading}
                 disabled={isLoading || isBlocked}
-                className='bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-700 hover:to-purple-700 shadow-lg'
+                className='bg-gradient-to-r from-orange-500 to-red-600 text-white hover:from-orange-600 hover:to-red-700 shadow-lg'
               >
                 {isBlocked ? 'Registration Blocked' : (
                   <>
@@ -494,7 +488,7 @@ const RegisterPage = () => {
                 Already have an account?{' '}
                 <Link
                   to={ROUTES.LOGIN}
-                  className='font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors duration-200'
+                  className='font-medium text-orange-600 dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300 transition-colors duration-200'
                 >
                   Sign in here
                 </Link>
@@ -516,7 +510,7 @@ const RegisterPage = () => {
               <GoogleAuth 
                 onSuccess={(result) => {
                   if (result.success) {
-                    navigate(ROUTES.DASHBOARD);
+                    navigate(ROUTES.HOME);
                   }
                 }}
                 text="Sign up with Google"
@@ -528,11 +522,10 @@ const RegisterPage = () => {
         {/* Footer */}
         <motion.div className='mt-8 text-center' variants={itemVariants}>
           <p className='text-gray-500 dark:text-gray-400 text-sm'>
-            Join thousands of users investing and growing their wealth
+            Join thousands of users shopping with us
           </p>
         </motion.div>
       </motion.div>
-      <NotificationContainer />
     </div>
   );
 };

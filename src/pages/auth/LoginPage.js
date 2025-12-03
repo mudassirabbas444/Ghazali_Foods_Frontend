@@ -6,7 +6,6 @@ import { Eye, EyeOff, Mail, Lock, ArrowRight, Shield } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { Button, Input } from '../../components';
 import GoogleAuth from '../../components/auth/GoogleAuth';
-import NotificationContainer from '../../components/common/NotificationContainer';
 import { ROUTES } from '../../constants';
 
 const LoginPage = () => {
@@ -26,8 +25,8 @@ const LoginPage = () => {
     console.log('LoginPage login result:', result);
     
     if (result.success) {
-      console.log('Login successful, redirecting to dashboard');
-      navigate(ROUTES.DASHBOARD);
+      console.log('Login successful, redirecting to home');
+      navigate(ROUTES.HOME);
     } else if (result.requiresVerification) {
       console.log('Login requires verification, redirecting to verification page');
       // Redirect to email verification page
@@ -37,7 +36,7 @@ const LoginPage = () => {
 
   const handleGoogleSuccess = (result) => {
     if (result.success) {
-      navigate(ROUTES.DASHBOARD);
+      navigate(ROUTES.HOME);
     }
   };
 
@@ -66,7 +65,7 @@ const LoginPage = () => {
     <div className='min-h-screen bg-white dark:bg-gray-900 flex items-center justify-center p-4 relative overflow-hidden'>
       {/* Subtle Background Pattern */}
       <div className='absolute inset-0 overflow-hidden opacity-5'>
-        <div className='absolute top-0 left-0 w-full h-full bg-gradient-to-br from-indigo-100 via-purple-100 to-pink-100 dark:from-indigo-900 dark:via-purple-900 dark:to-pink-900'></div>
+        <div className='absolute top-0 left-0 w-full h-full bg-gradient-to-br from-orange-100 via-red-100 to-pink-100 dark:from-orange-900 dark:via-red-900 dark:to-pink-900'></div>
       </div>
 
       <motion.div
@@ -83,7 +82,7 @@ const LoginPage = () => {
           {/* Header */}
           <motion.div className='text-center mb-6 sm:mb-8' variants={itemVariants}>
             <motion.div
-              className='w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-3 sm:mb-4 shadow-lg'
+              className='w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-orange-500 to-red-600 rounded-2xl flex items-center justify-center mx-auto mb-3 sm:mb-4 shadow-lg'
               whileHover={{ scale: 1.05, rotate: 5 }}
               transition={{ duration: 0.2 }}
             >
@@ -101,7 +100,7 @@ const LoginPage = () => {
                 placeholder='Enter your email'
                 leftIcon={<Mail className='h-5 w-5 text-gray-400' />}
                 error={errors.email?.message}
-                className='bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 focus:bg-white dark:focus:bg-gray-600 focus:border-indigo-500 dark:focus:border-indigo-400'
+                className='bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 focus:bg-white dark:focus:bg-gray-600 focus:border-orange-500 dark:focus:border-orange-400'
                 {...register('email', {
                   required: 'Email is required',
                   pattern: {
@@ -131,7 +130,7 @@ const LoginPage = () => {
                   </button>
                 }
                 error={errors.password?.message}
-                className='bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 focus:bg-white dark:focus:bg-gray-600 focus:border-indigo-500 dark:focus:border-indigo-400 pr-12'
+                className='bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 focus:bg-white dark:focus:bg-gray-600 focus:border-orange-500 dark:focus:border-orange-400 pr-12'
                 {...register('password', {
                   required: 'Password is required',
                   minLength: {
@@ -148,7 +147,7 @@ const LoginPage = () => {
                   id='remember-me'
                   name='remember-me'
                   type='checkbox'
-                  className='h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700'
+                  className='h-4 w-4 text-orange-600 focus:ring-orange-500 border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700'
                 />
                 <label
                   htmlFor='remember-me'
@@ -161,7 +160,7 @@ const LoginPage = () => {
               <div className='text-xs sm:text-sm'>
                 <Link
                   to={ROUTES.FORGOT_PASSWORD}
-                  className='font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors duration-200 min-h-[44px] flex items-center'
+                  className='font-medium text-orange-600 dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300 transition-colors duration-200 min-h-[44px] flex items-center'
                 >
                   Forgot password?
                 </Link>
@@ -178,7 +177,7 @@ const LoginPage = () => {
                 fullWidth
                 loading={isLoading}
                 disabled={isLoading}
-                className='bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-700 hover:to-purple-700 shadow-lg'
+                className='bg-gradient-to-r from-orange-500 to-red-600 text-white hover:from-orange-600 hover:to-red-700 shadow-lg'
               >
                 {isLoading ? 'Signing in...' : (
                   <>
@@ -194,7 +193,7 @@ const LoginPage = () => {
                 Don't have an account?{' '}
                 <Link
                   to={ROUTES.REGISTER}
-                  className='font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors duration-200'
+                  className='font-medium text-orange-600 dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300 transition-colors duration-200'
                 >
                   Sign up here
                 </Link>
@@ -225,7 +224,6 @@ const LoginPage = () => {
           </p>
         </motion.div>
       </motion.div>
-      <NotificationContainer />
     </div>
   );
 };

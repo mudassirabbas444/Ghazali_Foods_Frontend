@@ -4,7 +4,6 @@ import { useForm } from 'react-hook-form';
 import { Mail, ArrowLeft, RefreshCw, CheckCircle, AlertCircle, Shield } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { Button, Input } from '../../components';
-import NotificationContainer from '../../components/common/NotificationContainer';
 import { ROUTES } from '../../constants';
 
 const VerifyEmailPage = () => {
@@ -98,7 +97,7 @@ const VerifyEmailPage = () => {
     if (result.success) {
       setVerificationSuccess(true);
       setTimeout(() => {
-        navigate(ROUTES.DASHBOARD);
+        navigate(ROUTES.HOME);
       }, 2000);
     } else {
       // Handle failed attempts
@@ -141,7 +140,7 @@ const VerifyEmailPage = () => {
 
   if (verificationSuccess) {
     return (
-      <div className='min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8'>
+      <div className='min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 to-red-100 py-12 px-4 sm:px-6 lg:px-8'>
         <div className='max-w-md w-full space-y-8'>
           <div className='text-center'>
             <div className='mx-auto h-16 w-16 bg-green-100 rounded-full flex items-center justify-center mb-4'>
@@ -161,7 +160,7 @@ const VerifyEmailPage = () => {
 
   if (isOtpExpired) {
     return (
-      <div className='min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8'>
+      <div className='min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 to-red-100 py-12 px-4 sm:px-6 lg:px-8'>
         <div className='max-w-md w-full space-y-8'>
           <div className='text-center'>
             <div className='mx-auto h-16 w-16 bg-red-100 rounded-full flex items-center justify-center mb-4'>
@@ -187,11 +186,11 @@ const VerifyEmailPage = () => {
   }
 
   return (
-    <div className='min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8'>
+    <div className='min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 to-red-100 py-12 px-4 sm:px-6 lg:px-8'>
       <div className='max-w-md w-full space-y-8'>
         <div>
-          <div className='mx-auto h-12 w-12 bg-primary-600 rounded-lg flex items-center justify-center'>
-            <span className='text-white font-bold text-xl'>D</span>
+          <div className='mx-auto h-12 w-12 bg-gradient-to-br from-orange-500 to-red-600 rounded-lg flex items-center justify-center'>
+            <Shield className='w-6 h-6 text-white' />
           </div>
           <h2 className='mt-6 text-center text-3xl font-extrabold text-gray-900'>
             Verify your email
@@ -200,7 +199,7 @@ const VerifyEmailPage = () => {
             We've sent a 6-digit verification code to
           </p>
           {email && (
-            <p className='text-center text-sm font-medium text-primary-600'>
+            <p className='text-center text-sm font-medium text-orange-600'>
               {email}
             </p>
           )}
@@ -289,7 +288,7 @@ const VerifyEmailPage = () => {
                 type='button'
                 onClick={handleResendOTP}
                 disabled={isResending || resendCooldown > 0 || isBlocked}
-                className='inline-flex items-center text-sm font-medium text-primary-600 hover:text-primary-500 disabled:text-gray-400 disabled:cursor-not-allowed'
+                className='inline-flex items-center text-sm font-medium text-orange-600 hover:text-orange-500 disabled:text-gray-400 disabled:cursor-not-allowed'
               >
                 {isResending ? (
                   <>
@@ -323,20 +322,19 @@ const VerifyEmailPage = () => {
         </form>
 
         <div className='text-center'>
-          <div className='bg-blue-50 border border-blue-200 rounded-lg p-4'>
+          <div className='bg-orange-50 border border-orange-200 rounded-lg p-4'>
             <div className='flex items-center justify-center mb-2'>
-              <Mail className='h-5 w-5 text-blue-600 mr-2' />
-              <span className='text-sm font-medium text-blue-800'>
+              <Mail className='h-5 w-5 text-orange-600 mr-2' />
+              <span className='text-sm font-medium text-orange-800'>
                 Check your email
               </span>
             </div>
-            <p className='text-xs text-blue-700'>
+            <p className='text-xs text-orange-700'>
               The verification code will expire in 10 minutes. Make sure to check your spam folder if you don't see it in your inbox.
             </p>
           </div>
         </div>
       </div>
-      <NotificationContainer />
     </div>
   
   );

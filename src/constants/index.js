@@ -36,11 +36,11 @@ if (process.env.REACT_APP_API_URL) {
 
 // App Configuration
 export const APP_CONFIG = {
-  NAME: process.env.REACT_APP_NAME || 'Dreams Life Traders',
+  NAME: process.env.REACT_APP_NAME || 'Ghazali Foods',
   VERSION: process.env.REACT_APP_VERSION || '1.0.0',
   DESCRIPTION:
     process.env.REACT_APP_DESCRIPTION ||
-    'The World\'s Best Investment Opportunity',
+    'Your trusted ecommerce platform',
   ENV: process.env.REACT_APP_ENV || 'development',
 };
 
@@ -65,23 +65,104 @@ export const API_ENDPOINTS = {
 
   // Product endpoints
   PRODUCTS: {
-    CREATE: '/products/add-product',
+    CREATE: '/products/',
     LIST: '/products/',
-    GET_BY_ID: '/products/get-product',
+    GET_BY_ID: '/products/:id',
+    GET_BY_SLUG: '/products/slug/:slug',
     GET_BY_SELLER: '/products/get-products-by-seller',
-    UPDATE: '/products/update-product',
-    DELETE: '/products/delete-product',
+    UPDATE: '/products/:id',
+    DELETE: '/products/:id',
     SEARCH: '/products/search-products',
-    MARK_SOLD: '/products/mark-sold',
+    GET_FEATURED: '/products/featured',
+    GET_BEST_SELLERS: '/products/bestsellers',
+    GET_NEW_ARRIVALS: '/products/new-arrivals',
   },
 
   // Category endpoints
   CATEGORIES: {
-    CREATE: '/categories/add-category',
+    CREATE: '/categories/',
     LIST: '/categories/',
-    GET_BY_ID: '/categories/get-category',
-    UPDATE: '/categories/update-category',
-    DELETE: '/categories/delete-category',
+    GET_BY_ID: '/categories/:id',
+    GET_BY_SLUG: '/categories/slug/:slug',
+    UPDATE: '/categories/:id',
+    DELETE: '/categories/:id',
+  },
+
+  // Cart endpoints
+  CART: {
+    GET: '/cart/',
+    ADD: '/cart/',
+    UPDATE_ITEM: '/cart/item/:itemId',
+    REMOVE_ITEM: '/cart/item/:itemId',
+    CLEAR: '/cart/',
+    APPLY_COUPON: '/cart/coupon',
+    REMOVE_COUPON: '/cart/coupon',
+  },
+
+  // Order endpoints
+  ORDERS: {
+    CREATE: '/orders/',
+    GET: '/orders/:id',
+    GET_BY_NUMBER: '/orders/number/:orderNumber',
+    GET_MY_ORDERS: '/orders/my-orders',
+    CANCEL: '/orders/:id/cancel',
+  },
+
+  // Wishlist endpoints
+  WISHLIST: {
+    GET: '/wishlist/',
+    ADD: '/wishlist/',
+    REMOVE: '/wishlist/:productId',
+    CHECK: '/wishlist/check/:productId',
+  },
+
+  // Address endpoints
+  ADDRESSES: {
+    GET: '/addresses/',
+    GET_BY_ID: '/addresses/:id',
+    CREATE: '/addresses/',
+    UPDATE: '/addresses/:id',
+    DELETE: '/addresses/:id',
+    GET_DEFAULT: '/addresses/default',
+  },
+
+  // Coupon endpoints
+  COUPONS: {
+    GET: '/coupons/',
+    GET_BY_ID: '/coupons/:id',
+    VALIDATE: '/coupons/validate',
+  },
+
+  // Review endpoints
+  REVIEWS: {
+    GET_BY_PRODUCT: '/reviews/product/:productId',
+    GET_MY_REVIEWS: '/reviews/my-reviews',
+    CREATE: '/reviews/',
+    UPDATE: '/reviews/:id',
+    DELETE: '/reviews/:id',
+  },
+
+  // Banner endpoints
+  BANNERS: {
+    GET: '/banners/',
+    GET_BY_ID: '/banners/:id',
+  },
+
+  // Stock Notification endpoints
+  STOCK_NOTIFICATIONS: {
+    SUBSCRIBE: '/stock-notifications/',
+    GET_MY_NOTIFICATIONS: '/stock-notifications/my-notifications',
+    UNSUBSCRIBE: '/stock-notifications/:id',
+  },
+
+  // Product Question endpoints
+  PRODUCT_QUESTIONS: {
+    CREATE: '/product-questions/',
+    GET_BY_PRODUCT: '/product-questions/product/:productId',
+    GET_MY_QUESTIONS: '/product-questions/my-questions',
+    UPDATE: '/product-questions/:id',
+    DELETE: '/product-questions/:id',
+    MARK_HELPFUL: '/product-questions/:id/helpful',
   },
 
   // Message endpoints
@@ -108,96 +189,42 @@ export const API_ENDPOINTS = {
     CLEAR: '/favorites/clear',
   },
 
-  // Investment endpoints
-  INVESTMENT: {
-    GET_PLANS: '/plans',
-    CREATE_INVESTMENT: '/invest',
-    REINVEST: '/reinvest',
-    MY_INVESTMENTS: '/my/investments',
-    PAYMENT_ACCOUNTS: '/payment-accounts',
-  },
-
-  // Withdrawal endpoints
-  WITHDRAWAL: {
-    CREATE: '/withdraw',
-    MY_WITHDRAWALS: '/my/withdrawals',
-  },
-
-  // Dashboard endpoints
-  DASHBOARD: {
-    SUMMARY: '/dashboard',
-    EARNINGS: '/earnings',
-    TEAM: '/team',
-    REFERRAL_INFO: '/referral-info',
-    DAILY_EARNINGS: '/daily-earnings',
-  },
-
-  // Admin endpoints
-  ADMIN: {
-    OVERVIEW: '/admin/overview',
-    INVESTMENTS: '/admin/investments',
-    APPROVE_INVESTMENT: '/admin/investments/:id/approve',
-    REJECT_INVESTMENT: '/admin/investments/:id/reject',
-    WITHDRAWALS: '/admin/withdrawals',
-    APPROVE_WITHDRAWAL: '/admin/withdrawals/:id/approve',
-    REJECT_WITHDRAWAL: '/admin/withdrawals/:id/reject',
-    SEED_RANKS: '/admin/seed-ranks',
-    GET_USERS: '/admin/users',
-    GET_USER_EARNINGS: '/admin/users/:id/earnings',
-    GET_USER_TEAM: '/admin/users/:id/team',
-    PLANS: '/admin/plans',
-    CREATE_PLAN: '/admin/plans',
-    UPDATE_PLAN: '/admin/plans/:id',
-    DELETE_PLAN: '/admin/plans/:id',
-    RANKS: '/admin/ranks',
-    CREATE_RANK: '/admin/ranks',
-    UPDATE_RANK: '/admin/ranks/:id',
-    DELETE_RANK: '/admin/ranks/:id',
-    PAYMENT_ACCOUNTS: '/admin/payment-accounts',
-    CREATE_PAYMENT_ACCOUNT: '/admin/payment-accounts',
-    UPDATE_PAYMENT_ACCOUNT: '/admin/payment-accounts/:id',
-    DELETE_PAYMENT_ACCOUNT: '/admin/payment-accounts/:id',
-  },
 };
 
 // Routes
 export const ROUTES = {
   HOME: '/',
   LOGIN: '/login',
-  HOME_PAGE: '/home',
   REGISTER: '/register',
   VERIFY_EMAIL: '/verify-email',
   FORGOT_PASSWORD: '/forgot-password',
   RESET_PASSWORD: '/reset-password',
-  DASHBOARD: '/dashboard',
-  PLANS: '/plans',
-  BUY_PLAN: '/buy-plan/:id',
-  MY_INVESTMENTS: '/my-investments',
-  WITHDRAW: '/withdraw',
-  TEAM: '/team',
   PROFILE: '/profile',
-  DAILY_EARNINGS: '/daily-earnings',
-  SUPPORT: '/support',
-  // Admin routes
-  ADMIN_LOGIN: '/admin/login',
-  ADMIN_DASHBOARD: '/admin',
-  ADMIN_INVESTMENTS: '/admin/investments',
-  ADMIN_WITHDRAWALS: '/admin/withdrawals',
-  ADMIN_SUPPORT: '/admin/support',
-  PRODUCTS: '/products',
-  PRODUCT_DETAIL: '/products/:id',
-  PRODUCT_CREATE: '/products/create',
-  PRODUCT_EDIT: '/products/:id/edit',
-  CATEGORIES: '/categories',
-  MESSAGES: '/messages',
-  MESSAGE_DETAIL: '/messages/:id',
-  FAVORITES: '/favorites',
+  // Ecommerce routes
+  SHOP: '/shop',
+  PRODUCT_DETAIL: '/product/:slug',
+  CATEGORY: '/category/:slug',
+  CART: '/cart',
+  CHECKOUT: '/checkout',
+  ORDERS: '/orders',
+  ORDER_DETAIL: '/order/:orderNumber',
+  WISHLIST: '/wishlist',
   SEARCH: '/search',
+  COMPARE: '/compare',
   ABOUT: '/about',
   CONTACT: '/contact',
-  TERMS: '/terms',
-  PRIVACY: '/privacy',
-  NOT_FOUND: '/404',
+  // Admin routes
+  ADMIN_LOGIN: '/admin/login',
+  ADMIN_DASHBOARD: '/admin/dashboard',
+  ADMIN_PRODUCTS: '/admin/products',
+  ADMIN_CATEGORIES: '/admin/categories',
+  ADMIN_ORDERS: '/admin/orders',
+  ADMIN_CUSTOMERS: '/admin/customers',
+  ADMIN_COUPONS: '/admin/coupons',
+  ADMIN_BANNERS: '/admin/banners',
+  ADMIN_REVIEWS: '/admin/reviews',
+  ADMIN_STOCK_NOTIFICATIONS: '/admin/stock-notifications',
+  ADMIN_QUESTIONS: '/admin/questions',
 };
 
 // Product Status
@@ -254,14 +281,14 @@ export const VALIDATION = {
 
 // Local Storage Keys
 export const STORAGE_KEYS = {
-  AUTH_TOKEN: 'dreamslife_auth_token',
-  USER_DATA: 'dreamslife_user_data',
-  ADMIN_TOKEN: 'dreamslife_admin_token',
-  ADMIN_DATA: 'dreamslife_admin_data',
-  THEME: 'dreamslife_theme',
-  LANGUAGE: 'dreamslife_language',
-  CART: 'dreamslife_cart',
-  WISHLIST: 'dreamslife_wishlist',
+  AUTH_TOKEN: 'dealistaan_auth_token',
+  USER_DATA: 'dealistaan_user_data',
+  ADMIN_TOKEN: 'dealistaan_admin_token',
+  ADMIN_DATA: 'dealistaan_admin_data',
+  THEME: 'dealistaan_theme',
+  LANGUAGE: 'dealistaan_language',
+  CART: 'dealistaan_cart',
+  WISHLIST: 'dealistaan_wishlist',
 };
 
 // Toast Messages

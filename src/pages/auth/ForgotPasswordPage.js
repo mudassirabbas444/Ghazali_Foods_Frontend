@@ -5,8 +5,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { toast } from 'react-hot-toast';
-import NotificationContainer from '../../components/common/NotificationContainer';
+import { toast } from 'react-toastify';
 import { ROUTES } from '../../constants';
 
 const ForgotPasswordPage = () => {
@@ -56,7 +55,7 @@ const ForgotPasswordPage = () => {
 
   if (isSubmitted) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className="min-h-screen bg-gradient-to-br from-orange-50 to-red-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-8">
           <div className="text-center">
             <div className="mx-auto h-16 w-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
@@ -68,14 +67,14 @@ const ForgotPasswordPage = () => {
             <p className="text-gray-600 mb-6">
               We've sent a password reset link to <strong>{email}</strong>
             </p>
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+            <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-6">
               <div className="flex items-start">
-                <svg className="h-5 w-5 text-blue-600 mt-0.5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="h-5 w-5 text-orange-600 mt-0.5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                <div className="text-sm text-blue-800">
+                <div className="text-sm text-orange-800">
                   <p className="font-medium mb-1">Didn't receive the email?</p>
-                  <ul className="list-disc list-inside space-y-1 text-blue-700">
+                  <ul className="list-disc list-inside space-y-1 text-orange-700">
                     <li>Check your spam/junk folder</li>
                     <li>Make sure you entered the correct email address</li>
                     <li>Wait a few minutes for the email to arrive</li>
@@ -86,13 +85,13 @@ const ForgotPasswordPage = () => {
             <div className="space-y-4">
               <button
                 onClick={handleResend}
-                className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors duration-200"
+                className="w-full bg-orange-500 text-white py-2 px-4 rounded-lg hover:bg-orange-600 transition-colors duration-200"
               >
                 Try Different Email
               </button>
               <Link
                 to={ROUTES.LOGIN}
-                className="block w-full text-center text-blue-600 hover:text-blue-800 transition-colors duration-200"
+                className="block w-full text-center text-orange-600 hover:text-orange-800 transition-colors duration-200"
               >
                 Back to Login
               </Link>
@@ -104,11 +103,11 @@ const ForgotPasswordPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-red-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
-          <div className="mx-auto h-16 w-16 bg-blue-100 rounded-full flex items-center justify-center mb-4">
-            <svg className="h-8 w-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="mx-auto h-16 w-16 bg-orange-100 rounded-full flex items-center justify-center mb-4">
+              <svg className="h-8 w-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m0 0a2 2 0 012 2m-2-2a2 2 0 00-2 2m2-2V5a2 2 0 00-2-2H9a2 2 0 00-2 2v2m0 0a2 2 0 102 2m-2-2h2m0 0V9a2 2 0 012-2h2a2 2 0 012 2v2" />
             </svg>
           </div>
@@ -131,7 +130,7 @@ const ForgotPasswordPage = () => {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-gray-900 bg-white"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors duration-200 text-gray-900 bg-white"
               placeholder="Enter your email address"
               disabled={isLoading}
             />
@@ -140,7 +139,7 @@ const ForgotPasswordPage = () => {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-orange-500 text-white py-3 px-4 rounded-lg hover:bg-orange-600 focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isLoading ? (
               <div className="flex items-center justify-center">
@@ -159,13 +158,12 @@ const ForgotPasswordPage = () => {
         <div className="text-center">
           <Link
             to={ROUTES.LOGIN}
-            className="text-blue-600 hover:text-blue-800 transition-colors duration-200"
+            className="text-orange-600 hover:text-orange-800 transition-colors duration-200"
           >
             Back to Login
           </Link>
         </div>
       </div>
-      <NotificationContainer />
     </div>
   
   );

@@ -1,381 +1,414 @@
-import { API_ENDPOINTS, API_CONFIG, STORAGE_KEYS } from '../constants';
-import axios from 'axios';
-import Cookies from 'js-cookie';
-
-// Create authenticated API instance for /api routes that need admin auth
-const authenticatedApi = axios.create({
-  baseURL: API_CONFIG.BASE_URL || 'http://localhost:5000/api',
-  timeout: API_CONFIG.TIMEOUT,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
-
-// Add auth token interceptor for authenticated API
-authenticatedApi.interceptors.request.use(
-  (config) => {
-    // Try to get token from admin auth storage (localStorage) first, then fallback to regular auth token
-    const token = localStorage.getItem(STORAGE_KEYS.ADMIN_TOKEN || 'dreamslife_admin_token') ||
-                  localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN) || 
-                  Cookies.get(STORAGE_KEYS.AUTH_TOKEN) ||
-                  localStorage.getItem('admin_token') ||
-                  Cookies.get('admin_token');
-    
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
-
-// Create a separate axios instance for admin routes (without /api prefix)
-const adminApi = axios.create({
-  baseURL: API_CONFIG.BASE_URL.replace('/api', '') || 'http://localhost:5000',
-  timeout: API_CONFIG.TIMEOUT,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
-
-// Add auth token interceptor for admin API
-adminApi.interceptors.request.use(
-  (config) => {
-    // Try to get token from admin auth storage (localStorage) first, then fallback to regular auth token
-    const token = localStorage.getItem(STORAGE_KEYS.ADMIN_TOKEN || 'dreamslife_admin_token') ||
-                  localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN) || 
-                  Cookies.get(STORAGE_KEYS.AUTH_TOKEN) ||
-                  localStorage.getItem('admin_token') ||
-                  Cookies.get('admin_token');
-    
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
+import apiService from './api';
+import { API_ENDPOINTS } from '../constants';
 
 class AdminService {
-  // Get admin overview
-  async getOverview() {
+  // Dashboard Stats
+  async getDashboardStats() {
     try {
-      const response = await adminApi.get(API_ENDPOINTS.ADMIN.OVERVIEW);
-      return response.data;
+      const response = await apiService.get('/orders/stats');
+      return response;
     } catch (error) {
-      throw this.handleError(error);
+      throw error;
     }
   }
 
-  // Get all investments with filters
-  async getInvestments(status = null, page = 1, limit = 20) {
-    try {
-      let url = `${API_ENDPOINTS.ADMIN.INVESTMENTS}?page=${page}&limit=${limit}`;
-      if (status) {
-        url += `&status=${status}`;
-      }
-      const response = await adminApi.get(url);
-      return response.data;
-    } catch (error) {
-      throw this.handleError(error);
-    }
-  }
-
-  // Approve investment
-  async approveInvestment(investmentId) {
-    try {
-      const response = await adminApi.patch(
-        API_ENDPOINTS.ADMIN.APPROVE_INVESTMENT.replace(':id', investmentId)
-      );
-      return response.data;
-    } catch (error) {
-      throw this.handleError(error);
-    }
-  }
-
-  // Reject investment
-  async rejectInvestment(investmentId) {
-    try {
-      const response = await adminApi.patch(
-        API_ENDPOINTS.ADMIN.REJECT_INVESTMENT.replace(':id', investmentId)
-      );
-      return response.data;
-    } catch (error) {
-      throw this.handleError(error);
-    }
-  }
-
-  // Get all withdrawals with filters
-  async getWithdrawals(status = null, page = 1, limit = 20) {
-    try {
-      let url = `${API_ENDPOINTS.ADMIN.WITHDRAWALS}?page=${page}&limit=${limit}`;
-      if (status) {
-        url += `&status=${status}`;
-      }
-      const response = await adminApi.get(url);
-      return response.data;
-    } catch (error) {
-      throw this.handleError(error);
-    }
-  }
-
-  // Approve withdrawal
-  async approveWithdrawal(withdrawalId, adminNote = '', receiptFile = null) {
+  // Products
+  async createProduct(productData, images) {
     try {
       const formData = new FormData();
-      formData.append('adminNote', adminNote || '');
-      if (receiptFile) {
-        formData.append('receipt', receiptFile);
-      }
-      
-      const response = await adminApi.patch(
-        API_ENDPOINTS.ADMIN.APPROVE_WITHDRAWAL.replace(':id', withdrawalId),
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
+      Object.keys(productData).forEach(key => {
+        if (key === 'variants' || key === 'tags' || key === 'applicableCategories' || key === 'applicableProducts') {
+          formData.append(key, JSON.stringify(productData[key]));
+        } else if (productData[key] !== undefined && productData[key] !== null) {
+          formData.append(key, productData[key]);
         }
-      );
-      return response.data;
-    } catch (error) {
-      throw this.handleError(error);
-    }
-  }
-
-  // Reject withdrawal
-  async rejectWithdrawal(withdrawalId, adminNote = '') {
-    try {
-      const response = await adminApi.patch(
-        API_ENDPOINTS.ADMIN.REJECT_WITHDRAWAL.replace(':id', withdrawalId),
-        { adminNote }
-      );
-      return response.data;
-    } catch (error) {
-      throw this.handleError(error);
-    }
-  }
-
-  // Seed ranks
-  async seedRanks() {
-    try {
-      const response = await adminApi.post(API_ENDPOINTS.ADMIN.SEED_RANKS);
-      return response.data;
-    } catch (error) {
-      throw this.handleError(error);
-    }
-  }
-
-  // Get all users with filters
-  async getUsers(page = 1, limit = 20, filters = {}) {
-    try {
-      const params = new URLSearchParams({
-        page: page.toString(),
-        limit: limit.toString(),
-        ...(filters.search && { search: filters.search }),
-        ...(filters.sortBy && { sortBy: filters.sortBy }),
-        ...(filters.sortOrder && { sortOrder: filters.sortOrder }),
-        ...(filters.minInvestment !== undefined && { minInvestment: filters.minInvestment.toString() }),
-        ...(filters.maxInvestment !== undefined && { maxInvestment: filters.maxInvestment.toString() }),
-        ...(filters.minEarnings !== undefined && { minEarnings: filters.minEarnings.toString() }),
-        ...(filters.maxEarnings !== undefined && { maxEarnings: filters.maxEarnings.toString() }),
       });
-      const response = await adminApi.get(`${API_ENDPOINTS.ADMIN.GET_USERS}?${params}`);
-      return response.data;
+      
+      if (images && images.length > 0) {
+        images.forEach((image, index) => {
+          formData.append('images', image);
+        });
+      }
+
+      const response = await apiService.upload(API_ENDPOINTS.PRODUCTS.CREATE, formData);
+      return response;
     } catch (error) {
-      throw this.handleError(error);
+      throw error;
     }
   }
 
-  // Get user earning details
-  async getUserEarnings(userId, page = 1, limit = 20, filters = {}) {
+  async updateProduct(productId, productData, images) {
     try {
-      const params = new URLSearchParams({
-        page: page.toString(),
-        limit: limit.toString(),
-        ...(filters.type && { type: filters.type }),
-        ...(filters.startDate && { startDate: filters.startDate }),
-        ...(filters.endDate && { endDate: filters.endDate }),
+      const formData = new FormData();
+      Object.keys(productData).forEach(key => {
+        if (key === 'variants' || key === 'tags' || key === 'applicableCategories' || key === 'applicableProducts') {
+          formData.append(key, JSON.stringify(productData[key]));
+        } else if (productData[key] !== undefined && productData[key] !== null) {
+          formData.append(key, productData[key]);
+        }
       });
-      const url = API_ENDPOINTS.ADMIN.GET_USER_EARNINGS.replace(':id', userId);
-      const response = await adminApi.get(`${url}?${params}`);
-      return response.data;
-    } catch (error) {
-      throw this.handleError(error);
-    }
-  }
+      
+      if (images && images.length > 0) {
+        images.forEach((image) => {
+          formData.append('images', image);
+        });
+      }
 
-  // Get user team data
-  async getUserTeam(userId) {
-    try {
-      const url = API_ENDPOINTS.ADMIN.GET_USER_TEAM.replace(':id', userId);
-      const response = await adminApi.get(url);
-      return response.data;
-    } catch (error) {
-      throw this.handleError(error);
-    }
-  }
-
-  // Get all plans
-  async getPlans() {
-    try {
-      const response = await adminApi.get(API_ENDPOINTS.ADMIN.PLANS);
-      return response.data;
-    } catch (error) {
-      throw this.handleError(error);
-    }
-  }
-
-  // Create plan
-  async createPlan(planData) {
-    try {
-      const response = await adminApi.post(API_ENDPOINTS.ADMIN.CREATE_PLAN, planData);
-      return response.data;
-    } catch (error) {
-      throw this.handleError(error);
-    }
-  }
-
-  // Update plan
-  async updatePlan(planId, planData) {
-    try {
-      const response = await adminApi.put(
-        API_ENDPOINTS.ADMIN.UPDATE_PLAN.replace(':id', planId),
-        planData
+      const response = await apiService.upload(
+        API_ENDPOINTS.PRODUCTS.UPDATE.replace(':id', productId),
+        formData
       );
-      return response.data;
+      return response;
     } catch (error) {
-      throw this.handleError(error);
+      throw error;
     }
   }
 
-  // Delete plan
-  async deletePlan(planId) {
+  async deleteProduct(productId) {
     try {
-      const response = await adminApi.delete(
-        API_ENDPOINTS.ADMIN.DELETE_PLAN.replace(':id', planId)
+      const response = await apiService.delete(API_ENDPOINTS.PRODUCTS.DELETE.replace(':id', productId));
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async updateProductStock(productId, stockData) {
+    try {
+      const response = await apiService.put(
+        API_ENDPOINTS.PRODUCTS.UPDATE_STOCK.replace(':id', productId),
+        stockData
       );
-      return response.data;
+      return response;
     } catch (error) {
-      throw this.handleError(error);
+      throw error;
     }
   }
 
-  // Get all ranks
-  async getRanks() {
+  async getLowStockProducts() {
     try {
-      const response = await adminApi.get(API_ENDPOINTS.ADMIN.RANKS);
-      return response.data;
+      const response = await apiService.get(API_ENDPOINTS.PRODUCTS.GET_LOW_STOCK);
+      if (response.success) {
+        return {
+          ...response,
+          products: response.products || response.data || []
+        };
+      }
+      return response;
     } catch (error) {
-      throw this.handleError(error);
+      throw error;
     }
   }
 
-  // Create rank
-  async createRank(rankData) {
+  // Categories
+  async createCategory(categoryData, image) {
     try {
-      const response = await adminApi.post(API_ENDPOINTS.ADMIN.CREATE_RANK, rankData);
-      return response.data;
+      const formData = new FormData();
+      Object.keys(categoryData).forEach(key => {
+        if (categoryData[key] !== undefined && categoryData[key] !== null) {
+          formData.append(key, categoryData[key]);
+        }
+      });
+      
+      if (image) {
+        formData.append('image', image);
+      }
+
+      const response = await apiService.upload(API_ENDPOINTS.CATEGORIES.CREATE, formData);
+      return response;
     } catch (error) {
-      throw this.handleError(error);
+      throw error;
     }
   }
 
-  // Update rank
-  async updateRank(rankId, rankData) {
+  async updateCategory(categoryId, categoryData, image) {
     try {
-      const response = await adminApi.put(
-        API_ENDPOINTS.ADMIN.UPDATE_RANK.replace(':id', rankId),
-        rankData
+      const formData = new FormData();
+      Object.keys(categoryData).forEach(key => {
+        if (categoryData[key] !== undefined && categoryData[key] !== null) {
+          formData.append(key, categoryData[key]);
+        }
+      });
+      
+      if (image) {
+        formData.append('image', image);
+      }
+
+      const response = await apiService.upload(
+        API_ENDPOINTS.CATEGORIES.UPDATE.replace(':id', categoryId),
+        formData
       );
-      return response.data;
+      return response;
     } catch (error) {
-      throw this.handleError(error);
+      throw error;
     }
   }
 
-  // Delete rank
-  async deleteRank(rankId) {
+  async deleteCategory(categoryId) {
     try {
-      const response = await adminApi.delete(
-        API_ENDPOINTS.ADMIN.DELETE_RANK.replace(':id', rankId)
-      );
-      return response.data;
+      const response = await apiService.delete(API_ENDPOINTS.CATEGORIES.DELETE.replace(':id', categoryId));
+      return response;
     } catch (error) {
-      throw this.handleError(error);
+      throw error;
     }
   }
 
-  // Delete user (uses /api/users route, not /admin route)
+  // Orders
+  async getAllOrders(filters = {}) {
+    try {
+      const params = new URLSearchParams();
+      if (filters.status) params.append('status', filters.status);
+      if (filters.paymentStatus) params.append('paymentStatus', filters.paymentStatus);
+      if (filters.search) params.append('search', filters.search);
+      if (filters.startDate) params.append('startDate', filters.startDate);
+      if (filters.endDate) params.append('endDate', filters.endDate);
+      if (filters.page) params.append('page', filters.page);
+      if (filters.limit) params.append('limit', filters.limit);
+
+      const queryString = params.toString();
+      const url = queryString 
+        ? `/orders?${queryString}`
+        : '/orders';
+
+      const response = await apiService.get(url);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async updateOrderStatus(orderId, status, adminNotes) {
+    try {
+      const response = await apiService.put(
+        `/orders/${orderId}/status`,
+        { status, adminNotes }
+      );
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // Customers
+  async getAllUsers(filters = {}) {
+    try {
+      const params = new URLSearchParams();
+      if (filters.search) params.append('search', filters.search);
+      if (filters.isActive !== undefined) params.append('isActive', filters.isActive);
+      if (filters.page) params.append('page', filters.page);
+      if (filters.limit) params.append('limit', filters.limit);
+
+      const queryString = params.toString();
+      const url = queryString 
+        ? `${API_ENDPOINTS.AUTH.PROFILE.replace('/profile', '')}?${queryString}`
+        : API_ENDPOINTS.AUTH.PROFILE.replace('/profile', '');
+
+      const response = await apiService.get(url);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async deleteUser(userId) {
     try {
-      const response = await authenticatedApi.delete(
-        `${API_ENDPOINTS.AUTH.DELETE_USER}?id=${userId}`
+      const response = await apiService.delete(API_ENDPOINTS.AUTH.DELETE_USER);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // Coupons
+  async createCoupon(couponData) {
+    try {
+      const response = await apiService.post(API_ENDPOINTS.COUPONS.GET.replace('/', ''), couponData);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async updateCoupon(couponId, couponData) {
+    try {
+      const response = await apiService.put(
+        API_ENDPOINTS.COUPONS.GET_BY_ID.replace(':id', couponId),
+        couponData
       );
-      return response.data;
+      return response;
     } catch (error) {
-      throw this.handleError(error);
+      throw error;
     }
   }
 
-  // Payment Account Management
-  async getPaymentAccounts() {
+  async deleteCoupon(couponId) {
     try {
-      const response = await adminApi.get(API_ENDPOINTS.ADMIN.PAYMENT_ACCOUNTS);
-      return response.data;
-    } catch (error) {
-      throw this.handleError(error);
-    }
-  }
-
-  async createPaymentAccount(accountData) {
-    try {
-      const response = await adminApi.post(API_ENDPOINTS.ADMIN.CREATE_PAYMENT_ACCOUNT, accountData);
-      return response.data;
-    } catch (error) {
-      throw this.handleError(error);
-    }
-  }
-
-  async updatePaymentAccount(accountId, accountData) {
-    try {
-      const response = await adminApi.put(
-        API_ENDPOINTS.ADMIN.UPDATE_PAYMENT_ACCOUNT.replace(':id', accountId),
-        accountData
+      const response = await apiService.delete(
+        API_ENDPOINTS.COUPONS.GET_BY_ID.replace(':id', couponId)
       );
-      return response.data;
+      return response;
     } catch (error) {
-      throw this.handleError(error);
+      throw error;
     }
   }
 
-  async deletePaymentAccount(accountId) {
+  async getAllCoupons() {
     try {
-      const response = await adminApi.delete(
-        API_ENDPOINTS.ADMIN.DELETE_PAYMENT_ACCOUNT.replace(':id', accountId)
-      );
-      return response.data;
+      const response = await apiService.get(API_ENDPOINTS.COUPONS.GET);
+      return response;
     } catch (error) {
-      throw this.handleError(error);
+      throw error;
     }
   }
 
-  // Error handler
-  handleError(error) {
-    const { response } = error;
-    if (response) {
-      const { status, data } = response;
-      return {
-        type: status === 404 ? 'not_found' : status === 401 ? 'unauthorized' : status === 403 ? 'forbidden' : 'server',
-        message: data?.message || 'An error occurred',
-        status,
-      };
+  // Banners
+  async createBanner(bannerData, image) {
+    try {
+      const formData = new FormData();
+      Object.keys(bannerData).forEach(key => {
+        if (bannerData[key] !== undefined && bannerData[key] !== null) {
+          formData.append(key, bannerData[key]);
+        }
+      });
+      
+      if (image) {
+        formData.append('image', image);
+      }
+
+      const response = await apiService.upload(API_ENDPOINTS.BANNERS.GET.replace('/', ''), formData);
+      return response;
+    } catch (error) {
+      throw error;
     }
-    return {
-      type: 'network',
-      message: 'Network error. Please check your connection.',
-      status: 0,
-    };
+  }
+
+  async updateBanner(bannerId, bannerData, image) {
+    try {
+      const formData = new FormData();
+      Object.keys(bannerData).forEach(key => {
+        if (bannerData[key] !== undefined && bannerData[key] !== null) {
+          formData.append(key, bannerData[key]);
+        }
+      });
+      
+      if (image) {
+        formData.append('image', image);
+      }
+
+      const response = await apiService.upload(
+        API_ENDPOINTS.BANNERS.GET_BY_ID.replace(':id', bannerId),
+        formData
+      );
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async deleteBanner(bannerId) {
+    try {
+      const response = await apiService.delete(
+        API_ENDPOINTS.BANNERS.GET_BY_ID.replace(':id', bannerId)
+      );
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // Reviews
+  async approveReview(reviewId) {
+    try {
+      const response = await apiService.put(`/reviews/${reviewId}/approve`);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async deleteReview(reviewId) {
+    try {
+      const response = await apiService.delete(API_ENDPOINTS.REVIEWS.DELETE.replace(':id', reviewId));
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // Stock Notifications
+  async getAllStockNotifications(filters = {}) {
+    try {
+      const params = new URLSearchParams();
+      if (filters.isNotified !== undefined) params.append('isNotified', filters.isNotified);
+
+      const queryString = params.toString();
+      const url = queryString
+        ? `/stock-notifications?${queryString}`
+        : '/stock-notifications';
+
+      const response = await apiService.get(url);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async deleteStockNotification(notificationId) {
+    try {
+      const response = await apiService.delete(`/stock-notifications/${notificationId}`);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // Product Questions
+  async getAllQuestions(filters = {}) {
+    try {
+      const params = new URLSearchParams();
+      if (filters.hasAnswer !== undefined) params.append('hasAnswer', filters.hasAnswer);
+      if (filters.isApproved !== undefined) params.append('isApproved', filters.isApproved);
+
+      const queryString = params.toString();
+      const url = queryString
+        ? `/product-questions?${queryString}`
+        : '/product-questions';
+
+      const response = await apiService.get(url);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async answerQuestion(questionId, answer) {
+    try {
+      const response = await apiService.put(
+        `/product-questions/${questionId}/answer`,
+        { answer }
+      );
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async deleteQuestion(questionId) {
+    try {
+      const response = await apiService.delete(`/product-questions/${questionId}`);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async approveQuestion(questionId) {
+    try {
+      const response = await apiService.put(`/product-questions/${questionId}/approve`);
+      return response;
+    } catch (error) {
+      throw error;
+    }
   }
 }
 
