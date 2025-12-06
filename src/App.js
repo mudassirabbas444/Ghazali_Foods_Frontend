@@ -26,6 +26,7 @@ import ProfilePage from './pages/profile/ProfilePage';
 import ShopPage from './pages/shop/ShopPage';
 import ProductDetailPage from './pages/product/ProductDetailPage';
 import CategoryPage from './pages/category/CategoryPage';
+import CategoriesPage from './pages/categories/CategoriesPage';
 import CartPage from './pages/cart/CartPage';
 import CheckoutPage from './pages/checkout/CheckoutPage';
 import OrdersPage from './pages/orders/OrdersPage';
@@ -171,6 +172,7 @@ function AppWithToast() {
                   <Route path={ROUTES.SHOP} element={<Layout><ShopPage /></Layout>} />
                   <Route path={ROUTES.PRODUCT_DETAIL} element={<Layout><ProductDetailPage /></Layout>} />
                   <Route path={ROUTES.CATEGORY} element={<Layout><CategoryPage /></Layout>} />
+                  <Route path={ROUTES.CATEGORIES} element={<Layout><CategoriesPage /></Layout>} />
                   <Route path={ROUTES.SEARCH} element={<Layout><ShopPage /></Layout>} />
                   <Route path={ROUTES.ABOUT} element={<Layout><AboutPage /></Layout>} />
                   <Route path={ROUTES.CONTACT} element={<Layout><ContactPage /></Layout>} />

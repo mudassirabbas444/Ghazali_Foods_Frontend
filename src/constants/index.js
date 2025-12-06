@@ -204,6 +204,7 @@ export const ROUTES = {
   SHOP: '/shop',
   PRODUCT_DETAIL: '/product/:slug',
   CATEGORY: '/category/:slug',
+  CATEGORIES: '/categories',
   CART: '/cart',
   CHECKOUT: '/checkout',
   ORDERS: '/orders',
