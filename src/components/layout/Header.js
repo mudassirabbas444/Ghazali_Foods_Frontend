@@ -16,6 +16,7 @@ import { ROUTES } from '../../constants';
 import cartService from '../../services/cart';
 import { getComparison } from '../../utils/productComparison';
 import logo from '../../assets/Logo.png';
+import UserNotificationBell from '../common/UserNotificationBell';
 
 const Header = () => {
   const navigate = useNavigate();
@@ -176,6 +177,9 @@ const Header = () => {
                   </Link>
                 </motion.div>
                 <div className='h-6 w-px bg-amber-200 mx-2' />
+                {/* Notifications */}
+                <UserNotificationBell />
+                <div className='h-6 w-px bg-amber-200 mx-2' />
                 {/* User Menu */}
                 <div className='relative'>
                   <motion.button
@@ -260,6 +264,7 @@ const Header = () => {
           <div className='md:hidden flex items-center space-x-2'>
             {isAuthenticated && (
               <>
+                <UserNotificationBell />
                 <Link to={ROUTES.CART} className='relative p-2'>
                   <ShoppingCart className='w-6 h-6 text-gray-600 dark:text-gray-400' />
                   {cartCount > 0 && (

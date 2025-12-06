@@ -149,7 +149,7 @@ const AdminNotificationContainer = () => {
     };
   }, [adminNotifications, pausedNotifications, removeNotification]);
 
-  if (totalCount === 0) return null;
+  // Always show the bell icon, even if there are no notifications
 
   return (
     <>
