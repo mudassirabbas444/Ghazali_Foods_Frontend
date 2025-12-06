@@ -76,6 +76,8 @@ export const API_ENDPOINTS = {
     GET_FEATURED: '/products/featured',
     GET_BEST_SELLERS: '/products/bestsellers',
     GET_NEW_ARRIVALS: '/products/new-arrivals',
+    GET_LOW_STOCK: '/products/low-stock',
+    UPDATE_STOCK: '/products/:id/stock',
   },
 
   // Category endpoints

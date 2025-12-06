@@ -29,20 +29,33 @@ const AdminDashboardPage = () => {
   const fetchDashboardData = async () => {
     try {
       setLoading(true);
-      const [statsResponse, lowStockResponse, ordersResponse] = await Promise.all([
+      const [statsResponse, lowStockResponse, ordersResponse] = await Promise.allSettled([
         adminService.getDashboardStats(),
         adminService.getLowStockProducts(),
         adminService.getAllOrders({ limit: 5 }),
       ]);
 
-      if (statsResponse.success) {
-        setStats(statsResponse.data);
+      // Handle stats response
+      if (statsResponse.status === 'fulfilled' && statsResponse.value?.success) {
+        setStats(statsResponse.value.data);
+      } else if (statsResponse.status === 'rejected') {
+        console.error('Error fetching dashboard stats:', statsResponse.reason);
       }
-      if (lowStockResponse.success) {
-        setLowStockProducts(lowStockResponse.products || []);
+
+      // Handle low stock response
+      if (lowStockResponse.status === 'fulfilled' && lowStockResponse.value?.success) {
+        setLowStockProducts(lowStockResponse.value.products || lowStockResponse.value.data || []);
+      } else if (lowStockResponse.status === 'rejected') {
+        console.error('Error fetching low stock products:', lowStockResponse.reason);
+        setLowStockProducts([]); // Set empty array on error
       }
-      if (ordersResponse.success) {
-        setRecentOrders(ordersResponse.orders || []);
+
+      // Handle orders response
+      if (ordersResponse.status === 'fulfilled' && ordersResponse.value?.success) {
+        setRecentOrders(ordersResponse.value.orders || ordersResponse.value.data || []);
+      } else if (ordersResponse.status === 'rejected') {
+        console.error('Error fetching orders:', ordersResponse.reason);
+        setRecentOrders([]); // Set empty array on error
       }
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
