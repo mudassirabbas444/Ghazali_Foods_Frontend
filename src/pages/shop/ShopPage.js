@@ -293,13 +293,17 @@ const ShopPage = () => {
   }, [expandedCategory]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-amber-50 via-orange-50 to-amber-50" style={{ overflow: 'visible' }}>
+    <div className="min-h-screen bg-gradient-to-b from-amber-50 via-orange-50 to-amber-50 pb-16 md:pb-0" style={{ overflow: 'visible' }}>
       {/* Categories Section - Simple List Design */}
       {mainCategories.length > 0 && (
         <section className="bg-white border-b border-gray-200 sticky top-0 z-[100]" style={{ overflow: 'visible', position: 'sticky', isolation: 'auto' }}>
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative" style={{ overflow: 'visible' }}>
-            <div className="flex items-center justify-between py-4" style={{ overflowX: 'auto', overflowY: 'visible', overflow: 'visible' }}>
-              <div className="flex items-center space-x-6 min-w-max relative" style={{ position: 'relative', zIndex: 10001 }}>
+          <div className="max-w-7xl mx-auto relative" style={{ overflow: 'visible' }}>
+            <div className="overflow-x-auto overflow-y-visible scrollbar-hide horizontal-scroll py-4" style={{ 
+              WebkitOverflowScrolling: 'touch',
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none'
+            }}>
+              <div className="flex items-center space-x-6 min-w-max px-4 sm:px-6 lg:px-8 relative" style={{ position: 'relative', zIndex: 10001 }}>
                 {/* All Products */}
                 <button
                   onClick={() => {
