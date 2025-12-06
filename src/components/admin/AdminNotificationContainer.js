@@ -121,7 +121,7 @@ const AdminNotificationContainer = () => {
     adminNotifications.forEach((notif) => {
       removeNotification(notif.id);
     });
-  };
+  }, [adminNotifications, removeNotification]);
 
   // Auto-dismiss notifications (except critical)
   useEffect(() => {
