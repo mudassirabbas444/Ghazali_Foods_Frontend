@@ -296,10 +296,10 @@ const ShopPage = () => {
     <div className="min-h-screen bg-gradient-to-b from-amber-50 via-orange-50 to-amber-50">
       {/* Categories Section - Simple List Design */}
       {mainCategories.length > 0 && (
-        <section className="bg-white border-b border-gray-200 sticky top-0 z-[100] overflow-visible">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-            <div className="flex items-center justify-between overflow-x-auto py-4" style={{ overflowY: 'visible' }}>
-              <div className="flex items-center space-x-6 min-w-max">
+        <section className="bg-white border-b border-gray-200 sticky top-0 z-[100]" style={{ overflow: 'visible', position: 'relative' }}>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative" style={{ overflow: 'visible' }}>
+            <div className="flex items-center justify-between py-4" style={{ overflowX: 'auto', overflowY: 'visible' }}>
+              <div className="flex items-center space-x-6 min-w-max relative" style={{ position: 'relative' }}>
                 {/* All Products */}
                 <button
                   onClick={() => {
@@ -333,10 +333,17 @@ const ShopPage = () => {
                   const isSelected = selectedCategory === category._id;
 
                   return (
-                    <div key={category._id} className="relative category-item z-[101]">
+                    <div 
+                      key={category._id} 
+                      className="relative category-item"
+                      style={{ 
+                        zIndex: isExpanded ? 10000 : 'auto',
+                        position: 'relative'
+                      }}
+                    >
                       <button
                         onClick={(e) => handleCategoryClick(category._id, e)}
-                        className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors whitespace-nowrap group ${
+                        className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors whitespace-nowrap group relative ${
                           isSelected
                             ? 'bg-orange-500 text-white'
                             : 'hover:bg-orange-50'
@@ -367,12 +374,20 @@ const ShopPage = () => {
 
                       {/* Subcategories Dropdown */}
                       {hasSubcategories && isExpanded && (
-                        <div className="absolute top-full left-0 mt-1 bg-white rounded-lg shadow-xl border border-gray-200 z-[9999] min-w-[200px] py-2" style={{ zIndex: 9999, position: 'absolute' }}>
+                        <div 
+                          className="absolute top-full left-0 mt-1 bg-white rounded-lg shadow-2xl border border-gray-200 min-w-[200px] max-w-[250px] py-2"
+                          style={{ 
+                            zIndex: 10001,
+                            position: 'absolute',
+                            marginTop: '4px',
+                            boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)'
+                          }}
+                        >
                           {subcategories.map((subcategory) => (
                             <button
                               key={subcategory._id}
                               onClick={(e) => handleSubcategoryClick(subcategory._id, e)}
-                              className={`w-full flex items-center space-x-2 px-4 py-2 hover:bg-orange-50 transition-colors whitespace-nowrap ${
+                              className={`w-full flex items-center space-x-2 px-4 py-2 hover:bg-orange-50 transition-colors whitespace-nowrap text-left ${
                                 selectedCategory === subcategory._id ? 'bg-orange-50 text-orange-600 font-semibold' : 'text-gray-700'
                               }`}
                             >
@@ -387,7 +402,7 @@ const ShopPage = () => {
                                   <ShoppingBag className="w-3 h-3 text-orange-500" />
                                 </div>
                               )}
-                              <span className="text-sm">{subcategory.name}</span>
+                              <span className="text-sm truncate">{subcategory.name}</span>
                             </button>
                           ))}
                         </div>
@@ -401,7 +416,7 @@ const ShopPage = () => {
         </section>
       )}
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative" style={{ zIndex: 1 }}>
         {/* Header Section */}
         <div className="mb-8">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">

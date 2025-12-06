@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AlertCircle } from 'lucide-react';
 
 /**
@@ -15,6 +15,15 @@ const FirebaseImage = ({
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const [imageSrc, setImageSrc] = useState(src);
+
+  // Update imageSrc when src prop changes
+  useEffect(() => {
+    if (src && src.trim() !== '') {
+      setImageSrc(src);
+      setIsLoading(true);
+      setHasError(false);
+    }
+  }, [src]);
 
   const handleLoad = () => {
     setIsLoading(false);
@@ -33,8 +42,24 @@ const FirebaseImage = ({
     setHasError(false);
     setIsLoading(true);
     // Force reload by adding timestamp
-    setImageSrc(`${src}?t=${Date.now()}`);
+    if (src) {
+      setImageSrc(`${src}?t=${Date.now()}`);
+    }
   };
+
+  // Don't render if src is empty or null
+  if (!src || src.trim() === '') {
+    return (
+      <div className={`flex items-center justify-center bg-gray-100 ${className}`}>
+        {fallbackIcon || (
+          <div className='text-center p-4'>
+            <AlertCircle className='h-8 w-8 text-gray-400 mx-auto mb-2' />
+            <p className='text-sm text-gray-500'>No image available</p>
+          </div>
+        )}
+      </div>
+    );
+  }
 
   if (hasError) {
     return (

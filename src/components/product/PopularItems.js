@@ -194,9 +194,14 @@ const PopularItems = ({ excludeProductIds = [], limit = 6 }) => {
                 <Link to={ROUTES.PRODUCT_DETAIL.replace(':slug', product.slug)}>
                   <div className="relative aspect-square bg-gray-100">
                     <FirebaseImage
-                      src={product.thumbnail || product.images?.[0]}
+                      src={product.thumbnail || product.images?.[0] || ''}
                       alt={product.name}
                       className="w-full h-full object-cover"
+                      fallbackIcon={
+                        <div className="w-full h-full flex items-center justify-center bg-gray-100">
+                          <span className="text-2xl">📦</span>
+                        </div>
+                      }
                     />
                     {discount > 0 && (
                       <span className="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
@@ -283,9 +288,14 @@ const PopularItems = ({ excludeProductIds = [], limit = 6 }) => {
                 <Link to={ROUTES.PRODUCT_DETAIL.replace(':slug', product.slug)}>
                   <div className="relative aspect-square bg-gray-100">
                     <FirebaseImage
-                      src={product.thumbnail || product.images?.[0]}
+                      src={product.thumbnail || product.images?.[0] || ''}
                       alt={product.name}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      fallbackIcon={
+                        <div className="w-full h-full flex items-center justify-center bg-gray-100">
+                          <span className="text-2xl">📦</span>
+                        </div>
+                      }
                     />
                     {discount > 0 && (
                       <span className="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">

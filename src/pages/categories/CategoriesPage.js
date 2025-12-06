@@ -159,9 +159,10 @@ const CategoriesPage = () => {
                 >
                   {featuredProducts[0]?.thumbnail || featuredProducts[0]?.images?.[0] ? (
                     <FirebaseImage
-                      src={featuredProducts[0]?.thumbnail || featuredProducts[0]?.images?.[0]}
+                      src={featuredProducts[0]?.thumbnail || featuredProducts[0]?.images?.[0] || ''}
                       alt="Featured Products"
                       className="w-full h-full object-cover"
+                      fallbackIcon={<span className="text-2xl">⭐</span>}
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-orange-100 to-amber-100">
@@ -186,9 +187,10 @@ const CategoriesPage = () => {
                 >
                   {bestSellers[0]?.thumbnail || bestSellers[0]?.images?.[0] ? (
                     <FirebaseImage
-                      src={bestSellers[0]?.thumbnail || bestSellers[0]?.images?.[0]}
+                      src={bestSellers[0]?.thumbnail || bestSellers[0]?.images?.[0] || ''}
                       alt="Hot Products"
                       className="w-full h-full object-cover"
+                      fallbackIcon={<span className="text-2xl">🔥</span>}
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-red-100 to-orange-100">
@@ -213,9 +215,10 @@ const CategoriesPage = () => {
                 >
                   {newArrivals[0]?.thumbnail || newArrivals[0]?.images?.[0] ? (
                     <FirebaseImage
-                      src={newArrivals[0]?.thumbnail || newArrivals[0]?.images?.[0]}
+                      src={newArrivals[0]?.thumbnail || newArrivals[0]?.images?.[0] || ''}
                       alt="Trending Products"
                       className="w-full h-full object-cover"
+                      fallbackIcon={<span className="text-2xl">📈</span>}
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-100 to-purple-100">
@@ -314,9 +317,10 @@ const CategoriesPage = () => {
                 <div className="aspect-square bg-white rounded-lg overflow-hidden mb-4">
                   {featuredProducts[0]?.thumbnail || featuredProducts[0]?.images?.[0] ? (
                     <FirebaseImage
-                      src={featuredProducts[0]?.thumbnail || featuredProducts[0]?.images?.[0]}
+                      src={featuredProducts[0]?.thumbnail || featuredProducts[0]?.images?.[0] || ''}
                       alt="Featured Products"
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                      fallbackIcon={<span className="text-6xl">⭐</span>}
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
@@ -345,9 +349,10 @@ const CategoriesPage = () => {
                 <div className="aspect-square bg-white rounded-lg overflow-hidden mb-4">
                   {bestSellers[0]?.thumbnail || bestSellers[0]?.images?.[0] ? (
                     <FirebaseImage
-                      src={bestSellers[0]?.thumbnail || bestSellers[0]?.images?.[0]}
+                      src={bestSellers[0]?.thumbnail || bestSellers[0]?.images?.[0] || ''}
                       alt="Hot Products"
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                      fallbackIcon={<span className="text-6xl">🔥</span>}
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
@@ -376,9 +381,10 @@ const CategoriesPage = () => {
                 <div className="aspect-square bg-white rounded-lg overflow-hidden mb-4">
                   {newArrivals[0]?.thumbnail || newArrivals[0]?.images?.[0] ? (
                     <FirebaseImage
-                      src={newArrivals[0]?.thumbnail || newArrivals[0]?.images?.[0]}
+                      src={newArrivals[0]?.thumbnail || newArrivals[0]?.images?.[0] || ''}
                       alt="Trending Products"
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                      fallbackIcon={<span className="text-6xl">📈</span>}
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
