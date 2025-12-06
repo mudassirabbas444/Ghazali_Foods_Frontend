@@ -175,7 +175,11 @@ const AdminProductsPage = () => {
                       <div className="flex items-center gap-3">
                         <div className="w-12 h-12 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
                           <FirebaseImage
-                            src={product.thumbnail || product.images?.[0]}
+                            src={
+                              (product.images && product.images.length > 0 && product.images[0])
+                              || product.thumbnail
+                              || 'https://images8.alphacoders.com/109/1095996.jpg'
+                            }
                             alt={product.name}
                             className="w-full h-full object-cover"
                           />
@@ -292,7 +296,9 @@ const ProductModal = ({ product, categories, onClose, onSuccess }) => {
     product?.variants || [{ weight: '', price: 0, stock: 0, sku: '', isActive: true }]
   );
   const [images, setImages] = useState([]);
+  const [imagePreviews, setImagePreviews] = useState([]);
   const [existingImages, setExistingImages] = useState(product?.images || []);
+  const [imagesToRemove, setImagesToRemove] = useState([]);
   const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -332,6 +338,54 @@ const ProductModal = ({ product, categories, onClose, onSuccess }) => {
     updated[index][field] = value;
     setVariants(updated);
   };
+
+  const handleImageChange = (e) => {
+    const files = Array.from(e.target.files);
+    if (files.length === 0) return;
+
+    // Create previews for new images with file reference
+    const newPreviews = files.map((file, index) => ({
+      file,
+      preview: URL.createObjectURL(file),
+      id: `preview-${Date.now()}-${index}-${Math.random()}`
+    }));
+
+    setImages([...images, ...files]);
+    setImagePreviews([...imagePreviews, ...newPreviews]);
+    
+    // Reset input
+    e.target.value = '';
+  };
+
+  const removeNewImage = (previewId) => {
+    const previewIndex = imagePreviews.findIndex(p => p.id === previewId);
+    if (previewIndex !== -1) {
+      // Revoke object URL to free memory
+      URL.revokeObjectURL(imagePreviews[previewIndex].preview);
+      
+      // Remove from both arrays using the same index (they should stay in sync)
+      const newPreviews = imagePreviews.filter((_, idx) => idx !== previewIndex);
+      const newImages = images.filter((_, idx) => idx !== previewIndex);
+      
+      setImagePreviews(newPreviews);
+      setImages(newImages);
+    }
+  };
+
+  const removeExistingImage = (imageIndex) => {
+    const imageUrl = existingImages[imageIndex];
+    setExistingImages(existingImages.filter((_, idx) => idx !== imageIndex));
+    setImagesToRemove([...imagesToRemove, imageUrl]);
+  };
+
+  // Cleanup preview URLs on unmount
+  useEffect(() => {
+    return () => {
+      imagePreviews.forEach(preview => {
+        URL.revokeObjectURL(preview.preview);
+      });
+    };
+  }, [imagePreviews]);
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto">
@@ -510,25 +564,87 @@ const ProductModal = ({ product, categories, onClose, onSuccess }) => {
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Product Images
+                <span className="text-xs text-gray-500 ml-2">
+                  ({(existingImages.length - imagesToRemove.length) + images.length} total)
+                </span>
               </label>
-              <div className="grid grid-cols-4 gap-4 mb-4">
-                {existingImages.map((img, idx) => (
-                  <div key={idx} className="relative">
-                    <FirebaseImage
-                      src={img}
-                      alt={`Product ${idx + 1}`}
-                      className="w-full aspect-square object-cover rounded-lg"
-                    />
+              
+              {/* Existing Images */}
+              {existingImages.length > 0 && (
+                <div className="mb-4">
+                  <p className="text-xs text-gray-600 mb-2">Existing Images:</p>
+                  <div className="grid grid-cols-4 gap-4">
+                    {existingImages.map((img, idx) => (
+                      <div key={idx} className="relative group">
+                        <FirebaseImage
+                          src={img}
+                          alt={`Product ${idx + 1}`}
+                          className="w-full aspect-square object-cover rounded-lg border-2 border-gray-200"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => removeExistingImage(idx)}
+                          className="absolute top-2 right-2 p-1.5 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600"
+                          title="Remove image"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                </div>
+              )}
+
+              {/* New Image Previews */}
+              {imagePreviews.length > 0 && (
+                <div className="mb-4">
+                  <p className="text-xs text-gray-600 mb-2">New Images:</p>
+                  <div className="grid grid-cols-4 gap-4">
+                    {imagePreviews.map((preview, idx) => (
+                      <div key={preview.id} className="relative group">
+                        <img
+                          src={preview.preview}
+                          alt={`New image ${idx + 1}`}
+                          className="w-full aspect-square object-cover rounded-lg border-2 border-orange-300"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => removeNewImage(preview.id)}
+                          className="absolute top-2 right-2 p-1.5 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600"
+                          title="Remove image"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                        <div className="absolute bottom-2 left-2 bg-orange-500 text-white text-xs px-2 py-1 rounded">
+                          New
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Upload Input */}
+              <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-orange-400 transition-colors">
+                <label className="cursor-pointer">
+                  <div className="flex flex-col items-center gap-2">
+                    <Plus className="w-8 h-8 text-gray-400" />
+                    <span className="text-sm font-medium text-gray-700">
+                      Click to upload images
+                    </span>
+                    <span className="text-xs text-gray-500">
+                      Multiple images supported (PNG, JPG, WEBP)
+                    </span>
+                  </div>
+                  <input
+                    type="file"
+                    multiple
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="hidden"
+                  />
+                </label>
               </div>
-              <input
-                type="file"
-                multiple
-                accept="image/*"
-                onChange={(e) => setImages(Array.from(e.target.files))}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg"
-              />
             </div>
 
             {/* Flags */}

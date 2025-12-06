@@ -1,6 +1,6 @@
 {
-  "short_name": "DLT",
-  "name": "Dreams Life Traders",
+  "short_name": "Ghazali Foods",
+  "name": "Ghazali Foods",
   "icons": [
     {
       "src": "favicon.png",
@@ -20,6 +20,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
+  "theme_color": "#f97316",
   "background_color": "#ffffff"
 }

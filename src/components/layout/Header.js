@@ -50,12 +50,21 @@ const Header = () => {
   const fetchCartCount = async () => {
     try {
       const response = await cartService.getCart();
-      if (response.success && response.cart) {
-        const count = response.cart.items?.reduce((sum, item) => sum + (item.quantity || 0), 0) || 0;
-        setCartCount(count);
+      if (response.success) {
+        // Handle different response formats
+        const cartData = response.cart || response.data || response;
+        if (cartData && cartData.items) {
+          const count = cartData.items.reduce((sum, item) => sum + (item.quantity || 0), 0);
+          setCartCount(count);
+        } else {
+          setCartCount(0);
+        }
+      } else {
+        setCartCount(0);
       }
     } catch (error) {
       console.error('Error fetching cart count:', error);
+      setCartCount(0);
     }
   };
 

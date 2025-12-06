@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { motion } from 'framer-motion';
-import { Eye, EyeOff, Mail, Lock, User, Phone, Wallet, Gift, AlertCircle, CheckCircle, ArrowRight, Shield } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, User, AlertCircle, ArrowRight, Shield } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { Button, Input } from '../../components';
 import GoogleAuth from '../../components/auth/GoogleAuth';
@@ -10,14 +10,12 @@ import { VALIDATION, ROUTES } from '../../constants';
 
 const RegisterPage = () => {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
   const { register: registerUser, isLoading } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState(0);
   const [registrationAttempts, setRegistrationAttempts] = useState(0);
   const [isBlocked, setIsBlocked] = useState(false);
   const [blockTime, setBlockTime] = useState(0);
-  const [referralCode, setReferralCode] = useState('');
 
   const {
     register,
@@ -28,31 +26,6 @@ const RegisterPage = () => {
   } = useForm();
 
   const password = watch('password');
-  const watchedReferralCode = watch('referredBy');
-
-  // Get referral code, username, and company from URL params
-  useEffect(() => {
-    const refCode = searchParams.get('ref');
-    const username = searchParams.get('user');
-    const company = searchParams.get('company');
-    
-    if (refCode) {
-      setReferralCode(refCode);
-      setValue('referredBy', refCode);
-    }
-    
-    // Display username and company if present in URL
-    if (username || company) {
-      console.log('Referral link info:', { username, company, refCode });
-    }
-  }, [searchParams, setValue]);
-
-  // Sync watched referral code with state
-  useEffect(() => {
-    if (watchedReferralCode) {
-      setReferralCode(watchedReferralCode);
-    }
-  }, [watchedReferralCode]);
 
   // Password strength calculation
   useEffect(() => {
@@ -85,17 +58,11 @@ const RegisterPage = () => {
   const onSubmit = async (data) => {
     if (isBlocked) return;
 
-    // Prepare registration data matching backend format
-    // Referral code is optional for ecommerce
-    const finalReferralCode = referralCode || data.referredBy;
-
+    // Prepare registration data - only name, email, password
     const registrationData = {
-      fullName: data.name, // Map name to fullName for backend
+      fullName: data.name,
       email: data.email,
-      phone: data.phone,
       password: data.password,
-      walletInfo: data.walletInfo || '', // Optional wallet info
-      referredBy: finalReferralCode || undefined // Optional referral code
     };
 
     console.log('Registration attempt:', registrationData);
@@ -103,7 +70,6 @@ const RegisterPage = () => {
     console.log('Registration result:', result);
     
     if (result.success) {
-      // Backend returns token and user data directly (no email verification in investment system)
       console.log('Registration successful, redirecting to home');
       navigate(ROUTES.HOME);
     } else {
@@ -265,87 +231,6 @@ const RegisterPage = () => {
                   },
                 })}
               />
-
-              <Input
-                label='Phone Number'
-                type='tel'
-                autoComplete='tel'
-                placeholder='Enter your phone number'
-                leftIcon={<Phone className='h-5 w-5 text-gray-400' />}
-                error={errors.phone?.message}
-                className='bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 focus:bg-white dark:focus:bg-gray-600 focus:border-orange-500 dark:focus:border-orange-400'
-                {...register('phone', {
-                  required: 'Phone number is required',
-                  pattern: {
-                    value: VALIDATION.PHONE_REGEX,
-                    message: 'Please enter a valid phone number',
-                  },
-                  minLength: {
-                    value: 10,
-                    message: 'Phone number must be at least 10 digits',
-                  },
-                  maxLength: {
-                    value: 15,
-                    message: 'Phone number must be less than 15 digits',
-                  },
-                })}
-              />
-
-              <Input
-                label='Wallet Info (Optional)'
-                type='text'
-                autoComplete='off'
-                placeholder='Enter wallet address or payment method'
-                leftIcon={<Wallet className='h-5 w-5 text-gray-400' />}
-                error={errors.walletInfo?.message}
-                className='bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 focus:bg-white dark:focus:bg-gray-600 focus:border-orange-500 dark:focus:border-orange-400'
-                {...register('walletInfo', {
-                  required: false,
-                })}
-              />
-
-              <Input
-                label='Referral Code (Optional)'
-                type='text'
-                autoComplete='off'
-                placeholder='Enter referral code (optional)'
-                leftIcon={<Gift className='h-5 w-5 text-gray-400' />}
-                error={errors.referredBy?.message}
-                className='bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 focus:bg-white dark:focus:bg-gray-600 focus:border-orange-500 dark:focus:border-orange-400 uppercase'
-                {...register('referredBy', {
-                  required: false,
-                  pattern: {
-                    value: /^[A-Za-z0-9]{0,8}$/,
-                    message: 'Referral code must be up to 8 alphanumeric characters',
-                  },
-                  onChange: (e) => {
-                    // Convert to uppercase automatically
-                    const upperValue = e.target.value.toUpperCase();
-                    e.target.value = upperValue;
-                    setValue('referredBy', upperValue);
-                    setReferralCode(upperValue);
-                  },
-                })}
-              />
-              
-              {referralCode && !errors.referredBy && referralCode.length === 8 && /^[A-Za-z0-9]{8}$/.test(referralCode) && (
-                <motion.div
-                  className='bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-3'
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <div className='flex items-center'>
-                    <CheckCircle className='h-4 w-4 text-green-600 dark:text-green-400 mr-2' />
-                    <span className='text-sm text-green-800 dark:text-green-300'>
-                      Referral code applied: {referralCode}
-                    </span>
-                  </div>
-                  <p className='text-xs text-green-700 dark:text-green-400 mt-1'>
-                    Referral code applied successfully!
-                  </p>
-                </motion.div>
-              )}
 
               <div className='relative'>
                 <Input
