@@ -12,16 +12,11 @@ import {
   CheckCircle2,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import notificationService from '../../services/notification';
-import { useAdminAuth } from '../../context/AdminAuthContext';
 
 const AdminNotificationContainer = () => {
-  const { notifications, removeNotification, addNotification } = useApp();
-  const { admin } = useAdminAuth();
+  const { notifications, removeNotification } = useApp();
   const [isOpen, setIsOpen] = useState(false);
   const [pausedNotifications, setPausedNotifications] = useState(new Set());
-  const [backendUnreadCount, setBackendUnreadCount] = useState(0);
-  const [loading, setLoading] = useState(false);
 
   // Filter admin notifications
   const adminNotifications = notifications.filter((notif) => notif.isAdmin === true);
@@ -36,86 +31,7 @@ const AdminNotificationContainer = () => {
   };
 
   const totalCount = adminNotifications.length;
-  const unreadCount = Math.max(
-    adminNotifications.filter((n) => !n.read).length,
-    backendUnreadCount
-  );
-
-  // Fetch notifications from backend
-  useEffect(() => {
-    if (admin) {
-      fetchNotifications();
-      fetchUnreadCount();
-      // Poll for new notifications every 30 seconds
-      const interval = setInterval(() => {
-        fetchUnreadCount();
-        fetchNotifications();
-      }, 30000);
-      return () => clearInterval(interval);
-    }
-  }, [admin]);
-
-  const fetchNotifications = async () => {
-    try {
-      setLoading(true);
-      const response = await notificationService.getUserNotifications({
-        isAdmin: true,
-        limit: 20,
-      });
-      if (response.success && response.data) {
-        // Add backend notifications to context if not already present
-        response.data.forEach((notif) => {
-          const exists = notifications.find((n) => n.id === notif._id);
-          if (!exists) {
-            addNotification({
-              id: notif._id,
-              type: notif.type,
-              title: notif.title,
-              message: notif.message,
-              priority: notif.priority,
-              isAdmin: true,
-              read: notif.read,
-              timestamp: new Date(notif.createdAt).getTime(),
-              category: notif.category,
-            });
-          }
-        });
-      }
-    } catch (error) {
-      console.error('Error fetching notifications:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const fetchUnreadCount = async () => {
-    try {
-      const response = await notificationService.getUnreadCount(true);
-      if (response.success) {
-        setBackendUnreadCount(response.unreadCount || 0);
-      }
-    } catch (error) {
-      console.error('Error fetching unread count:', error);
-    }
-  };
-
-  const handleMarkAsRead = async (notificationId) => {
-    try {
-      await notificationService.markAsRead(notificationId);
-      setBackendUnreadCount(Math.max(0, backendUnreadCount - 1));
-    } catch (error) {
-      console.error('Error marking notification as read:', error);
-    }
-  };
-
-  const handleMarkAllAsRead = async () => {
-    try {
-      await notificationService.markAllAsRead(true);
-      setBackendUnreadCount(0);
-    } catch (error) {
-      console.error('Error marking all as read:', error);
-    }
-  };
+  const unreadCount = adminNotifications.filter((n) => !n.read).length;
 
   const getIcon = (type, priority) => {
     const iconClass = 'h-5 w-5';
@@ -201,16 +117,10 @@ const AdminNotificationContainer = () => {
     });
   }, []);
 
-  const handleClearAll = useCallback(async () => {
+  const handleClearAll = useCallback(() => {
     adminNotifications.forEach((notif) => {
       removeNotification(notif.id);
     });
-    try {
-      await notificationService.deleteAllNotifications(true);
-      setBackendUnreadCount(0);
-    } catch (error) {
-      console.error('Error clearing notifications:', error);
-    }
   }, [adminNotifications, removeNotification]);
 
   // Auto-dismiss notifications (except critical)
@@ -239,8 +149,7 @@ const AdminNotificationContainer = () => {
     };
   }, [adminNotifications, pausedNotifications, removeNotification]);
 
-  // Always show bell for backend sync (even if no local notifications)
-  // if (totalCount === 0 && backendUnreadCount === 0) return null;
+  if (totalCount === 0) return null;
 
   return (
     <>
@@ -336,7 +245,6 @@ const AdminNotificationContainer = () => {
                               handlePause={handlePause}
                               handleResume={handleResume}
                               isPaused={pausedNotifications.has(notification.id)}
-                              onMarkAsRead={handleMarkAsRead}
                             />
                           ))}
                         </div>
@@ -362,7 +270,6 @@ const AdminNotificationContainer = () => {
                               handlePause={handlePause}
                               handleResume={handleResume}
                               isPaused={pausedNotifications.has(notification.id)}
-                              onMarkAsRead={handleMarkAsRead}
                             />
                           ))}
                         </div>
@@ -389,7 +296,6 @@ const AdminNotificationContainer = () => {
                               handlePause={handlePause}
                               handleResume={handleResume}
                               isPaused={pausedNotifications.has(notification.id)}
-                              onMarkAsRead={handleMarkAsRead}
                             />
                           ))}
                         </div>
@@ -425,17 +331,12 @@ const NotificationItem = ({
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -20 }}
-      className={`p-4 hover:bg-gray-50 transition-colors border-l-4 cursor-pointer ${getBgColor(
+      className={`p-4 hover:bg-gray-50 transition-colors border-l-4 ${getBgColor(
         notification.type,
         notification.priority
-      )} ${!notification.read ? 'bg-blue-50' : ''}`}
+      )}`}
       onMouseEnter={() => handlePause(notification.id)}
       onMouseLeave={() => handleResume(notification.id)}
-      onClick={() => {
-        if (!notification.read && onMarkAsRead && notification.id) {
-          onMarkAsRead(notification.id);
-        }
-      }}
     >
       <div className="flex items-start gap-3">
         {/* Icon */}
