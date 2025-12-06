@@ -151,8 +151,18 @@ const RelatedProducts = ({ product, limit = 8 }) => {
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 />
                 {item.discount > 0 && (
-                  <span className="absolute top-2 left-2 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded">
-                    -{item.discount}%
+                  <span className="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
+                    {item.discount}% OFF
+                  </span>
+                )}
+                {item.isBestSeller && (
+                  <span className="absolute bottom-2 left-2 bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded flex items-center gap-1">
+                    Hot 🔥
+                  </span>
+                )}
+                {item.isNewArrival && !item.isBestSeller && (
+                  <span className="absolute bottom-2 left-2 bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded">
+                    New
                   </span>
                 )}
                 <button

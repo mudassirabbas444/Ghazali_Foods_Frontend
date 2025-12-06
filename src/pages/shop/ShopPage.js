@@ -533,22 +533,22 @@ const ShopPage = () => {
           <div
             className={
               viewMode === 'grid'
-                ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'
+                ? 'grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-6'
                 : 'space-y-4'
             }
           >
             {products.map((product) => (
               <div
                 key={product._id}
-                className={`bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 ${
-                  viewMode === 'list' ? 'flex gap-4 p-4' : 'p-4'
+                className={`bg-white rounded-xl md:rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 ${
+                  viewMode === 'list' ? 'flex gap-4 p-4' : 'p-2 md:p-4'
                 } group`}
               >
                 <Link
                   to={ROUTES.PRODUCT_DETAIL.replace(':slug', product.slug)}
                   className={viewMode === 'list' ? 'flex-shrink-0' : 'block'}
                 >
-                  <div className={`relative ${viewMode === 'list' ? 'w-32 h-32' : 'w-full aspect-square'} mb-4 rounded-xl overflow-hidden bg-white/50`}>
+                  <div className={`relative ${viewMode === 'list' ? 'w-32 h-32' : 'w-full aspect-square'} mb-2 md:mb-4 rounded-lg md:rounded-xl overflow-hidden bg-white/50`}>
                     <FirebaseImage
                       src={
                         (product.images && product.images.length > 0 && product.images[0])
@@ -559,37 +559,37 @@ const ShopPage = () => {
                       className={`w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 ${isProductOutOfStock(product) ? 'opacity-60' : ''}`}
                     />
                     {isProductOutOfStock(product) ? (
-                      <span className="absolute top-3 left-3 bg-gray-800 text-white text-xs font-semibold px-3 py-1.5 rounded-lg z-10">
+                      <span className="absolute top-1 left-1 md:top-3 md:left-3 bg-gray-800 text-white text-[10px] md:text-xs font-semibold px-1.5 md:px-3 py-0.5 md:py-1.5 rounded md:rounded-lg z-10">
                         Out of Stock
                       </span>
                     ) : product.isBestSeller ? (
-                      <span className="absolute top-3 left-3 bg-gray-800 text-white text-xs font-semibold px-3 py-1.5 rounded-lg">
+                      <span className="absolute top-1 left-1 md:top-3 md:left-3 bg-gray-800 text-white text-[10px] md:text-xs font-semibold px-1.5 md:px-3 py-0.5 md:py-1.5 rounded md:rounded-lg">
                         Best Seller
                       </span>
                     ) : product.discount > 0 && (
-                      <span className="absolute top-3 left-3 bg-red-500 text-white text-xs font-semibold px-3 py-1.5 rounded-lg">
+                      <span className="absolute top-1 left-1 md:top-3 md:left-3 bg-red-500 text-white text-[10px] md:text-xs font-semibold px-1.5 md:px-3 py-0.5 md:py-1.5 rounded md:rounded-lg">
                         -{product.discount}%
                       </span>
                     )}
-                    <div className="absolute top-3 right-3 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="absolute top-1 right-1 md:top-3 md:right-3 flex flex-col gap-1 md:gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                       <button
                         onClick={(e) => {
                           e.preventDefault();
                           e.stopPropagation();
                           setQuickViewProduct(product);
                         }}
-                        className="p-2 bg-white/90 backdrop-blur-sm rounded-full shadow-md hover:bg-white transition-colors"
+                        className="p-1 md:p-2 bg-white/90 backdrop-blur-sm rounded-full shadow-md hover:bg-white transition-colors"
                         title="Quick View"
                       >
-                        <Eye className="w-4 h-4 text-gray-700" />
+                        <Eye className="w-3 h-3 md:w-4 md:h-4 text-gray-700" />
                       </button>
                       <button
                         onClick={(e) => handleToggleWishlist(product._id, e)}
-                        className="p-2 bg-white/90 backdrop-blur-sm rounded-full shadow-md hover:bg-white transition-colors"
+                        className="p-1 md:p-2 bg-white/90 backdrop-blur-sm rounded-full shadow-md hover:bg-white transition-colors"
                         title="Add to Wishlist"
                       >
                         <Heart
-                          className={`w-4 h-4 ${
+                          className={`w-3 h-3 md:w-4 md:h-4 ${
                             wishlistItems.has(product._id)
                               ? 'fill-red-500 text-red-500'
                               : 'text-gray-700'
@@ -602,18 +602,18 @@ const ShopPage = () => {
 
                 <div className={viewMode === 'list' ? 'flex-1' : ''}>
                   <Link to={ROUTES.PRODUCT_DETAIL.replace(':slug', product.slug)}>
-                    <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 text-base hover:text-orange-600 transition-colors">
+                    <h3 className="font-semibold text-gray-900 mb-1 md:mb-2 line-clamp-2 text-xs md:text-base hover:text-orange-600 transition-colors">
                       {product.name}
                     </h3>
                   </Link>
 
-                  <div className="flex items-center justify-between mt-3">
-                    <div>
-                      <p className="text-lg font-bold text-gray-900">
+                  <div className="flex items-center justify-between mt-1 md:mt-3">
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm md:text-lg font-bold text-gray-900 truncate">
                         {getProductPrice(product)}
                       </p>
                       {product.compareAtPrice && (
-                        <p className="text-sm text-gray-500 line-through">
+                        <p className="text-xs md:text-sm text-gray-500 line-through">
                           Rs. {product.compareAtPrice.toLocaleString()}
                         </p>
                       )}
@@ -622,14 +622,14 @@ const ShopPage = () => {
                     <button
                       onClick={() => handleAddToCart(product)}
                       disabled={isProductOutOfStock(product)}
-                      className={`p-2 rounded-lg transition-colors opacity-0 group-hover:opacity-100 ${
+                      className={`p-1.5 md:p-2 rounded-lg transition-colors flex-shrink-0 ${
                         isProductOutOfStock(product)
-                          ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                          : 'bg-orange-500 text-white hover:bg-orange-600'
+                          ? 'bg-gray-300 text-gray-500 cursor-not-allowed opacity-50'
+                          : 'bg-orange-500 text-white hover:bg-orange-600 opacity-100'
                       }`}
                       title={isProductOutOfStock(product) ? 'Out of Stock' : 'Add to Cart'}
                     >
-                      <ShoppingCart className="w-5 h-5" />
+                      <ShoppingCart className="w-4 h-4 md:w-5 md:h-5" />
                     </button>
                   </div>
                 </div>

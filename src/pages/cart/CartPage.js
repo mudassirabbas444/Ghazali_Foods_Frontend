@@ -16,6 +16,7 @@ import { useAuth } from '../../context/AuthContext';
 import { toast } from 'react-toastify';
 import { ROUTES } from '../../constants';
 import FirebaseImage from '../../components/FirebaseImage';
+import PopularItems from '../../components/product/PopularItems';
 
 const CartPage = () => {
   const navigate = useNavigate();
@@ -167,86 +168,125 @@ const CartPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-amber-50 via-orange-50 to-amber-50 py-8">
+    <div className="min-h-screen bg-gradient-to-b from-amber-50 via-orange-50 to-amber-50 py-4 md:py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8">Shopping Cart</h1>
+        {/* Mobile Header */}
+        <div className="md:hidden mb-4">
+          <div className="flex items-center justify-between mb-4">
+            <h1 className="text-xl font-bold text-gray-900">Your Cart</h1>
+            <button
+              onClick={async () => {
+                if (window.confirm('Are you sure you want to clear your cart?')) {
+                  try {
+                    await cartService.clearCart();
+                    await fetchCart();
+                    toast.success('Cart cleared');
+                  } catch (error) {
+                    toast.error('Failed to clear cart');
+                  }
+                }
+              }}
+              className="text-sm text-orange-500 hover:text-orange-600"
+            >
+              Clear cart
+            </button>
+          </div>
+        </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Desktop Header */}
+        <h1 className="hidden md:block text-3xl font-bold text-gray-900 mb-8">Shopping Cart</h1>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-8">
           {/* Cart Items */}
-          <div className="lg:col-span-2 space-y-4">
-            {cartItems.map((item) => (
-              <motion.div
-                key={item._id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 p-4 flex gap-4"
-              >
-                <Link
-                  to={ROUTES.PRODUCT_DETAIL.replace(':slug', item.product?.slug)}
-                  className="flex-shrink-0"
+          <div className="lg:col-span-2 space-y-3 md:space-y-4">
+            {cartItems.map((item) => {
+              const originalPrice = item.product?.compareAtPrice || item.product?.basePrice;
+              const currentPrice = item.price;
+              const discount = originalPrice && originalPrice > currentPrice 
+                ? Math.round(((originalPrice - currentPrice) / originalPrice) * 100)
+                : 0;
+
+              return (
+                <motion.div
+                  key={item._id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="bg-white rounded-xl md:rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 p-3 md:p-4 flex gap-3 md:gap-4"
                 >
-                  <div className="w-24 h-24 rounded-lg overflow-hidden bg-gray-100">
-                    <FirebaseImage
-                      src={
-                        (item.product?.images && item.product.images.length > 0 && item.product.images[0])
-                        || item.product?.thumbnail
-                        || 'https://images8.alphacoders.com/109/1095996.jpg'
-                      }
-                      alt={item.product?.name}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                </Link>
-
-                <div className="flex-1">
-                  <Link to={ROUTES.PRODUCT_DETAIL.replace(':slug', item.product?.slug)}>
-                    <h3 className="font-semibold text-gray-900 mb-1 hover:text-orange-600">
-                      {item.product?.name}
-                    </h3>
+                  <Link
+                    to={ROUTES.PRODUCT_DETAIL.replace(':slug', item.product?.slug)}
+                    className="flex-shrink-0"
+                  >
+                    <div className="w-20 h-20 md:w-24 md:h-24 rounded-lg overflow-hidden bg-gray-100">
+                      <FirebaseImage
+                        src={
+                          (item.product?.images && item.product.images.length > 0 && item.product.images[0])
+                          || item.product?.thumbnail
+                          || 'https://images8.alphacoders.com/109/1095996.jpg'
+                        }
+                        alt={item.product?.name}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
                   </Link>
-                  {item.variant && (
-                    <p className="text-sm text-gray-600 mb-2">Weight: {item.variant}</p>
-                  )}
-                  <p className="text-lg font-bold text-gray-900">
-                    Rs. {item.price?.toLocaleString()}
-                  </p>
 
-                  <div className="flex items-center justify-between mt-4">
-                    <div className="flex items-center gap-2">
-                      <button
-                        onClick={() => handleUpdateQuantity(item._id, item.quantity - 1)}
-                        disabled={updating || item.quantity <= 1}
-                        className="p-1 border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50"
-                      >
-                        <Minus className="w-4 h-4" />
-                      </button>
-                      <span className="w-12 text-center font-semibold">{item.quantity}</span>
-                      <button
-                        onClick={() => handleUpdateQuantity(item._id, item.quantity + 1)}
-                        disabled={updating}
-                        className="p-1 border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50"
-                      >
-                        <Plus className="w-4 h-4" />
-                      </button>
+                  <div className="flex-1 min-w-0">
+                    <Link to={ROUTES.PRODUCT_DETAIL.replace(':slug', item.product?.slug)}>
+                      <h3 className="font-semibold text-gray-900 mb-1 hover:text-orange-600 text-sm md:text-base line-clamp-2">
+                        {item.product?.name}
+                      </h3>
+                    </Link>
+                    <p className="text-xs md:text-sm text-gray-600 mb-2 line-clamp-2">
+                      {item.product?.shortDescription || item.product?.description?.substring(0, 60) + '...'}
+                    </p>
+                    <div className="flex items-center gap-2 mb-2">
+                      {originalPrice && originalPrice > currentPrice && (
+                        <span className="text-xs md:text-sm text-red-500 line-through">
+                          Rs. {originalPrice.toLocaleString()}
+                        </span>
+                      )}
+                      <span className="text-base md:text-lg font-bold text-gray-900">
+                        Rs. {currentPrice?.toLocaleString()}
+                      </span>
                     </div>
 
-                    <button
-                      onClick={() => handleRemoveItem(item._id)}
-                      disabled={updating}
-                      className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-50"
-                    >
-                      <Trash2 className="w-5 h-5" />
-                    </button>
+                    <div className="flex items-center justify-between mt-2 md:mt-4">
+                      <div className="flex items-center gap-1 md:gap-2">
+                        <button
+                          onClick={() => handleUpdateQuantity(item._id, item.quantity - 1)}
+                          disabled={updating || item.quantity <= 1}
+                          className="p-1 md:p-1.5 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                        >
+                          <Minus className="w-3 h-3 md:w-4 md:h-4" />
+                        </button>
+                        <span className="w-8 md:w-12 text-center font-semibold text-sm md:text-base">{item.quantity}</span>
+                        <button
+                          onClick={() => handleUpdateQuantity(item._id, item.quantity + 1)}
+                          disabled={updating}
+                          className="p-1 md:p-1.5 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50 transition-colors"
+                        >
+                          <Plus className="w-3 h-3 md:w-4 md:h-4" />
+                        </button>
+                      </div>
+
+                      <button
+                        onClick={() => handleRemoveItem(item._id)}
+                        disabled={updating}
+                        className="p-1.5 md:p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-50"
+                      >
+                        <Trash2 className="w-4 h-4 md:w-5 md:h-5" />
+                      </button>
+                    </div>
                   </div>
-                </div>
-              </motion.div>
-            ))}
+                </motion.div>
+              );
+            })}
           </div>
 
           {/* Order Summary */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-2xl shadow-sm p-6 sticky top-4">
-              <h2 className="text-xl font-bold text-gray-900 mb-4">Order Summary</h2>
+            <div className="bg-white rounded-xl md:rounded-2xl shadow-sm p-4 md:p-6 sticky top-4">
+              <h2 className="text-lg md:text-xl font-bold text-gray-900 mb-4">Order Summary</h2>
 
               {/* Coupon Section */}
               <div className="mb-6">
@@ -295,26 +335,26 @@ const CartPage = () => {
               </div>
 
               {/* Price Breakdown */}
-              <div className="space-y-3 mb-6">
-                <div className="flex justify-between text-gray-700">
+              <div className="space-y-2 md:space-y-3 mb-4 md:mb-6">
+                <div className="flex justify-between text-sm md:text-base text-gray-700">
                   <span>Subtotal</span>
                   <span className="font-semibold">Rs. {totals.subtotal.toLocaleString()}</span>
                 </div>
                 {totals.discount > 0 && (
-                  <div className="flex justify-between text-green-600">
+                  <div className="flex justify-between text-sm md:text-base text-green-600">
                     <span>Discount</span>
                     <span className="font-semibold">- Rs. {totals.discount.toLocaleString()}</span>
                   </div>
                 )}
-                <div className="flex justify-between text-gray-700">
-                  <span>Delivery Charges</span>
-                  <span className="font-semibold">Rs. 200</span>
+                <div className="flex justify-between text-sm md:text-base text-gray-700">
+                  <span>FBR POS Charges</span>
+                  <span className="font-semibold">Rs. 1</span>
                 </div>
-                <div className="border-t pt-3">
+                <div className="border-t pt-2 md:pt-3">
                   <div className="flex justify-between">
-                    <span className="text-lg font-bold text-gray-900">Grand Total</span>
-                    <span className="text-lg font-bold text-gray-900">
-                      Rs. {(totals.total + 200).toLocaleString()}
+                    <span className="text-base md:text-lg font-bold text-gray-900">Grand total</span>
+                    <span className="text-base md:text-lg font-bold text-gray-900">
+                      Rs. {(totals.total + 1).toLocaleString()}
                     </span>
                   </div>
                 </div>
@@ -322,9 +362,9 @@ const CartPage = () => {
 
               <Link
                 to={ROUTES.CHECKOUT}
-                className="block w-full bg-orange-500 text-white text-center py-3 px-6 rounded-lg font-semibold hover:bg-orange-600 transition-colors"
+                className="block w-full bg-blue-500 text-white text-center py-3 px-6 rounded-lg font-semibold hover:bg-blue-600 transition-colors"
               >
-                Proceed to Checkout
+                Checkout
               </Link>
 
               <Link
@@ -336,6 +376,12 @@ const CartPage = () => {
             </div>
           </div>
         </div>
+
+        {/* Popular Items Section */}
+        <PopularItems 
+          excludeProductIds={cartItems.map(item => item.product?._id).filter(Boolean)}
+          limit={6}
+        />
       </div>
     </div>
   );
