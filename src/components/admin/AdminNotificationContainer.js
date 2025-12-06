@@ -177,7 +177,7 @@ const AdminNotificationContainer = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="fixed inset-0 bg-black/20 z-[9998]"
+                className="fixed inset-0 bg-black/20 z-[10000]"
                 onClick={() => setIsOpen(false)}
               />
 
@@ -187,7 +187,7 @@ const AdminNotificationContainer = () => {
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: -10, scale: 0.95 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                className="absolute right-0 mt-2 w-96 bg-white rounded-lg shadow-2xl border border-gray-200 z-[9999] max-h-[600px] flex flex-col"
+                className="absolute right-0 mt-2 w-96 bg-white rounded-lg shadow-2xl border border-gray-200 z-[10001] max-h-[600px] flex flex-col"
               >
                 {/* Header */}
                 <div className="flex items-center justify-between p-4 border-b border-gray-200">

@@ -199,7 +199,7 @@ const AdminLayout = ({ children }) => {
             >
               <Menu className="w-6 h-6 text-gray-600" />
             </button>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 ml-auto">
               <AdminNotificationContainer />
               {admin && (
                 <div className="hidden sm:block text-right">
