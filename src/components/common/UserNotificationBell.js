@@ -108,13 +108,17 @@ const UserNotificationBell = () => {
               onClick={() => setIsOpen(false)}
             />
 
-            {/* Panel */}
+            {/* Panel - Positioned below header */}
             <motion.div
               initial={{ opacity: 0, y: -10, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -10, scale: 0.95 }}
               transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-              className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-2xl border border-gray-200 z-[10001] max-h-[500px] flex flex-col"
+              className="fixed right-4 top-20 w-80 bg-white rounded-lg shadow-2xl border border-gray-200 z-[10001] flex flex-col"
+              style={{
+                maxHeight: 'calc(100vh - 6rem)',
+                top: '5rem' // 64px header + 16px spacing
+              }}
             >
               {/* Header */}
               <div className="flex items-center justify-between p-4 border-b border-gray-200">

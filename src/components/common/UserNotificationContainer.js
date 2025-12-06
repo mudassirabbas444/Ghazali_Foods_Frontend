@@ -125,7 +125,13 @@ const UserNotificationContainer = () => {
   if (visibleNotifications.length === 0) return null;
 
   return (
-    <div className="fixed top-4 right-4 z-[10001] flex flex-col gap-3 max-w-md w-full pointer-events-none">
+    <div 
+      className="fixed right-4 z-[10001] flex flex-col gap-3 max-w-md w-full pointer-events-none" 
+      style={{ 
+        top: '5rem', // 64px header + 16px spacing
+        maxWidth: 'calc(100vw - 2rem)'
+      }}
+    >
       <AnimatePresence mode="popLayout">
         {visibleNotifications.map((notification, index) => {
           const isPaused = pausedNotifications.has(notification.id);
