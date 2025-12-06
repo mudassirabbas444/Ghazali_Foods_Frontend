@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import {
   Search,
@@ -39,6 +39,9 @@ const ShopPage = () => {
   const [quickViewProduct, setQuickViewProduct] = useState(null);
   const [advancedFilters, setAdvancedFilters] = useState({});
   const [expandedCategory, setExpandedCategory] = useState(null);
+  const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
+  const categoryButtonRefs = useRef({});
+  const dropdownRef = useRef(null);
   
   // Filters
   const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '');
@@ -265,6 +268,15 @@ const ShopPage = () => {
       if (expandedCategory === categoryId) {
         setExpandedCategory(null);
       } else {
+        // Calculate position for dropdown
+        const button = categoryButtonRefs.current[categoryId];
+        if (button) {
+          const rect = button.getBoundingClientRect();
+          setDropdownPosition({
+            top: rect.bottom + 4,
+            left: rect.left
+          });
+        }
         setExpandedCategory(categoryId);
       }
     } else {
@@ -281,10 +293,35 @@ const ShopPage = () => {
     navigate(`${ROUTES.SHOP}?category=${subcategoryId}`);
   };
 
+  // Update dropdown position on scroll/resize
+  useEffect(() => {
+    if (expandedCategory) {
+      const updatePosition = () => {
+        const button = categoryButtonRefs.current[expandedCategory];
+        if (button) {
+          const rect = button.getBoundingClientRect();
+          setDropdownPosition({
+            top: rect.bottom + 4,
+            left: rect.left
+          });
+        }
+      };
+
+      updatePosition();
+      window.addEventListener('scroll', updatePosition, true);
+      window.addEventListener('resize', updatePosition);
+      
+      return () => {
+        window.removeEventListener('scroll', updatePosition, true);
+        window.removeEventListener('resize', updatePosition);
+      };
+    }
+  }, [expandedCategory]);
+
   // Close expanded category when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (expandedCategory && !event.target.closest('.category-item')) {
+      if (expandedCategory && !event.target.closest('.category-item') && !dropdownRef.current?.contains(event.target)) {
         setExpandedCategory(null);
       }
     };
@@ -293,17 +330,13 @@ const ShopPage = () => {
   }, [expandedCategory]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-amber-50 via-orange-50 to-amber-50 pb-16 md:pb-0" style={{ overflow: 'visible' }}>
+    <div className="min-h-screen bg-gradient-to-b from-amber-50 via-orange-50 to-amber-50 pb-16 md:pb-0">
       {/* Categories Section - Simple List Design */}
       {mainCategories.length > 0 && (
-        <section className="bg-white border-b border-gray-200 sticky top-0 z-[100]" style={{ overflow: 'visible', position: 'sticky', isolation: 'auto' }}>
-          <div className="max-w-7xl mx-auto relative" style={{ overflow: 'visible' }}>
-            <div className="overflow-x-auto overflow-y-visible scrollbar-hide horizontal-scroll py-4" style={{ 
-              WebkitOverflowScrolling: 'touch',
-              scrollbarWidth: 'none',
-              msOverflowStyle: 'none'
-            }}>
-              <div className="flex items-center space-x-6 min-w-max px-4 sm:px-6 lg:px-8 relative" style={{ position: 'relative', zIndex: 10001 }}>
+        <section className="bg-white border-b border-gray-200 sticky top-0 z-[100]">
+          <div className="max-w-7xl mx-auto">
+            <div className="overflow-x-auto scrollbar-hide horizontal-scroll py-4">
+              <div className="flex items-center space-x-6 min-w-max px-4 sm:px-6 lg:px-8">
                 {/* All Products */}
                 <button
                   onClick={() => {
@@ -340,12 +373,13 @@ const ShopPage = () => {
                     <div 
                       key={category._id} 
                       className="relative category-item"
-                      style={{ 
-                        zIndex: isExpanded ? 10002 : 'auto',
-                        position: 'relative'
-                      }}
                     >
                       <button
+                        ref={(el) => {
+                          if (el) {
+                            categoryButtonRefs.current[category._id] = el;
+                          }
+                        }}
                         onClick={(e) => handleCategoryClick(category._id, e)}
                         className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors whitespace-nowrap group relative ${
                           isSelected
@@ -376,41 +410,52 @@ const ShopPage = () => {
                         )}
                       </button>
 
-                      {/* Subcategories Dropdown */}
-                      {hasSubcategories && isExpanded && (
-                        <div 
-                          className="absolute top-full left-0 mt-1 bg-white rounded-lg shadow-2xl border border-gray-200 min-w-[200px] max-w-[250px] py-2"
-                          style={{ 
-                            zIndex: 10003,
-                            position: 'absolute',
-                            marginTop: '4px',
-                            boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
-                            overflow: 'visible'
-                          }}
-                        >
-                          {subcategories.map((subcategory) => (
-                            <button
-                              key={subcategory._id}
-                              onClick={(e) => handleSubcategoryClick(subcategory._id, e)}
-                              className={`w-full flex items-center space-x-2 px-4 py-2 hover:bg-orange-50 transition-colors whitespace-nowrap text-left ${
-                                selectedCategory === subcategory._id ? 'bg-orange-50 text-orange-600 font-semibold' : 'text-gray-700'
-                              }`}
-                            >
-                              {subcategory.image ? (
-                                <FirebaseImage
-                                  src={subcategory.image}
-                                  alt={subcategory.name}
-                                  className="w-6 h-6 object-cover rounded-full border border-orange-200 flex-shrink-0"
-                                />
-                              ) : (
-                                <div className="w-6 h-6 rounded-full bg-orange-100 flex items-center justify-center flex-shrink-0">
-                                  <ShoppingBag className="w-3 h-3 text-orange-500" />
-                                </div>
-                              )}
-                              <span className="text-sm truncate">{subcategory.name}</span>
-                            </button>
-                          ))}
-                        </div>
+                      {/* Subcategories Dropdown - Using fixed positioning to ensure it appears above everything */}
+                      {hasSubcategories && isExpanded && expandedCategory === category._id && (
+                        <>
+                          {/* Backdrop to capture clicks outside */}
+                          <div 
+                            className="fixed inset-0 z-[99998]"
+                            onClick={() => setExpandedCategory(null)}
+                            style={{ background: 'transparent' }}
+                          />
+                          {/* Dropdown positioned relative to button */}
+                          <div 
+                            ref={dropdownRef}
+                            className="fixed bg-white rounded-lg shadow-2xl border border-gray-200 min-w-[200px] max-w-[250px] py-2 z-[99999]"
+                            style={{ 
+                              top: `${dropdownPosition.top}px`,
+                              left: `${dropdownPosition.left}px`
+                            }}
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            {subcategories.map((subcategory) => (
+                              <button
+                                key={subcategory._id}
+                                onClick={(e) => {
+                                  handleSubcategoryClick(subcategory._id, e);
+                                  setExpandedCategory(null);
+                                }}
+                                className={`w-full flex items-center space-x-2 px-4 py-2 hover:bg-orange-50 transition-colors whitespace-nowrap text-left ${
+                                  selectedCategory === subcategory._id ? 'bg-orange-50 text-orange-600 font-semibold' : 'text-gray-700'
+                                }`}
+                              >
+                                {subcategory.image ? (
+                                  <FirebaseImage
+                                    src={subcategory.image}
+                                    alt={subcategory.name}
+                                    className="w-6 h-6 object-cover rounded-full border border-orange-200 flex-shrink-0"
+                                  />
+                                ) : (
+                                  <div className="w-6 h-6 rounded-full bg-orange-100 flex items-center justify-center flex-shrink-0">
+                                    <ShoppingBag className="w-3 h-3 text-orange-500" />
+                                  </div>
+                                )}
+                                <span className="text-sm truncate">{subcategory.name}</span>
+                              </button>
+                            ))}
+                          </div>
+                        </>
                       )}
                     </div>
                   );
