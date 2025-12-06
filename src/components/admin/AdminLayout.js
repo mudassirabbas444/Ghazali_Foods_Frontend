@@ -21,6 +21,7 @@ import { useAdminAuth } from '../../context/AdminAuthContext';
 import { ROUTES } from '../../constants';
 import { toast } from 'react-toastify';
 import logo from '../../assets/Logo.png';
+import AdminNotificationContainer from './AdminNotificationContainer';
 
 const AdminLayout = ({ children }) => {
   const navigate = useNavigate();
@@ -199,6 +200,7 @@ const AdminLayout = ({ children }) => {
               <Menu className="w-6 h-6 text-gray-600" />
             </button>
             <div className="flex items-center gap-4">
+              <AdminNotificationContainer />
               {admin && (
                 <div className="hidden sm:block text-right">
                   <p className="text-sm font-semibold text-gray-900">{admin.fullName}</p>

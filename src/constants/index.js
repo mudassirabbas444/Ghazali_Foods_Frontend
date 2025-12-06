@@ -157,6 +157,22 @@ export const API_ENDPOINTS = {
     UNSUBSCRIBE: '/stock-notifications/:id',
   },
 
+  // Notification endpoints
+  NOTIFICATIONS: {
+    CREATE: '/notifications/',
+    GET_USER_NOTIFICATIONS: '/notifications/',
+    GET_UNREAD_COUNT: '/notifications/unread-count',
+    MARK_AS_READ: '/notifications/:id/read',
+    MARK_ALL_AS_READ: '/notifications/read-all',
+    UPDATE: '/notifications/:id',
+    DELETE: '/notifications/:id',
+    DELETE_ALL: '/notifications/',
+    DELETE_READ: '/notifications/read',
+    GET_ALL: '/notifications/all', // Admin only
+    CREATE_BULK: '/notifications/bulk', // Admin only
+    CLEANUP: '/notifications/cleanup', // Admin only
+  },
+
   // Product Question endpoints
   PRODUCT_QUESTIONS: {
     CREATE: '/product-questions/',

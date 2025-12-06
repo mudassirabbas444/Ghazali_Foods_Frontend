@@ -293,13 +293,13 @@ const ShopPage = () => {
   }, [expandedCategory]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-amber-50 via-orange-50 to-amber-50">
+    <div className="min-h-screen bg-gradient-to-b from-amber-50 via-orange-50 to-amber-50" style={{ overflow: 'visible' }}>
       {/* Categories Section - Simple List Design */}
       {mainCategories.length > 0 && (
-        <section className="bg-white border-b border-gray-200 sticky top-0 z-[100]" style={{ overflow: 'visible', position: 'relative' }}>
+        <section className="bg-white border-b border-gray-200 sticky top-0 z-[100]" style={{ overflow: 'visible', position: 'sticky', isolation: 'auto' }}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative" style={{ overflow: 'visible' }}>
-            <div className="flex items-center justify-between py-4" style={{ overflowX: 'auto', overflowY: 'visible' }}>
-              <div className="flex items-center space-x-6 min-w-max relative" style={{ position: 'relative' }}>
+            <div className="flex items-center justify-between py-4" style={{ overflowX: 'auto', overflowY: 'visible', overflow: 'visible' }}>
+              <div className="flex items-center space-x-6 min-w-max relative" style={{ position: 'relative', zIndex: 10001 }}>
                 {/* All Products */}
                 <button
                   onClick={() => {
@@ -337,7 +337,7 @@ const ShopPage = () => {
                       key={category._id} 
                       className="relative category-item"
                       style={{ 
-                        zIndex: isExpanded ? 10000 : 'auto',
+                        zIndex: isExpanded ? 10002 : 'auto',
                         position: 'relative'
                       }}
                     >
@@ -377,10 +377,11 @@ const ShopPage = () => {
                         <div 
                           className="absolute top-full left-0 mt-1 bg-white rounded-lg shadow-2xl border border-gray-200 min-w-[200px] max-w-[250px] py-2"
                           style={{ 
-                            zIndex: 10001,
+                            zIndex: 10003,
                             position: 'absolute',
                             marginTop: '4px',
-                            boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)'
+                            boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+                            overflow: 'visible'
                           }}
                         >
                           {subcategories.map((subcategory) => (
@@ -416,7 +417,7 @@ const ShopPage = () => {
         </section>
       )}
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative" style={{ zIndex: 1 }}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative" style={{ zIndex: 1, overflow: 'visible' }}>
         {/* Header Section */}
         <div className="mb-8">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">

@@ -209,6 +209,13 @@ export const AppProvider = ({ children }) => {
       const notificationWithId = {
         id,
         timestamp: Date.now(),
+        read: false,
+        priority: notification.priority || 'normal', // 'critical', 'high', 'normal'
+        isAdmin: notification.isAdmin || false,
+        duration: notification.duration || (notification.type === 'error' ? 8000 : 5000),
+        persist: notification.persist || false,
+        category: notification.category || null,
+        actions: notification.actions || [],
         ...notification,
       };
       
@@ -219,12 +226,8 @@ export const AppProvider = ({ children }) => {
         payload: notificationWithId,
       });
 
-      // Auto-remove notification after 5 seconds
-      if (notification.type !== 'error') {
-        setTimeout(() => {
-          actions.removeNotification(id);
-        }, 5000);
-      }
+      // Auto-remove notification (handled by containers now)
+      // Containers will handle auto-dismiss based on priority and type
     },
 
     removeNotification: (id) => {
