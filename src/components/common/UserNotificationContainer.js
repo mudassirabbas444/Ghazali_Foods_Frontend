@@ -126,10 +126,13 @@ const UserNotificationContainer = () => {
 
   return (
     <div 
-      className="fixed right-4 z-[10001] flex flex-col gap-3 max-w-md w-full pointer-events-none" 
+      className="fixed right-2 sm:right-4 flex flex-col gap-3 max-w-md w-full pointer-events-none" 
       style={{ 
-        top: '5rem', // 64px header + 16px spacing
-        maxWidth: 'calc(100vw - 2rem)'
+        top: '8rem', // Account for header (64px) + categories section (~64px) + spacing
+        maxWidth: 'calc(100vw - 1rem)',
+        position: 'fixed',
+        zIndex: 99999,
+        isolation: 'isolate'
       }}
     >
       <AnimatePresence mode="popLayout">

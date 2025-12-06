@@ -104,7 +104,8 @@ const UserNotificationBell = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/20 z-[10000]"
+              className="fixed inset-0 bg-black/20"
+              style={{ zIndex: 99998 }}
               onClick={() => setIsOpen(false)}
             />
 
@@ -114,10 +115,13 @@ const UserNotificationBell = () => {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -10, scale: 0.95 }}
               transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-              className="fixed right-4 top-20 w-80 bg-white rounded-lg shadow-2xl border border-gray-200 z-[10001] flex flex-col"
+              className="fixed right-2 sm:right-4 w-[calc(100vw-1rem)] sm:w-80 bg-white rounded-lg shadow-2xl border border-gray-200 flex flex-col"
               style={{
-                maxHeight: 'calc(100vh - 6rem)',
-                top: '5rem' // 64px header + 16px spacing
+                maxHeight: 'calc(100vh - 8rem)',
+                top: '8rem', // Account for header (64px) + categories section (~64px) + spacing
+                position: 'fixed',
+                zIndex: 99999,
+                isolation: 'isolate'
               }}
             >
               {/* Header */}
