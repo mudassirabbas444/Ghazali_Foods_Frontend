@@ -16,6 +16,7 @@ import { ROUTES } from '../../constants';
 import cartService from '../../services/cart';
 import { getComparison } from '../../utils/productComparison';
 import logo from '../../assets/Logo.png';
+import UserNotificationBell from '../common/UserNotificationBell';
 
 const Header = () => {
   const navigate = useNavigate();
@@ -174,6 +175,10 @@ const Header = () => {
                       </span>
                     )}
                   </Link>
+                </motion.div>
+                <div className='h-6 w-px bg-amber-200 mx-2' />
+                <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
+                  <UserNotificationBell />
                 </motion.div>
                 <div className='h-6 w-px bg-amber-200 mx-2' />
                 {/* User Menu */}
