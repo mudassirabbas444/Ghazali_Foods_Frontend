@@ -210,7 +210,73 @@ const Home = () => {
   return (
     <Layout>
       <div className="min-h-screen bg-white">
-        {/* Shop by Category Section */}
+        {/* Banner Carousel Section - First */}
+        {banners.length > 0 && (
+          <section className="relative w-full bg-white">
+            <div className="relative w-full h-[250px] md:h-[400px] lg:h-[500px] overflow-hidden">
+              {banners.map((banner, index) => (
+                <motion.div
+                  key={banner._id}
+                  initial={{ opacity: 0 }}
+                  animate={{
+                    opacity: index === currentBannerIndex ? 1 : 0,
+                    x: index === currentBannerIndex ? 0 : index < currentBannerIndex ? '-100%' : '100%',
+                  }}
+                  transition={{ duration: 0.5 }}
+                  className={`absolute inset-0 ${index === currentBannerIndex ? 'z-10' : 'z-0'}`}
+                >
+                  <Link to={banner.link || '#'} className="block h-full w-full">
+                    <FirebaseImage
+                      src={banner.image}
+                      alt={banner.title || 'Banner'}
+                      className="w-full h-full object-cover"
+                    />
+                  </Link>
+                </motion.div>
+              ))}
+              
+              {/* Navigation Arrows */}
+              {banners.length > 1 && (
+                <>
+                  <button
+                    onClick={prevBanner}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-white/80 hover:bg-white rounded-full p-2 shadow-lg transition-all"
+                    aria-label="Previous banner"
+                  >
+                    <ChevronLeft className="w-6 h-6 text-gray-800" />
+                  </button>
+                  <button
+                    onClick={nextBanner}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-white/80 hover:bg-white rounded-full p-2 shadow-lg transition-all"
+                    aria-label="Next banner"
+                  >
+                    <ChevronRight className="w-6 h-6 text-gray-800" />
+                  </button>
+                </>
+              )}
+              
+              {/* Dots Indicator */}
+              {banners.length > 1 && (
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+                  {banners.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setCurrentBannerIndex(index)}
+                      className={`w-2 h-2 rounded-full transition-all ${
+                        index === currentBannerIndex
+                          ? 'bg-white w-8'
+                          : 'bg-white/50 hover:bg-white/75'
+                      }`}
+                      aria-label={`Go to banner ${index + 1}`}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+          </section>
+        )}
+
+        {/* Shop by Category Section - Second */}
         {categories.length > 0 && (
           <section className="bg-white py-6 px-4">
             <h2 className="text-xl font-bold text-gray-900 mb-4 px-2">Shop by Category</h2>
@@ -240,26 +306,6 @@ const Home = () => {
             </div>
           </section>
         )}
-
-        {/* Promotional Banner Section */}
-        {banners.length > 0 && (
-          <section className="px-4 py-6">
-            <h2 className="text-xl font-bold text-gray-900 mb-4 px-2">
-              {banners[0]?.title || 'DRY FRUITS-SINCE 1993'}
-            </h2>
-            <div className="relative w-full h-[200px] md:h-[300px] rounded-lg overflow-hidden">
-              {banners[0] && (
-                <Link to={banners[0].link || '#'} className="block h-full">
-                  <FirebaseImage
-                    src={banners[0].image}
-                    alt={banners[0].title}
-                    className="w-full h-full object-cover"
-                  />
-                </Link>
-              )}
-              </div>
-            </section>
-          )}
 
         {/* Categories with Products - Top 5 Categories */}
         {categories.slice(0, 5).map((category) => {
