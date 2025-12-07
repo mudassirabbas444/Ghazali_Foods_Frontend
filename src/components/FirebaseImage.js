@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { AlertCircle } from 'lucide-react';
 
 /**
@@ -15,19 +15,41 @@ const FirebaseImage = ({
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const [imageSrc, setImageSrc] = useState(src);
+  const previousSrcRef = useRef(src);
+  const imgRef = useRef(null);
 
-  // Update imageSrc when src prop changes
+  // Update imageSrc when src prop actually changes
   useEffect(() => {
-    if (src && src.trim() !== '') {
-      setImageSrc(src);
-      setIsLoading(true);
-      setHasError(false);
+    const normalizedSrc = src && src.trim() !== '' ? src.trim() : '';
+    const previousSrc = previousSrcRef.current;
+    
+    // Only update if src actually changed (not just a new string reference)
+    if (normalizedSrc !== previousSrc) {
+      previousSrcRef.current = normalizedSrc;
+      
+      if (normalizedSrc) {
+        setImageSrc(normalizedSrc);
+        // Only reset loading state if image hasn't loaded yet or src actually changed
+        if (!imgRef.current || !imgRef.current.complete || imgRef.current.dataset.loaded !== 'true') {
+          setIsLoading(true);
+          setHasError(false);
+        }
+      } else {
+        // If src becomes empty, reset
+        setImageSrc('');
+        setIsLoading(false);
+        setHasError(false);
+      }
     }
   }, [src]);
 
   const handleLoad = () => {
     setIsLoading(false);
     setHasError(false);
+    // Mark image as loaded to prevent unnecessary reloads
+    if (imgRef.current) {
+      imgRef.current.dataset.loaded = 'true';
+    }
   };
 
   const handleError = () => {
@@ -100,10 +122,12 @@ const FirebaseImage = ({
         </div>
       )}
       <img
+        ref={imgRef}
         src={imageSrc}
         alt={alt}
         onLoad={handleLoad}
         onError={handleError}
+        loading="lazy"
         className={`${className} ${isLoading ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`}
         {...props}
       />
