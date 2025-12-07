@@ -57,7 +57,7 @@ const RecentlyViewed = () => {
         <h2 className="text-2xl font-bold text-gray-900">Recently Viewed</h2>
         <button
           onClick={handleClear}
-          className="text-sm text-gray-600 hover:text-orange-600 transition-colors"
+          className="text-sm text-gray-600 hover:text-green-600 transition-colors"
         >
           Clear All
         </button>
@@ -73,7 +73,11 @@ const RecentlyViewed = () => {
             <Link to={ROUTES.PRODUCT_DETAIL.replace(':slug', product.slug)}>
               <div className="aspect-square rounded-lg overflow-hidden bg-gray-100 mb-2">
                 <FirebaseImage
-                  src={product.thumbnail || product.images?.[0]}
+                  src={
+                    (product.images && product.images.length > 0 && product.images[0])
+                    || product.thumbnail
+                    || 'https://images8.alphacoders.com/109/1095996.jpg'
+                  }
                   alt={product.name}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform"
                 />
@@ -81,13 +85,13 @@ const RecentlyViewed = () => {
               <h3 className="text-sm font-medium text-gray-900 line-clamp-2 mb-1">
                 {product.name}
               </h3>
-              <p className="text-sm font-bold text-orange-600">
+              <p className="text-sm font-bold text-green-600">
                 Rs. {(product.basePrice || product.variants?.[0]?.price || 0).toLocaleString()}
               </p>
             </Link>
             <button
               onClick={(e) => handleAddToCart(product, e)}
-              className="absolute bottom-0 right-0 p-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors opacity-0 group-hover:opacity-100"
+              className="absolute bottom-0 right-0 p-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors opacity-0 group-hover:opacity-100"
             >
               <ShoppingCart className="w-4 h-4" />
             </button>

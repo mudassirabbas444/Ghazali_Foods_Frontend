@@ -222,7 +222,7 @@ const ProductDetailPage = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-orange-500" />
+        <Loader2 className="w-8 h-8 animate-spin text-green-500" />
       </div>
     );
   }
@@ -238,7 +238,7 @@ const ProductDetailPage = () => {
         <div className="mb-6">
           <Link
             to={ROUTES.SHOP}
-            className="text-gray-600 hover:text-orange-600 flex items-center gap-1"
+            className="text-gray-600 hover:text-green-600 flex items-center gap-1"
           >
             <ChevronLeft className="w-4 h-4" />
             Back to Shop
@@ -275,7 +275,7 @@ const ProductDetailPage = () => {
                       }
                     }}
                     className={`aspect-square rounded-lg overflow-hidden border-2 cursor-pointer ${
-                      selectedImage === idx ? 'border-orange-500' : 'border-gray-200'
+                      selectedImage === idx ? 'border-green-500' : 'border-gray-200'
                     }`}
                   >
                     <FirebaseImage
@@ -348,8 +348,8 @@ const ProductDetailPage = () => {
                       onClick={() => setSelectedVariant(variant)}
                       className={`px-4 py-2 rounded-lg border-2 transition-colors ${
                         selectedVariant?.weight === variant.weight
-                          ? 'border-orange-500 bg-orange-50 text-orange-700'
-                          : 'border-gray-300 hover:border-orange-300'
+                          ? 'border-green-500 bg-green-50 text-green-700'
+                          : 'border-gray-300 hover:border-green-300'
                       }`}
                     >
                       {variant.weight} - Rs. {variant.price.toLocaleString()}
@@ -387,7 +387,7 @@ const ProductDetailPage = () => {
                 <button
                   onClick={handleAddToCart}
                   disabled={addingToCart}
-                  className="flex-1 bg-orange-500 text-white py-3 px-6 rounded-lg font-semibold hover:bg-orange-600 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+                  className="flex-1 bg-green-500 text-white py-3 px-6 rounded-lg font-semibold hover:bg-green-600 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
                 >
                   {addingToCart ? (
                     <>
@@ -434,7 +434,7 @@ const ProductDetailPage = () => {
                 </button>
                 <button
                   onClick={handleShare}
-                  className="flex-1 p-3 rounded-lg border-2 border-gray-300 hover:border-orange-300 transition-colors"
+                  className="flex-1 p-3 rounded-lg border-2 border-gray-300 hover:border-green-300 transition-colors"
                   title="Share Product"
                 >
                   <Share2 className="w-5 h-5 mx-auto" />
@@ -496,8 +496,8 @@ const ProductDetailPage = () => {
                 <div key={review._id} className="border-b pb-6 last:border-0">
                   <div className="flex items-start justify-between mb-2">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center">
-                        <span className="text-orange-600 font-semibold">
+                      <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
+                        <span className="text-green-600 font-semibold">
                           {(review.user?.fullName || 'A').charAt(0).toUpperCase()}
                         </span>
                       </div>

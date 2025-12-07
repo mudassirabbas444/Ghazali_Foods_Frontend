@@ -10,11 +10,13 @@ import {
   Wallet,
   Phone,
   Mail,
+  Navigation,
 } from 'lucide-react';
 import cartService from '../../services/cart';
 import orderService from '../../services/order';
 import addressService from '../../services/address';
 import { useAuth } from '../../context/AuthContext';
+import { useLocationContext } from '../../context/LocationContext';
 import { toast } from 'react-toastify';
 import { ROUTES } from '../../constants';
 import FirebaseImage from '../../components/FirebaseImage';
@@ -22,6 +24,7 @@ import FirebaseImage from '../../components/FirebaseImage';
 const CheckoutPage = () => {
   const navigate = useNavigate();
   const { isAuthenticated, user } = useAuth();
+  const { getCurrentLocation, location, locationName } = useLocationContext();
 
   const [cart, setCart] = useState(null);
   const [addresses, setAddresses] = useState([]);
@@ -30,6 +33,8 @@ const CheckoutPage = () => {
   const [loading, setLoading] = useState(true);
   const [placingOrder, setPlacingOrder] = useState(false);
   const [totals, setTotals] = useState({ subtotal: 0, discount: 0, delivery: 200, total: 0 });
+  const [usingCurrentLocation, setUsingCurrentLocation] = useState(false);
+  const [isGettingLocation, setIsGettingLocation] = useState(false);
 
   const {
     register,
@@ -177,7 +182,7 @@ const CheckoutPage = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-orange-500" />
+        <Loader2 className="w-8 h-8 animate-spin text-green-500" />
       </div>
     );
   }
@@ -187,7 +192,7 @@ const CheckoutPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-amber-50 via-orange-50 to-amber-50 py-8">
+    <div className="min-h-screen bg-gradient-to-b from-amber-50 via-green-50 to-amber-50 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-8">Checkout</h1>
 
@@ -206,7 +211,7 @@ const CheckoutPage = () => {
                     <input
                       type="text"
                       {...register('fullName', { required: 'Full name is required' })}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
                       placeholder="Enter your full name"
                     />
                     {errors.fullName && (
@@ -227,7 +232,7 @@ const CheckoutPage = () => {
                           message: 'Invalid email address',
                         },
                       })}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
                       placeholder="you@example.com"
                     />
                     {errors.email && (
@@ -240,14 +245,14 @@ const CheckoutPage = () => {
                       Mobile Number
                     </label>
                     <div className="flex gap-2">
-                      <select className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500">
+                      <select className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500">
                         <option value="+92">+92</option>
                         <option value="+1">+1</option>
                       </select>
                       <input
                         type="tel"
                         {...register('phone', { required: 'Phone number is required' })}
-                        className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                        className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
                         placeholder="300 1234567"
                       />
                     </div>
@@ -260,7 +265,40 @@ const CheckoutPage = () => {
 
               {/* Delivery Address */}
               <div className="bg-white rounded-2xl shadow-sm p-6">
-                <h2 className="text-xl font-bold text-gray-900 mb-4">Delivery Address</h2>
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-xl font-bold text-gray-900">Delivery Address</h2>
+                  <button
+                    type="button"
+                    onClick={async () => {
+                      try {
+                        setIsGettingLocation(true);
+                        const locationData = await getCurrentLocation();
+                        setUsingCurrentLocation(true);
+                        setSelectedAddress(null);
+                        setValue('city', locationData.name || locationName);
+                        toast.success('Location detected! Please fill in your complete address.');
+                      } catch (error) {
+                        toast.error('Failed to get location. Please enable location access.');
+                      } finally {
+                        setIsGettingLocation(false);
+                      }
+                    }}
+                    disabled={isGettingLocation || usingCurrentLocation}
+                    className="flex items-center gap-2 px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
+                  >
+                    {isGettingLocation ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        Getting Location...
+                      </>
+                    ) : (
+                      <>
+                        <Navigation className="w-4 h-4" />
+                        {usingCurrentLocation ? 'Using Current Location' : 'Use Current Location'}
+                      </>
+                    )}
+                  </button>
+                </div>
                 
                 {addresses.length > 0 && (
                   <div className="mb-4 space-y-2">
@@ -269,20 +307,27 @@ const CheckoutPage = () => {
                         key={address._id}
                         className={`block p-4 border-2 rounded-lg cursor-pointer transition-colors ${
                           selectedAddress?._id === address._id
-                            ? 'border-orange-500 bg-orange-50'
-                            : 'border-gray-200 hover:border-orange-300'
+                            ? 'border-green-500 bg-green-50'
+                            : 'border-gray-200 hover:border-green-300'
                         }`}
+                        onClick={() => {
+                          setSelectedAddress(address);
+                          setUsingCurrentLocation(false);
+                        }}
                       >
                         <input
                           type="radio"
                           name="address"
                           value={address._id}
                           checked={selectedAddress?._id === address._id}
-                          onChange={() => setSelectedAddress(address)}
+                          onChange={() => {
+                            setSelectedAddress(address);
+                            setUsingCurrentLocation(false);
+                          }}
                           className="sr-only"
                         />
                         <div className="flex items-start gap-3">
-                          <MapPin className="w-5 h-5 text-orange-500 mt-0.5" />
+                          <MapPin className="w-5 h-5 text-green-500 mt-0.5" />
                           <div>
                             <p className="font-semibold text-gray-900">{address.fullName}</p>
                             <p className="text-sm text-gray-600">{address.address}</p>
@@ -297,6 +342,21 @@ const CheckoutPage = () => {
                   </div>
                 )}
 
+                {usingCurrentLocation && (
+                  <div className="mb-4 p-4 bg-green-50 border-2 border-green-500 rounded-lg">
+                    <div className="flex items-start gap-3">
+                      <MapPin className="w-5 h-5 text-green-500 mt-0.5" />
+                      <div>
+                        <p className="font-semibold text-gray-900">Current Location</p>
+                        <p className="text-sm text-gray-600">{locationName}</p>
+                        <p className="text-xs text-gray-500 mt-1">
+                          Please fill in your complete address details below
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
                 <div className="space-y-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -304,8 +364,8 @@ const CheckoutPage = () => {
                     </label>
                     <input
                       type="text"
-                      {...register('address', { required: !selectedAddress ? 'Address is required' : false })}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                      {...register('address', { required: !selectedAddress && !usingCurrentLocation ? 'Address is required' : false })}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
                       placeholder="House No. Street, Area"
                       disabled={!!selectedAddress}
                     />
@@ -319,10 +379,14 @@ const CheckoutPage = () => {
                       <label className="block text-sm font-medium text-gray-700 mb-2">City</label>
                       <input
                         type="text"
-                        {...register('city', { required: !selectedAddress ? 'City is required' : false })}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+                        {...register('city', { required: !selectedAddress && !usingCurrentLocation ? 'City is required' : false })}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
                         disabled={!!selectedAddress}
+                        placeholder={usingCurrentLocation ? locationName : 'Enter city'}
                       />
+                      {errors.city && (
+                        <p className="text-red-500 text-sm mt-1">{errors.city.message}</p>
+                      )}
                     </div>
 
                     <div>
@@ -330,7 +394,7 @@ const CheckoutPage = () => {
                       <input
                         type="text"
                         {...register('area')}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
                         disabled={!!selectedAddress}
                       />
                     </div>
@@ -343,7 +407,7 @@ const CheckoutPage = () => {
                     <textarea
                       {...register('specialInstructions')}
                       rows={3}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
                       placeholder="e.g., Please call before arrival or specify any nut allergies."
                     />
                   </div>
@@ -366,8 +430,8 @@ const CheckoutPage = () => {
                         key={method.value}
                         className={`flex items-center gap-3 p-4 border-2 rounded-lg cursor-pointer transition-colors ${
                           paymentMethod === method.value
-                            ? 'border-orange-500 bg-orange-50'
-                            : 'border-gray-200 hover:border-orange-300'
+                            ? 'border-green-500 bg-green-50'
+                            : 'border-gray-200 hover:border-green-300'
                         }`}
                       >
                         <input
@@ -378,7 +442,7 @@ const CheckoutPage = () => {
                           onChange={(e) => setPaymentMethod(e.target.value)}
                           className="sr-only"
                         />
-                        <Icon className="w-5 h-5 text-orange-500" />
+                        <Icon className="w-5 h-5 text-green-500" />
                         <span className="font-medium text-gray-900">{method.label}</span>
                       </label>
                     );
@@ -393,7 +457,7 @@ const CheckoutPage = () => {
               <button
                 type="submit"
                 disabled={placingOrder}
-                className="w-full bg-orange-500 text-white py-4 px-6 rounded-lg font-semibold text-lg hover:bg-orange-600 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+                className="w-full bg-green-500 text-white py-4 px-6 rounded-lg font-semibold text-lg hover:bg-green-600 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
               >
                 {placingOrder ? (
                   <>

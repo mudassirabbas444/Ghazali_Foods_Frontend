@@ -69,7 +69,7 @@ const OrderDetailPage = () => {
   const getStatusColor = (status) => {
     const colors = {
       pending: 'bg-yellow-100 text-yellow-800',
-      processing: 'bg-blue-100 text-blue-800',
+      processing: 'bg-green-100 text-green-800',
       packed: 'bg-purple-100 text-purple-800',
       out_for_delivery: 'bg-indigo-100 text-indigo-800',
       delivered: 'bg-green-100 text-green-800',
@@ -95,7 +95,7 @@ const OrderDetailPage = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-orange-500" />
+        <Loader2 className="w-8 h-8 animate-spin text-green-500" />
       </div>
     );
   }
@@ -105,11 +105,11 @@ const OrderDetailPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-amber-50 via-orange-50 to-amber-50 py-8">
+    <div className="min-h-screen bg-gradient-to-b from-green-50 via-green-50 to-green-50 py-8">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <Link
           to={ROUTES.ORDERS}
-          className="text-gray-600 hover:text-orange-600 mb-6 inline-block"
+          className="text-gray-600 hover:text-green-600 mb-6 inline-block"
         >
           ← Back to Orders
         </Link>
@@ -148,15 +148,52 @@ const OrderDetailPage = () => {
         <div className="bg-white rounded-2xl shadow-sm p-6 mb-6">
           <h2 className="text-xl font-bold text-gray-900 mb-4">Order Items</h2>
           <div className="space-y-4">
-            {order.items?.map((item, idx) => (
-              <div key={idx} className="flex gap-4 pb-4 border-b last:border-0">
-                <div className="w-20 h-20 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
-                  <FirebaseImage
-                    src={item.image || 'https://images8.alphacoders.com/109/1095996.jpg'}
-                    alt={item.productName}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
+            {order.items?.map((item, idx) => {
+              // Get image source with proper fallback
+              let imageSrc = null;
+              
+              // Helper function to validate URL
+              const isValidUrl = (url) => {
+                if (!url || typeof url !== 'string') return false;
+                const trimmed = url.trim();
+                if (trimmed === '' || trimmed === 'null' || trimmed === 'undefined') return false;
+                try {
+                  const urlObj = new URL(trimmed);
+                  return urlObj.protocol === 'http:' || urlObj.protocol === 'https:';
+                } catch {
+                  return false;
+                }
+              };
+              
+              // Priority 1: product.images[0] (from populated product - most reliable)
+              if (item.product?.images && Array.isArray(item.product.images) && item.product.images.length > 0) {
+                const firstImage = item.product.images[0];
+                if (isValidUrl(firstImage)) {
+                  imageSrc = firstImage.trim();
+                }
+              }
+              // Priority 2: product.thumbnail
+              if (!imageSrc && item.product?.thumbnail && isValidUrl(item.product.thumbnail)) {
+                imageSrc = item.product.thumbnail.trim();
+              }
+              // Priority 3: item.image (stored when order was created - may be outdated)
+              if (!imageSrc && item.image && isValidUrl(item.image)) {
+                imageSrc = item.image.trim();
+              }
+              // Priority 4: fallback
+              if (!imageSrc) {
+                imageSrc = 'https://images8.alphacoders.com/109/1095996.jpg';
+              }
+              
+              return (
+                <div key={idx} className="flex gap-4 pb-4 border-b last:border-0">
+                  <div className="w-20 h-20 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
+                    <FirebaseImage
+                      src={imageSrc}
+                      alt={item.productName || 'Product image'}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
                 <div className="flex-1">
                   <h3 className="font-semibold text-gray-900">{item.productName}</h3>
                   {item.variant && (
@@ -168,7 +205,8 @@ const OrderDetailPage = () => {
                   </p>
                 </div>
               </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 

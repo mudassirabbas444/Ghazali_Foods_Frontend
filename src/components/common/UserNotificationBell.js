@@ -22,9 +22,9 @@ const UserNotificationBell = () => {
       case 'error':
         return <XCircle className={`${iconClass} text-red-600`} />;
       case 'warning':
-        return <AlertCircle className={`${iconClass} text-orange-600`} />;
+        return <AlertCircle className={`${iconClass} text-green-600`} />;
       default:
-        return <Info className={`${iconClass} text-blue-600`} />;
+        return <Info className={`${iconClass} text-green-600`} />;
     }
   };
 
@@ -35,9 +35,9 @@ const UserNotificationBell = () => {
       case 'error':
         return 'bg-red-50 border-red-200';
       case 'warning':
-        return 'bg-orange-50 border-orange-200';
+        return 'bg-green-50 border-green-200';
       default:
-        return 'bg-blue-50 border-blue-200';
+        return 'bg-green-50 border-green-200';
     }
   };
 
@@ -48,9 +48,9 @@ const UserNotificationBell = () => {
       case 'error':
         return 'text-red-900';
       case 'warning':
-        return 'text-orange-900';
+        return 'text-green-900';
       default:
-        return 'text-blue-900';
+        return 'text-green-900';
     }
   };
 
@@ -89,7 +89,7 @@ const UserNotificationBell = () => {
       >
         <Bell className="h-5 w-5" />
         {unreadCount > 0 && (
-          <span className="absolute -top-1 -right-1 bg-orange-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+          <span className="absolute -top-1 -right-1 bg-green-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
             {unreadCount > 9 ? '9+' : unreadCount}
           </span>
         )}
@@ -130,7 +130,7 @@ const UserNotificationBell = () => {
                   <Bell className="h-5 w-5 text-gray-600" />
                   <h3 className="text-lg font-semibold text-gray-900">Notifications</h3>
                   {unreadCount > 0 && (
-                    <span className="bg-orange-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                    <span className="bg-green-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
                       {unreadCount}
                     </span>
                   )}
@@ -234,7 +234,7 @@ const UserNotificationBell = () => {
                                     }}
                                     className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
                                       action.primary
-                                        ? 'bg-orange-600 text-white hover:bg-orange-700'
+                                        ? 'bg-green-600 text-white hover:bg-green-700'
                                         : 'text-gray-700 bg-gray-100 hover:bg-gray-200'
                                     }`}
                                   >

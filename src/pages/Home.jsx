@@ -26,6 +26,7 @@ const Home = () => {
   const { isAuthenticated } = useAuth();
   const [banners, setBanners] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [categoryProducts, setCategoryProducts] = useState({});
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [bestSellers, setBestSellers] = useState([]);
   const [newArrivals, setNewArrivals] = useState([]);
@@ -70,6 +71,10 @@ const Home = () => {
         const allCategories = categoriesRes.data || categoriesRes.categories || [];
         const mainCategories = allCategories.filter(c => !c.parentCategory);
         setCategories(mainCategories);
+        
+        // Fetch products for top 5 categories
+        const topCategories = mainCategories.slice(0, 5);
+        fetchCategoryProducts(topCategories);
       }
       if (featuredRes.success) {
         setFeaturedProducts(featuredRes.products || []);
@@ -84,6 +89,32 @@ const Home = () => {
       console.error('Error fetching home data:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchCategoryProducts = async (categories) => {
+    try {
+      const productsMap = {};
+      await Promise.all(
+        categories.map(async (category) => {
+          try {
+            const response = await productService.getProducts({
+              category: category._id,
+              limit: 10,
+              isActive: true,
+            });
+            if (response.success) {
+              productsMap[category._id] = response.products || [];
+            }
+          } catch (error) {
+            console.error(`Error fetching products for category ${category.name}:`, error);
+            productsMap[category._id] = [];
+          }
+        })
+      );
+      setCategoryProducts(productsMap);
+    } catch (error) {
+      console.error('Error fetching category products:', error);
     }
   };
 
@@ -170,7 +201,7 @@ const Home = () => {
     return (
       <Layout>
         <div className="flex items-center justify-center min-h-screen">
-          <Loader2 className="w-8 h-8 animate-spin text-orange-500" />
+          <Loader2 className="w-8 h-8 animate-spin text-green-500" />
         </div>
       </Layout>
     );
@@ -178,217 +209,143 @@ const Home = () => {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gradient-to-b from-amber-50 via-orange-50 to-amber-50">
-        {/* Banner Slider */}
-        {banners.length > 0 && (
-          <section className="relative h-[400px] md:h-[500px] lg:h-[600px] overflow-hidden">
-            {banners.map((banner, index) => (
-              <motion.div
-                key={banner._id}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: index === currentBannerIndex ? 1 : 0 }}
-                transition={{ duration: 0.5 }}
-                className={`absolute inset-0 ${index === currentBannerIndex ? 'block' : 'hidden'}`}
-              >
-                {banner.link ? (
-                  <Link to={banner.link} className="block h-full">
-                    <FirebaseImage
-                      src={banner.image}
-                      alt={banner.title}
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
-                      <div className="text-center text-white px-4">
-                        <h2 className="text-3xl md:text-5xl font-bold mb-4">{banner.title}</h2>
-                        {banner.description && (
-                          <p className="text-lg md:text-xl">{banner.description}</p>
-                        )}
-                      </div>
-                    </div>
-                  </Link>
-                ) : (
-                  <div className="h-full">
-                    <FirebaseImage
-                      src={banner.image}
-                      alt={banner.title}
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
-                      <div className="text-center text-white px-4">
-                        <h2 className="text-3xl md:text-5xl font-bold mb-4">{banner.title}</h2>
-                        {banner.description && (
-                          <p className="text-lg md:text-xl">{banner.description}</p>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </motion.div>
-            ))}
-            {banners.length > 1 && (
-              <>
-                <button
-                  onClick={prevBanner}
-                  className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-80 hover:bg-opacity-100 p-2 rounded-full transition-all"
-                >
-                  <ChevronLeft className="w-6 h-6 text-gray-900" />
-                </button>
-                <button
-                  onClick={nextBanner}
-                  className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-80 hover:bg-opacity-100 p-2 rounded-full transition-all"
-                >
-                  <ChevronRight className="w-6 h-6 text-gray-900" />
-                </button>
-                <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
-                  {banners.map((_, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setCurrentBannerIndex(index)}
-                      className={`w-2 h-2 rounded-full transition-all ${
-                        index === currentBannerIndex ? 'bg-white w-8' : 'bg-white bg-opacity-50'
-                      }`}
-                    />
-                  ))}
-                </div>
-              </>
-            )}
-          </section>
-        )}
-
-        {/* Category Navigation */}
+      <div className="min-h-screen bg-white">
+        {/* Shop by Category Section */}
         {categories.length > 0 && (
-          <section className="bg-white border-b border-gray-200 sticky top-16 z-40">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="flex items-center justify-between overflow-x-auto py-4">
-                <div className="flex items-center space-x-6 min-w-max">
-                  {categories.map((category) => (
+          <section className="bg-white py-6 px-4">
+            <h2 className="text-xl font-bold text-gray-900 mb-4 px-2">Shop by Category</h2>
+            <div className="flex gap-4 overflow-x-auto scrollbar-hide pb-2">
+              {categories.slice(0, 4).map((category) => (
                     <Link
                       key={category._id}
                       to={ROUTES.CATEGORY.replace(':slug', category.slug)}
-                      className="flex items-center space-x-2 px-4 py-2 rounded-lg hover:bg-orange-50 transition-colors whitespace-nowrap group"
+                  className="flex-shrink-0 w-[140px] bg-white rounded-lg border border-gray-200 p-4 hover:shadow-md transition-shadow"
                     >
+                  <div className="w-full aspect-square mb-3 rounded-lg overflow-hidden bg-gray-100 flex items-center justify-center">
                       {category.image ? (
                         <FirebaseImage
                           src={category.image}
                           alt={category.name}
-                          className="w-8 h-8 object-cover rounded-full border-2 border-orange-200"
+                        className="w-full h-full object-cover"
                         />
                       ) : (
-                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-orange-400 to-red-400 flex items-center justify-center">
-                          <ShoppingBag className="w-4 h-4 text-white" />
+                      <ShoppingBag className="w-12 h-12 text-gray-400" />
+                    )}
                         </div>
-                      )}
-                      <span className="text-sm font-medium text-gray-700 group-hover:text-orange-600">
+                  <p className="text-sm font-medium text-gray-900 text-center line-clamp-2">
                         {category.name}
-                      </span>
+                  </p>
                     </Link>
                   ))}
-                </div>
-                <Link
-                  to={ROUTES.SHOP}
-                  className="text-sm text-orange-600 hover:text-orange-700 font-medium whitespace-nowrap ml-4"
-                >
-                  View All →
-                </Link>
-              </div>
             </div>
           </section>
         )}
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {/* Featured Products */}
-          {featuredProducts.length > 0 && (
-            <section className="mb-12">
-              <div className="flex items-center justify-between mb-6">
-                <div>
-                  <h2 className="text-2xl md:text-3xl font-bold text-gray-900">Featured Products</h2>
-                  <p className="text-gray-600 mt-1">Explore our premium selection</p>
-                </div>
-                <Link
-                  to={ROUTES.SHOP}
-                  className="text-orange-600 hover:text-orange-700 font-medium flex items-center gap-1"
-                >
-                  View All
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </div>
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-                {featuredProducts.slice(0, 10).map((product) => (
-                  <ProductCard
-                    key={product._id}
-                    product={product}
-                    onAddToCart={handleAddToCart}
-                    onToggleWishlist={handleToggleWishlist}
-                    isInWishlist={wishlistItems.has(product._id)}
-                    getPrice={getProductPrice}
+        {/* Promotional Banner Section */}
+        {banners.length > 0 && (
+          <section className="px-4 py-6">
+            <h2 className="text-xl font-bold text-gray-900 mb-4 px-2">
+              {banners[0]?.title || 'DRY FRUITS-SINCE 1993'}
+            </h2>
+            <div className="relative w-full h-[200px] md:h-[300px] rounded-lg overflow-hidden">
+              {banners[0] && (
+                <Link to={banners[0].link || '#'} className="block h-full">
+                  <FirebaseImage
+                    src={banners[0].image}
+                    alt={banners[0].title}
+                    className="w-full h-full object-cover"
                   />
-                ))}
+                </Link>
+              )}
               </div>
             </section>
           )}
 
-          {/* Best Sellers */}
-          {bestSellers.length > 0 && (
-            <section className="mb-12">
-              <div className="flex items-center justify-between mb-6">
-                <div>
-                  <h2 className="text-2xl md:text-3xl font-bold text-gray-900">Best Sellers</h2>
-                  <p className="text-gray-600 mt-1">Most popular products</p>
-                </div>
-                <Link
-                  to={ROUTES.SHOP}
-                  className="text-orange-600 hover:text-orange-700 font-medium flex items-center gap-1"
-                >
-                  View All
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </div>
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-                {bestSellers.slice(0, 10).map((product) => (
-                  <ProductCard
-                    key={product._id}
-                    product={product}
-                    onAddToCart={handleAddToCart}
-                    onToggleWishlist={handleToggleWishlist}
-                    isInWishlist={wishlistItems.has(product._id)}
-                    getPrice={getProductPrice}
-                  />
-                ))}
-              </div>
-            </section>
-          )}
+        {/* Categories with Products - Top 5 Categories */}
+        {categories.slice(0, 5).map((category) => {
+          const products = categoryProducts[category._id] || [];
+          if (products.length === 0) return null;
 
-          {/* New Arrivals */}
-          {newArrivals.length > 0 && (
-            <section className="mb-12">
-              <div className="flex items-center justify-between mb-6">
-                <div>
-                  <h2 className="text-2xl md:text-3xl font-bold text-gray-900">New Arrivals</h2>
-                  <p className="text-gray-600 mt-1">Latest products added to our store</p>
-                </div>
+          return (
+            <section key={category._id} className="px-4 py-6">
+              {/* Category Header with Image */}
+              <div className="mb-4">
+                <div className="flex items-center justify-between mb-3">
+                  <h2 className="text-xl font-bold text-gray-900">{category.name}</h2>
                 <Link
-                  to={ROUTES.SHOP}
-                  className="text-orange-600 hover:text-orange-700 font-medium flex items-center gap-1"
-                >
-                  View All
-                  <ArrowRight className="w-4 h-4" />
+                    to={ROUTES.CATEGORY.replace(':slug', category.slug)}
+                    className="text-sm text-green-600 hover:text-green-700 font-medium"
+                  >
+                    View more →
+                  </Link>
+                </div>
+                {/* Category Image Banner */}
+                {category.image && (
+                  <div className="relative w-full h-[150px] md:h-[200px] rounded-lg overflow-hidden mb-4">
+                    <Link to={ROUTES.CATEGORY.replace(':slug', category.slug)} className="block h-full">
+                      <FirebaseImage
+                        src={category.image}
+                        alt={category.name}
+                        className="w-full h-full object-cover"
+                      />
                 </Link>
               </div>
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-                {newArrivals.slice(0, 10).map((product) => (
-                  <ProductCard
+                )}
+              </div>
+              {/* Products Scroll */}
+              <div className="flex gap-4 overflow-x-auto scrollbar-hide pb-2">
+                {products.map((product) => (
+                  <div
                     key={product._id}
-                    product={product}
-                    onAddToCart={handleAddToCart}
-                    onToggleWishlist={handleToggleWishlist}
-                    isInWishlist={wishlistItems.has(product._id)}
-                    getPrice={getProductPrice}
-                  />
+                    className="flex-shrink-0 w-[140px] bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-md transition-shadow"
+                  >
+                    <Link to={ROUTES.PRODUCT_DETAIL.replace(':slug', product.slug)}>
+                      <div className="relative aspect-square bg-gray-50">
+                        <FirebaseImage
+                          src={
+                            (product.images && product.images.length > 0 && product.images[0])
+                            || product.thumbnail
+                            || 'https://images8.alphacoders.com/109/1095996.jpg'
+                          }
+                          alt={product.name}
+                          className="w-full h-full object-cover"
+                        />
+                        {product.discount > 0 && (
+                          <span className="absolute top-1 left-1 bg-red-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded">
+                            {product.discount}% OFF
+                          </span>
+                        )}
+              </div>
+                    </Link>
+                    <div className="p-2">
+                      <Link to={ROUTES.PRODUCT_DETAIL.replace(':slug', product.slug)}>
+                        <h3 className="font-medium text-gray-900 mb-1 line-clamp-2 text-xs leading-tight">
+                          {product.name}
+                        </h3>
+                      </Link>
+                      <div className="mb-2">
+                        <p className="text-xs font-bold text-gray-900">
+                          {getProductPrice(product)}
+                        </p>
+                        {product.compareAtPrice && (
+                          <p className="text-[10px] text-gray-500 line-through">
+                            Rs. {product.compareAtPrice.toLocaleString()}
+                          </p>
+                        )}
+                </div>
+                      <button
+                        onClick={() => handleAddToCart(product)}
+                        className="w-full bg-green-500 hover:bg-green-600 text-white text-[10px] font-semibold py-1.5 rounded transition-colors"
+                >
+                        Add To Cart
+                      </button>
+                    </div>
+              </div>
                 ))}
               </div>
             </section>
-          )}
-        </div>
+          );
+        })}
       </div>
     </Layout>
   );
@@ -396,15 +353,24 @@ const Home = () => {
 
 // Product Card Component
 const ProductCard = ({ product, onAddToCart, onToggleWishlist, isInWishlist, getPrice }) => {
+  const discount = product.discount || (product.compareAtPrice && product.basePrice 
+    ? Math.round(((product.compareAtPrice - product.basePrice) / product.compareAtPrice) * 100)
+    : 0);
+  
+  const displayPrice = product.basePrice || (product.variants && product.variants.length > 0 
+    ? product.variants[0].price 
+    : 0);
+  const originalPrice = product.compareAtPrice || displayPrice;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      className="bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 p-4 group"
+      className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-300"
     >
       <Link to={ROUTES.PRODUCT_DETAIL.replace(':slug', product.slug)}>
-        <div className="relative aspect-square mb-4 rounded-xl overflow-hidden bg-white/50">
+        <div className="relative aspect-square bg-gray-50">
           <FirebaseImage
             src={
               (product.images && product.images.length > 0 && product.images[0])
@@ -412,44 +378,40 @@ const ProductCard = ({ product, onAddToCart, onToggleWishlist, isInWishlist, get
               || 'https://images8.alphacoders.com/109/1095996.jpg'
             }
             alt={product.name}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            className="w-full h-full object-cover"
           />
-          {product.isBestSeller && (
-            <span className="absolute top-3 left-3 bg-gray-800 text-white text-xs font-semibold px-3 py-1.5 rounded-lg">
-              Best Seller
+          {discount > 0 && (
+            <span className="absolute top-2 left-2 bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded">
+              {discount}% OFF
             </span>
           )}
-          {product.discount > 0 && !product.isBestSeller && (
-            <span className="absolute top-3 left-3 bg-red-500 text-white text-xs font-semibold px-3 py-1.5 rounded-lg">
-              -{product.discount}%
-            </span>
-          )}
-          <button
-            onClick={(e) => onToggleWishlist(product._id, e)}
-            className="absolute top-3 right-3 p-2 bg-white/90 backdrop-blur-sm rounded-full shadow-md hover:bg-white transition-colors opacity-0 group-hover:opacity-100"
-          >
-            <Heart
-              className={`w-4 h-4 ${isInWishlist ? 'fill-red-500 text-red-500' : 'text-gray-700'}`}
-            />
-          </button>
         </div>
       </Link>
 
+      <div className="p-2">
       <Link to={ROUTES.PRODUCT_DETAIL.replace(':slug', product.slug)}>
-        <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 text-base hover:text-orange-600 transition-colors">
+          <h3 className="font-medium text-gray-900 mb-1 line-clamp-2 text-xs leading-tight">
           {product.name}
         </h3>
       </Link>
 
-      <div className="flex items-center justify-between mt-3">
-        <div>
-          <p className="text-lg font-bold text-gray-900">{getPrice(product)}</p>
-          {product.compareAtPrice && (
-            <p className="text-sm text-gray-500 line-through">
-              Rs. {product.compareAtPrice.toLocaleString()}
-            </p>
+        <div className="mb-2">
+          {discount > 0 && originalPrice > displayPrice ? (
+            <>
+              <p className="text-xs text-gray-500 line-through">Rs. {originalPrice.toLocaleString()}</p>
+              <p className="text-sm font-bold text-gray-900">Rs. {displayPrice.toLocaleString()}</p>
+            </>
+          ) : (
+            <p className="text-sm font-bold text-gray-900">Rs. {displayPrice.toLocaleString()}</p>
           )}
         </div>
+
+        <button
+          onClick={() => onAddToCart(product)}
+          className="w-full bg-green-500 hover:bg-green-600 text-white text-xs font-semibold py-2 rounded transition-colors"
+        >
+          Add To Cart
+        </button>
       </div>
     </motion.div>
   );

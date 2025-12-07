@@ -68,7 +68,7 @@ const ProductComparisonPage = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-orange-500" />
+        <Loader2 className="w-8 h-8 animate-spin text-green-500" />
       </div>
     );
   }
@@ -84,7 +84,7 @@ const ProductComparisonPage = () => {
             </p>
             <Link
               to={ROUTES.SHOP}
-              className="inline-block bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition-colors"
+              className="inline-block bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600 transition-colors"
             >
               Continue Shopping
             </Link>
@@ -145,7 +145,7 @@ const ProductComparisonPage = () => {
                     </Link>
                     <button
                       onClick={() => handleAddToCart(product)}
-                      className="w-full bg-orange-500 text-white py-2 px-4 rounded-lg hover:bg-orange-600 transition-colors flex items-center justify-center gap-2"
+                      className="w-full bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 transition-colors flex items-center justify-center gap-2"
                     >
                       <ShoppingCart className="w-4 h-4" />
                       Add to Cart

@@ -113,7 +113,7 @@ const QuickView = ({ product, isOpen, onClose }) => {
                     to={ROUTES.PRODUCT_DETAIL.replace(':slug', product.slug)}
                     onClick={onClose}
                   >
-                    <h3 className="text-2xl font-bold text-gray-900 mb-2 hover:text-orange-600">
+                    <h3 className="text-2xl font-bold text-gray-900 mb-2 hover:text-green-600">
                       {product.name}
                     </h3>
                   </Link>
@@ -173,8 +173,8 @@ const QuickView = ({ product, isOpen, onClose }) => {
                             onClick={() => setSelectedVariant(variant)}
                             className={`px-3 py-2 rounded-lg border-2 transition-colors text-sm ${
                               selectedVariant?.weight === variant.weight
-                                ? 'border-orange-500 bg-orange-50 text-orange-700'
-                                : 'border-gray-300 hover:border-orange-300'
+                                ? 'border-green-500 bg-green-50 text-green-700'
+                                : 'border-gray-300 hover:border-green-300'
                             }`}
                           >
                             {variant.weight} - Rs. {variant.price.toLocaleString()}
@@ -211,7 +211,7 @@ const QuickView = ({ product, isOpen, onClose }) => {
                     <button
                       onClick={handleAddToCart}
                       disabled={addingToCart}
-                      className="flex-1 bg-orange-500 text-white py-3 px-6 rounded-lg font-semibold hover:bg-orange-600 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+                      className="flex-1 bg-green-500 text-white py-3 px-6 rounded-lg font-semibold hover:bg-green-600 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
                     >
                       <ShoppingCart className="w-5 h-5" />
                       {addingToCart ? 'Adding...' : 'Add to Cart'}
@@ -231,7 +231,7 @@ const QuickView = ({ product, isOpen, onClose }) => {
                   <Link
                     to={ROUTES.PRODUCT_DETAIL.replace(':slug', product.slug)}
                     onClick={onClose}
-                    className="block text-center mt-4 text-orange-600 hover:text-orange-700 font-medium"
+                    className="block text-center mt-4 text-green-600 hover:text-green-700 font-medium"
                   >
                     View Full Details →
                   </Link>

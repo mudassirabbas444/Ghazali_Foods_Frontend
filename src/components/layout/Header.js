@@ -9,12 +9,16 @@ import {
   ShoppingCart,
   Heart,
   Package,
+  MapPin,
+  ChevronDown,
 } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
+import { useLocationContext } from '../../context/LocationContext';
 import { cn } from '../../utils';
 import { ROUTES } from '../../constants';
 import cartService from '../../services/cart';
 import { getComparison } from '../../utils/productComparison';
+import { toast } from 'react-toastify';
 import logo from '../../assets/Logo.png';
 import UserNotificationBell from '../common/UserNotificationBell';
 
@@ -22,8 +26,10 @@ const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, isAuthenticated, logout } = useAuth();
+  const { locationName, getCurrentLocation, updateLocationName } = useLocationContext();
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isLocationMenuOpen, setIsLocationMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [cartCount, setCartCount] = useState(0);
   const [compareCount, setCompareCount] = useState(0);
@@ -42,6 +48,17 @@ const Header = () => {
     }
     updateCompareCount();
   }, [isAuthenticated, location.pathname]);
+
+  // Close location menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (isLocationMenuOpen && !event.target.closest('.location-menu-container')) {
+        setIsLocationMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isLocationMenuOpen]);
 
   const updateCompareCount = () => {
     const items = getComparison();
@@ -94,7 +111,7 @@ const Header = () => {
           >
             <Link to='/' className='flex items-center space-x-2 sm:space-x-3'>
               <motion.div
-                className='h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center shadow-md overflow-hidden'
+                className='h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center shadow-md overflow-hidden'
                 whileHover={{ scale: 1.05 }}
                 transition={{ duration: 0.2 }}
               >
@@ -114,12 +131,67 @@ const Header = () => {
             </Link>
           </motion.div>
 
+          {/* Location - Desktop */}
+          <div className='hidden md:flex items-center mr-4'>
+            <div className='relative location-menu-container'>
+              <button
+                onClick={() => setIsLocationMenuOpen(!isLocationMenuOpen)}
+                className='flex items-center gap-1 px-3 py-1.5 hover:bg-gray-50 rounded-lg transition-colors'
+              >
+                <MapPin className='w-4 h-4 text-gray-700' />
+                <div className='flex flex-col items-start'>
+                  <span className='text-xs text-gray-600'>Deliver to</span>
+                  <span className='text-sm font-medium text-green-600 flex items-center gap-1'>
+                    {locationName}
+                    <ChevronDown className='w-3 h-3' />
+                  </span>
+                </div>
+              </button>
+              
+              {isLocationMenuOpen && (
+                <div className='absolute top-full left-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50 location-menu-container'>
+                  <button
+                    onClick={async () => {
+                      try {
+                        await getCurrentLocation();
+                        toast.success('Location updated');
+                        setIsLocationMenuOpen(false);
+                      } catch (error) {
+                        toast.error('Failed to get location');
+                      }
+                    }}
+                    className='w-full px-4 py-2 text-left hover:bg-gray-50 flex items-center gap-2'
+                  >
+                    <MapPin className='w-4 h-4 text-green-500' />
+                    <span className='text-sm'>Use Current Location</span>
+                  </button>
+                  <div className='border-t border-gray-200 my-1'></div>
+                  <div className='px-4 py-2'>
+                    <span className='text-xs text-gray-500'>Popular Cities</span>
+                  </div>
+                  {['Islamabad', 'Lahore', 'Karachi', 'Rawalpindi', 'Faisalabad'].map((city) => (
+                    <button
+                      key={city}
+                      onClick={() => {
+                        updateLocationName(city);
+                        setIsLocationMenuOpen(false);
+                      }}
+                      className='w-full px-4 py-2 text-left hover:bg-gray-50 text-sm'
+                    >
+                      {city}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+
           {/* Navigation Links - Desktop */}
           <nav className='hidden md:flex items-center space-x-6 flex-1 justify-center'>
             <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
               <Link 
                 to={ROUTES.HOME}
-                className='text-gray-700 hover:text-orange-600 transition-colors duration-300 font-medium'
+                className='text-gray-700 hover:text-green-600 transition-colors duration-300 font-medium'
               >
                 Home
               </Link>
@@ -127,7 +199,7 @@ const Header = () => {
             <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
               <Link 
                 to={ROUTES.SHOP}
-                className='text-gray-700 hover:text-orange-600 transition-colors duration-300 font-medium'
+                className='text-gray-700 hover:text-green-600 transition-colors duration-300 font-medium'
               >
                 Shop
               </Link>
@@ -135,7 +207,7 @@ const Header = () => {
             <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
               <Link 
                 to='/about'
-                className='text-gray-700 hover:text-orange-600 transition-colors duration-300 font-medium'
+                className='text-gray-700 hover:text-green-600 transition-colors duration-300 font-medium'
               >
                 About Us
               </Link>
@@ -143,7 +215,7 @@ const Header = () => {
             <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
               <Link 
                 to='/contact'
-                className='text-gray-700 hover:text-orange-600 transition-colors duration-300 font-medium'
+                className='text-gray-700 hover:text-green-600 transition-colors duration-300 font-medium'
               >
                 Contact
               </Link>
@@ -162,24 +234,26 @@ const Header = () => {
                     <Heart className='w-5 h-5' />
                   </Link>
                 </motion.div>
-                <div className='h-6 w-px bg-amber-200 mx-2' />
+                <div className='h-6 w-px bg-green-200 mx-2' />
                 <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
                   <Link 
                     to={ROUTES.CART}
-                    className='relative p-2.5 rounded-lg text-gray-700 transition-colors duration-300'
+                    className='relative p-2.5 rounded-lg text-gray-700 transition-colors duration-300 flex flex-col items-center'
                   >
+                    <div className='relative'>
                     <ShoppingCart className='w-5 h-5' />
+                    </div>
                     {cartCount > 0 && (
-                      <span className='absolute -top-1 -right-1 bg-orange-500 text-white text-[10px] font-bold rounded-full min-w-[18px] h-[18px] px-1 flex items-center justify-center leading-none'>
+                      <span className='absolute -bottom-1 left-1/2 -translate-x-1/2 bg-green-500 text-white text-[10px] font-bold rounded-full min-w-[18px] h-[18px] px-1 flex items-center justify-center leading-none whitespace-nowrap'>
                         {cartCount > 99 ? '99+' : cartCount > 9 ? '9+' : cartCount}
                       </span>
                     )}
                   </Link>
                 </motion.div>
-                <div className='h-6 w-px bg-amber-200 mx-2' />
+                <div className='h-6 w-px bg-green-200 mx-2' />
                 {/* Notifications */}
                 <UserNotificationBell />
-                <div className='h-6 w-px bg-amber-200 mx-2' />
+                <div className='h-6 w-px bg-green-200 mx-2' />
                 {/* User Menu */}
                 <div className='relative'>
                   <motion.button
@@ -243,14 +317,14 @@ const Header = () => {
                 <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
                   <Link
                     to={ROUTES.LOGIN}
-                    className='text-gray-700 hover:text-orange-600 transition-colors duration-300 font-medium'
+                    className='text-gray-700 hover:text-green-600 transition-colors duration-300 font-medium'
                   >
                     Login
                   </Link>
                 </motion.div>
                 <motion.button
                   onClick={() => navigate(ROUTES.REGISTER)}
-                  className='inline-flex items-center px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-all duration-300 ml-4'
+                  className='inline-flex items-center px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-all duration-300 ml-4'
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -260,15 +334,73 @@ const Header = () => {
             )}
           </div>
 
+          {/* Mobile Location */}
+          <div className='md:hidden flex items-center mr-2 location-menu-container'>
+            <button
+              onClick={() => setIsLocationMenuOpen(!isLocationMenuOpen)}
+              className='flex items-center gap-1 px-2 py-1 hover:bg-gray-50 rounded-lg transition-colors'
+            >
+              <MapPin className='w-4 h-4 text-gray-700' />
+              <div className='flex flex-col items-start'>
+                <span className='text-[10px] text-gray-600 leading-none'>Deliver to</span>
+                <span className='text-xs font-medium text-green-600 flex items-center gap-0.5 leading-tight'>
+                  {locationName.length > 12 ? locationName.substring(0, 12) + '...' : locationName}
+                  <ChevronDown className='w-3 h-3' />
+                </span>
+              </div>
+            </button>
+            
+            {isLocationMenuOpen && (
+              <div className='fixed inset-0 bg-black bg-opacity-50 z-40' onClick={() => setIsLocationMenuOpen(false)}>
+                <div className='absolute bottom-0 left-0 right-0 bg-white rounded-t-xl p-4 z-50 location-menu-container' onClick={(e) => e.stopPropagation()}>
+                  <h3 className='font-semibold mb-3'>Select Location</h3>
+                  <button
+                    onClick={async () => {
+                      try {
+                        await getCurrentLocation();
+                        toast.success('Location updated');
+                        setIsLocationMenuOpen(false);
+                      } catch (error) {
+                        toast.error('Failed to get location');
+                      }
+                    }}
+                    className='w-full px-4 py-2 text-left hover:bg-gray-50 flex items-center gap-2 mb-2 rounded-lg'
+                  >
+                    <MapPin className='w-4 h-4 text-green-500' />
+                    <span className='text-sm'>Use Current Location</span>
+                  </button>
+                  <div className='border-t border-gray-200 my-2'></div>
+                  <div className='px-2 py-1 mb-2'>
+                    <span className='text-xs text-gray-500'>Popular Cities</span>
+                  </div>
+                  {['Islamabad', 'Lahore', 'Karachi', 'Rawalpindi', 'Faisalabad'].map((city) => (
+                    <button
+                      key={city}
+                      onClick={() => {
+                        updateLocationName(city);
+                        setIsLocationMenuOpen(false);
+                      }}
+                      className='w-full px-4 py-2 text-left hover:bg-gray-50 text-sm rounded-lg'
+                    >
+                      {city}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
           {/* Mobile Menu Button */}
           <div className='md:hidden flex items-center space-x-2'>
             {isAuthenticated && (
               <>
                 <UserNotificationBell />
-                <Link to={ROUTES.CART} className='relative p-2'>
+                <Link to={ROUTES.CART} className='relative p-2 flex flex-col items-center'>
+                  <div className='relative'>
                   <ShoppingCart className='w-6 h-6 text-gray-600 dark:text-gray-400' />
+                  </div>
                   {cartCount > 0 && (
-                    <span className='absolute top-0 right-0 bg-orange-500 text-white text-[10px] font-bold rounded-full min-w-[18px] h-[18px] px-1 flex items-center justify-center leading-none'>
+                    <span className='absolute -bottom-1 left-1/2 -translate-x-1/2 bg-green-500 text-white text-[10px] font-bold rounded-full min-w-[18px] h-[18px] px-1 flex items-center justify-center leading-none whitespace-nowrap'>
                       {cartCount > 99 ? '99+' : cartCount > 9 ? '9+' : cartCount}
                     </span>
                   )}
@@ -351,7 +483,7 @@ const Header = () => {
                     </Link>
                     <Link
                       to={ROUTES.REGISTER}
-                      className='block px-4 py-2 text-orange-600 dark:text-orange-400 hover:bg-orange-50 dark:hover:bg-orange-900/20 rounded-xl transition-colors duration-300'
+                      className='block px-4 py-2 text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/20 rounded-xl transition-colors duration-300'
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
                       Sign Up

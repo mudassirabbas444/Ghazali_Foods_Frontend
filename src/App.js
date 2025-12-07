@@ -5,6 +5,7 @@ import { AuthProvider } from './context/AuthContext';
 import { AdminAuthProvider } from './context/AdminAuthContext';
 import { ThemeProvider } from './context/ThemeContext';
 import { AppProvider, useApp } from './context/AppContext';
+import { LocationProvider } from './context/LocationContext';
 import { NotificationContainer } from './components';
 import { ROUTES } from './constants';
 import { setAppContext } from './services/toast';
@@ -52,6 +53,8 @@ import AdminLayout from './components/admin/AdminLayout';
 
 // Layout
 import Layout from './components/layout/Layout';
+import WhatsAppButton from './components/common/WhatsAppButton';
+import ScrollToTop from './components/common/ScrollToTop';
 import { useAuth } from './context/AuthContext';
 import { useAdminAuth } from './context/AdminAuthContext';
 
@@ -100,7 +103,7 @@ const AdminProtectedRoute = ({ children }) => {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600"></div>
       </div>
     );
   }
@@ -119,7 +122,7 @@ const AdminPublicRoute = ({ children }) => {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600"></div>
       </div>
     );
   }
@@ -144,6 +147,7 @@ function AppWithToast() {
     <AuthProvider>
             <AdminAuthProvider>
               <Router>
+                <ScrollToTop />
                 <div className="App">
                   <Routes>
                   {/* Public Routes */}
@@ -363,6 +367,8 @@ function AppWithToast() {
 
             {/* Notification Container */}
             <NotificationContainer />
+            {/* WhatsApp Button - appears on all pages */}
+            <WhatsAppButton />
           </div>
         </Router>
       </AdminAuthProvider>
@@ -377,7 +383,9 @@ function App() {
     <GoogleOAuthProvider clientId={googleClientId || ''}>
       <ThemeProvider>
         <AppProvider>
-          <AppWithToast />
+          <LocationProvider>
+            <AppWithToast />
+          </LocationProvider>
         </AppProvider>
       </ThemeProvider>
     </GoogleOAuthProvider>

@@ -330,7 +330,7 @@ const ShopPage = () => {
   }, [expandedCategory]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-amber-50 via-orange-50 to-amber-50 pb-16 md:pb-0">
+    <div className="min-h-screen bg-gradient-to-b from-green-50 via-green-50 to-green-50 pb-16 md:pb-0">
       {/* Categories Section - Simple List Design */}
       {mainCategories.length > 0 && (
         <section className="bg-white border-b border-gray-200 sticky top-0 z-[100]">
@@ -346,17 +346,17 @@ const ShopPage = () => {
                   }}
                   className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors whitespace-nowrap group ${
                     !selectedCategory
-                      ? 'bg-orange-500 text-white'
-                      : 'hover:bg-orange-50'
+                      ? 'bg-green-500 text-white'
+                      : 'hover:bg-green-50'
                   }`}
                 >
                   <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                    !selectedCategory ? 'bg-white/20' : 'bg-orange-50'
+                    !selectedCategory ? 'bg-white/20' : 'bg-green-50'
                   }`}>
-                    <ShoppingBag className={`w-4 h-4 ${!selectedCategory ? 'text-white' : 'text-orange-500'}`} />
+                    <ShoppingBag className={`w-4 h-4 ${!selectedCategory ? 'text-white' : 'text-green-500'}`} />
                   </div>
                   <span className={`text-sm font-medium ${
-                    !selectedCategory ? 'text-white' : 'text-gray-700 group-hover:text-orange-600'
+                    !selectedCategory ? 'text-white' : 'text-gray-700 group-hover:text-green-600'
                   }`}>
                     All Products
                   </span>
@@ -383,23 +383,23 @@ const ShopPage = () => {
                         onClick={(e) => handleCategoryClick(category._id, e)}
                         className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors whitespace-nowrap group relative ${
                           isSelected
-                            ? 'bg-orange-500 text-white'
-                            : 'hover:bg-orange-50'
+                            ? 'bg-green-500 text-white'
+                            : 'hover:bg-green-50'
                         }`}
                       >
                         {category.image ? (
                           <FirebaseImage
                             src={category.image}
                             alt={category.name}
-                            className="w-8 h-8 object-cover rounded-full border-2 border-orange-200"
+                            className="w-8 h-8 object-cover rounded-full border-2 border-green-200"
                           />
                         ) : (
-                          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-orange-400 to-red-400 flex items-center justify-center">
+                          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-green-400 to-green-500 flex items-center justify-center">
                             <ShoppingBag className="w-4 h-4 text-white" />
                           </div>
                         )}
                         <span className={`text-sm font-medium ${
-                          isSelected ? 'text-white' : 'text-gray-700 group-hover:text-orange-600'
+                          isSelected ? 'text-white' : 'text-gray-700 group-hover:text-green-600'
                         }`}>
                           {category.name}
                         </span>
@@ -436,19 +436,19 @@ const ShopPage = () => {
                                   handleSubcategoryClick(subcategory._id, e);
                                   setExpandedCategory(null);
                                 }}
-                                className={`w-full flex items-center space-x-2 px-4 py-2 hover:bg-orange-50 transition-colors whitespace-nowrap text-left ${
-                                  selectedCategory === subcategory._id ? 'bg-orange-50 text-orange-600 font-semibold' : 'text-gray-700'
+                                className={`w-full flex items-center space-x-2 px-4 py-2 hover:bg-green-50 transition-colors whitespace-nowrap text-left ${
+                                  selectedCategory === subcategory._id ? 'bg-green-50 text-green-600 font-semibold' : 'text-gray-700'
                                 }`}
                               >
                                 {subcategory.image ? (
                                   <FirebaseImage
                                     src={subcategory.image}
                                     alt={subcategory.name}
-                                    className="w-6 h-6 object-cover rounded-full border border-orange-200 flex-shrink-0"
+                                    className="w-6 h-6 object-cover rounded-full border border-green-200 flex-shrink-0"
                                   />
                                 ) : (
-                                  <div className="w-6 h-6 rounded-full bg-orange-100 flex items-center justify-center flex-shrink-0">
-                                    <ShoppingBag className="w-3 h-3 text-orange-500" />
+                                  <div className="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
+                                    <ShoppingBag className="w-3 h-3 text-green-500" />
                                   </div>
                                 )}
                                 <span className="text-sm truncate">{subcategory.name}</span>
@@ -491,7 +491,7 @@ const ShopPage = () => {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search for products... (real-time search)"
-                  className="w-full pl-10 pr-10 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                  className="w-full pl-10 pr-10 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
                 />
                 {searchQuery && (
                   <button
@@ -515,13 +515,13 @@ const ShopPage = () => {
               <div className="flex items-center border border-gray-300 rounded-lg overflow-hidden">
                 <button
                   onClick={() => setViewMode('grid')}
-                  className={`p-2 ${viewMode === 'grid' ? 'bg-orange-500 text-white' : 'bg-white text-gray-700'}`}
+                  className={`p-2 ${viewMode === 'grid' ? 'bg-green-500 text-white' : 'bg-white text-gray-700'}`}
                 >
                   <Grid className="w-4 h-4" />
                 </button>
                 <button
                   onClick={() => setViewMode('list')}
-                  className={`p-2 ${viewMode === 'list' ? 'bg-orange-500 text-white' : 'bg-white text-gray-700'}`}
+                  className={`p-2 ${viewMode === 'list' ? 'bg-green-500 text-white' : 'bg-white text-gray-700'}`}
                 >
                   <List className="w-4 h-4" />
                 </button>
@@ -538,7 +538,7 @@ const ShopPage = () => {
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
                   >
                     <option value="default">Default</option>
                     <option value="price">Price</option>
@@ -553,7 +553,7 @@ const ShopPage = () => {
                     <select
                       value={sortOrder}
                       onChange={(e) => setSortOrder(e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
                     >
                       <option value="asc">Low to High</option>
                       <option value="desc">High to Low</option>
@@ -569,14 +569,14 @@ const ShopPage = () => {
                       placeholder="Min"
                       value={priceRange.min}
                       onChange={(e) => setPriceRange({ ...priceRange, min: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
                     />
                     <input
                       type="number"
                       placeholder="Max"
                       value={priceRange.max}
                       onChange={(e) => setPriceRange({ ...priceRange, max: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
                     />
                   </div>
                 </div>
@@ -588,7 +588,7 @@ const ShopPage = () => {
         {/* Products Grid */}
         {loading ? (
           <div className="flex items-center justify-center py-20">
-            <Loader2 className="w-8 h-8 animate-spin text-orange-500" />
+            <Loader2 className="w-8 h-8 animate-spin text-green-500" />
           </div>
         ) : products.length === 0 ? (
           <div className="text-center py-20">
@@ -667,7 +667,7 @@ const ShopPage = () => {
 
                 <div className={viewMode === 'list' ? 'flex-1' : ''}>
                   <Link to={ROUTES.PRODUCT_DETAIL.replace(':slug', product.slug)}>
-                    <h3 className="font-semibold text-gray-900 mb-1 md:mb-2 line-clamp-2 text-xs md:text-base hover:text-orange-600 transition-colors">
+                    <h3 className="font-semibold text-gray-900 mb-1 md:mb-2 line-clamp-2 text-xs md:text-base hover:text-green-600 transition-colors">
                       {product.name}
                     </h3>
                   </Link>
@@ -690,7 +690,7 @@ const ShopPage = () => {
                       className={`p-1.5 md:p-2 rounded-lg transition-colors flex-shrink-0 ${
                         isProductOutOfStock(product)
                           ? 'bg-gray-300 text-gray-500 cursor-not-allowed opacity-50'
-                          : 'bg-orange-500 text-white hover:bg-orange-600 opacity-100'
+                          : 'bg-green-500 text-white hover:bg-green-600 opacity-100'
                       }`}
                       title={isProductOutOfStock(product) ? 'Out of Stock' : 'Add to Cart'}
                     >

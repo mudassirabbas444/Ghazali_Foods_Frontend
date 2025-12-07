@@ -72,9 +72,9 @@ const NotificationContainer = () => {
       case 'error':
         return <XCircle className={`${iconClass} text-red-500`} />;
       case 'warning':
-        return <AlertCircle className={`${iconClass} text-orange-500`} />;
+        return <AlertCircle className={`${iconClass} text-green-500`} />;
       default:
-        return <Info className={`${iconClass} text-blue-500`} />;
+        return <Info className={`${iconClass} text-green-500`} />;
     }
   };
 
@@ -85,9 +85,9 @@ const NotificationContainer = () => {
       case 'error':
         return 'text-red-600';
       case 'warning':
-        return 'text-orange-600';
+        return 'text-green-600';
       default:
-        return 'text-blue-600';
+        return 'text-green-600';
     }
   };
 
@@ -98,9 +98,9 @@ const NotificationContainer = () => {
       case 'error':
         return 'border-red-300';
       case 'warning':
-        return 'border-orange-300';
+        return 'border-green-300';
       default:
-        return 'border-blue-300';
+        return 'border-green-300';
     }
   };
 
@@ -221,7 +221,7 @@ const NotificationContainer = () => {
                           }, 100);
                         }
                       }}
-                      className="px-6 py-2.5 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg font-semibold hover:from-orange-600 hover:to-red-600 transition-all duration-300 shadow-md hover:shadow-lg"
+                      className="px-6 py-2.5 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-semibold hover:from-green-600 hover:to-green-700 transition-all duration-300 shadow-md hover:shadow-lg"
                     >
                       {latestNotification.action.label || 'OK'}
                     </button>
@@ -231,7 +231,7 @@ const NotificationContainer = () => {
                     <button
                       type="button"
                       onClick={handleClose}
-                      className="px-8 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg font-semibold hover:from-orange-600 hover:to-red-600 transition-all duration-300 shadow-md hover:shadow-lg text-base"
+                      className="px-8 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-semibold hover:from-green-600 hover:to-green-700 transition-all duration-300 shadow-md hover:shadow-lg text-base"
                     >
                       OK
                     </button>

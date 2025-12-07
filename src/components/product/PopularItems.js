@@ -141,7 +141,7 @@ const PopularItems = ({ excludeProductIds = [], limit = 6 }) => {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <Loader2 className="w-8 h-8 animate-spin text-orange-500" />
+        <Loader2 className="w-8 h-8 animate-spin text-green-500" />
       </div>
     );
   }
@@ -194,14 +194,13 @@ const PopularItems = ({ excludeProductIds = [], limit = 6 }) => {
                 <Link to={ROUTES.PRODUCT_DETAIL.replace(':slug', product.slug)}>
                   <div className="relative aspect-square bg-gray-100">
                     <FirebaseImage
-                      src={product.thumbnail || product.images?.[0] || ''}
+                      src={
+                        (product.images && product.images.length > 0 && product.images[0])
+                        || product.thumbnail
+                        || 'https://images8.alphacoders.com/109/1095996.jpg'
+                      }
                       alt={product.name}
                       className="w-full h-full object-cover"
-                      fallbackIcon={
-                        <div className="w-full h-full flex items-center justify-center bg-gray-100">
-                          <span className="text-2xl">📦</span>
-                        </div>
-                      }
                     />
                     {discount > 0 && (
                       <span className="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
@@ -209,12 +208,12 @@ const PopularItems = ({ excludeProductIds = [], limit = 6 }) => {
                       </span>
                     )}
                     {isHot && (
-                      <span className="absolute bottom-2 left-2 bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded flex items-center gap-1">
+                      <span className="absolute bottom-2 left-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded flex items-center gap-1">
                         Hot 🔥
                       </span>
                     )}
                     {isNew && !isHot && (
-                      <span className="absolute bottom-2 left-2 bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded">
+                      <span className="absolute bottom-2 left-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded">
                         New
                       </span>
                     )}
@@ -249,7 +248,7 @@ const PopularItems = ({ excludeProductIds = [], limit = 6 }) => {
                   </div>
                   <button
                     onClick={(e) => handleAddToCart(product, e)}
-                    className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg text-sm font-semibold hover:bg-blue-600 transition-colors"
+                    className="w-full bg-green-500 text-white py-2 px-4 rounded-lg text-sm font-semibold hover:bg-green-600 transition-colors"
                   >
                     Add To Cart
                   </button>
@@ -266,7 +265,7 @@ const PopularItems = ({ excludeProductIds = [], limit = 6 }) => {
           <h2 className="text-2xl font-bold text-gray-900">Popular Items</h2>
           <Link
             to={`${ROUTES.SHOP}?bestsellers=true`}
-            className="text-orange-500 hover:text-orange-600 font-medium text-sm"
+            className="text-green-500 hover:text-green-600 font-medium text-sm"
           >
             View all
           </Link>
@@ -288,14 +287,13 @@ const PopularItems = ({ excludeProductIds = [], limit = 6 }) => {
                 <Link to={ROUTES.PRODUCT_DETAIL.replace(':slug', product.slug)}>
                   <div className="relative aspect-square bg-gray-100">
                     <FirebaseImage
-                      src={product.thumbnail || product.images?.[0] || ''}
+                      src={
+                        (product.images && product.images.length > 0 && product.images[0])
+                        || product.thumbnail
+                        || 'https://images8.alphacoders.com/109/1095996.jpg'
+                      }
                       alt={product.name}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                      fallbackIcon={
-                        <div className="w-full h-full flex items-center justify-center bg-gray-100">
-                          <span className="text-2xl">📦</span>
-                        </div>
-                      }
                     />
                     {discount > 0 && (
                       <span className="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
@@ -303,12 +301,12 @@ const PopularItems = ({ excludeProductIds = [], limit = 6 }) => {
                       </span>
                     )}
                     {isHot && (
-                      <span className="absolute bottom-2 left-2 bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded flex items-center gap-1">
+                      <span className="absolute bottom-2 left-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded flex items-center gap-1">
                         Hot 🔥
                       </span>
                     )}
                     {isNew && !isHot && (
-                      <span className="absolute bottom-2 left-2 bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded">
+                      <span className="absolute bottom-2 left-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded">
                         New
                       </span>
                     )}
@@ -324,7 +322,7 @@ const PopularItems = ({ excludeProductIds = [], limit = 6 }) => {
                 </Link>
                 <div className="p-3">
                   <Link to={ROUTES.PRODUCT_DETAIL.replace(':slug', product.slug)}>
-                    <h3 className="font-semibold text-gray-900 mb-1 line-clamp-2 text-sm hover:text-orange-600">
+                    <h3 className="font-semibold text-gray-900 mb-1 line-clamp-2 text-sm hover:text-green-600">
                       {product.name}
                     </h3>
                   </Link>

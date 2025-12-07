@@ -44,7 +44,7 @@ const AdminNotificationContainer = () => {
       case 'error':
         return <XCircle className={`${iconClass} text-red-600`} />;
       case 'warning':
-        return <AlertCircle className={`${iconClass} text-orange-600`} />;
+        return <AlertCircle className={`${iconClass} text-green-600`} />;
       default:
         return <Info className={`${iconClass} text-blue-600`} />;
     }
@@ -58,7 +58,7 @@ const AdminNotificationContainer = () => {
       case 'error':
         return 'bg-red-50 border-red-200';
       case 'warning':
-        return 'bg-orange-50 border-orange-200';
+        return 'bg-green-50 border-orange-200';
       default:
         return 'bg-blue-50 border-blue-200';
     }
@@ -72,7 +72,7 @@ const AdminNotificationContainer = () => {
       case 'error':
         return 'text-red-900';
       case 'warning':
-        return 'text-orange-900';
+        return 'text-green-900';
       default:
         return 'text-blue-900';
     }
@@ -262,8 +262,8 @@ const AdminNotificationContainer = () => {
                       {groupedNotifications.high.length > 0 && (
                         <div>
                           {groupedNotifications.critical.length > 0 && (
-                            <div className="px-4 py-2 bg-orange-50 border-b border-orange-100">
-                              <p className="text-xs font-semibold text-orange-700">HIGH PRIORITY</p>
+                            <div className="px-4 py-2 bg-green-50 border-b border-green-100">
+                              <p className="text-xs font-semibold text-green-700">HIGH PRIORITY</p>
                             </div>
                           )}
                           {groupedNotifications.high.map((notification) => (

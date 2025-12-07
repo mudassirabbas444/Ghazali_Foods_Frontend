@@ -65,7 +65,7 @@ const CategoriesPage = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white">
-        <Loader2 className="w-8 h-8 animate-spin text-orange-500" />
+        <Loader2 className="w-8 h-8 animate-spin text-green-500" />
       </div>
     );
   }
@@ -95,7 +95,7 @@ const CategoriesPage = () => {
                 </h3>
                 <Link
                   to={ROUTES.SHOP}
-                  className="text-sm text-gray-500 hover:text-orange-500 transition-colors"
+                  className="text-sm text-gray-500 hover:text-green-500 transition-colors"
                 >
                   View more
                 </Link>
@@ -119,8 +119,8 @@ const CategoriesPage = () => {
                           className="w-full h-full object-cover"
                         />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-orange-100 to-amber-100">
-                          <span className="text-2xl font-bold text-orange-500">
+                        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-green-100 to-green-200">
+                          <span className="text-2xl font-bold text-green-500">
                             {category.name.charAt(0).toUpperCase()}
                           </span>
                         </div>
@@ -141,7 +141,7 @@ const CategoriesPage = () => {
               <h3 className="text-base font-bold text-gray-900">NAYE NAYE PRODUCTS</h3>
               <Link
                 to={ROUTES.SHOP}
-                className="text-sm text-gray-500 hover:text-orange-500 transition-colors"
+                className="text-sm text-gray-500 hover:text-green-500 transition-colors"
               >
                 View more
               </Link>
@@ -157,15 +157,18 @@ const CategoriesPage = () => {
                   whileHover={{ scale: 1.05 }}
                   transition={{ duration: 0.2 }}
                 >
-                  {featuredProducts[0]?.thumbnail || featuredProducts[0]?.images?.[0] ? (
+                  {featuredProducts[0] ? (
                     <FirebaseImage
-                      src={featuredProducts[0]?.thumbnail || featuredProducts[0]?.images?.[0] || ''}
+                      src={
+                        (featuredProducts[0].images && featuredProducts[0].images.length > 0 && featuredProducts[0].images[0])
+                        || featuredProducts[0].thumbnail
+                        || 'https://images8.alphacoders.com/109/1095996.jpg'
+                      }
                       alt="Featured Products"
                       className="w-full h-full object-cover"
-                      fallbackIcon={<span className="text-2xl">⭐</span>}
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-orange-100 to-amber-100">
+                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-green-100 to-green-200">
                       <span className="text-2xl">⭐</span>
                     </div>
                   )}
@@ -185,15 +188,18 @@ const CategoriesPage = () => {
                   whileHover={{ scale: 1.05 }}
                   transition={{ duration: 0.2 }}
                 >
-                  {bestSellers[0]?.thumbnail || bestSellers[0]?.images?.[0] ? (
+                  {bestSellers[0] ? (
                     <FirebaseImage
-                      src={bestSellers[0]?.thumbnail || bestSellers[0]?.images?.[0] || ''}
+                      src={
+                        (bestSellers[0].images && bestSellers[0].images.length > 0 && bestSellers[0].images[0])
+                        || bestSellers[0].thumbnail
+                        || 'https://images8.alphacoders.com/109/1095996.jpg'
+                      }
                       alt="Hot Products"
                       className="w-full h-full object-cover"
-                      fallbackIcon={<span className="text-2xl">🔥</span>}
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-red-100 to-orange-100">
+                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-red-100 to-green-100">
                       <span className="text-2xl">🔥</span>
                     </div>
                   )}
@@ -213,15 +219,18 @@ const CategoriesPage = () => {
                   whileHover={{ scale: 1.05 }}
                   transition={{ duration: 0.2 }}
                 >
-                  {newArrivals[0]?.thumbnail || newArrivals[0]?.images?.[0] ? (
+                  {newArrivals[0] ? (
                     <FirebaseImage
-                      src={newArrivals[0]?.thumbnail || newArrivals[0]?.images?.[0] || ''}
+                      src={
+                        (newArrivals[0].images && newArrivals[0].images.length > 0 && newArrivals[0].images[0])
+                        || newArrivals[0].thumbnail
+                        || 'https://images8.alphacoders.com/109/1095996.jpg'
+                      }
                       alt="Trending Products"
                       className="w-full h-full object-cover"
-                      fallbackIcon={<span className="text-2xl">📈</span>}
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-100 to-purple-100">
+                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-green-100 to-purple-100">
                       <span className="text-2xl">📈</span>
                     </div>
                   )}
@@ -250,7 +259,7 @@ const CategoriesPage = () => {
               <h2 className="text-2xl font-bold text-gray-900">Shop by Category</h2>
               <Link
                 to={ROUTES.SHOP}
-                className="text-orange-500 hover:text-orange-600 font-medium flex items-center gap-1 transition-colors"
+                className="text-green-500 hover:text-green-600 font-medium flex items-center gap-1 transition-colors"
               >
                 View all
                 <ChevronRight className="w-4 h-4" />
@@ -275,14 +284,14 @@ const CategoriesPage = () => {
                           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                         />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-orange-100 to-amber-100">
-                          <span className="text-4xl font-bold text-orange-500">
+                        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-green-100 to-green-200">
+                          <span className="text-4xl font-bold text-green-500">
                             {category.name.charAt(0).toUpperCase()}
                           </span>
                         </div>
                       )}
                     </div>
-                    <h3 className="text-sm font-semibold text-gray-900 text-center group-hover:text-orange-500 transition-colors">
+                    <h3 className="text-sm font-semibold text-gray-900 text-center group-hover:text-green-500 transition-colors">
                       {category.name}
                     </h3>
                   </motion.div>
@@ -298,7 +307,7 @@ const CategoriesPage = () => {
             <h2 className="text-2xl font-bold text-gray-900">New & Featured Products</h2>
             <Link
               to={ROUTES.SHOP}
-              className="text-orange-500 hover:text-orange-600 font-medium flex items-center gap-1 transition-colors"
+              className="text-green-500 hover:text-green-600 font-medium flex items-center gap-1 transition-colors"
             >
               View all
               <ChevronRight className="w-4 h-4" />
@@ -311,16 +320,19 @@ const CategoriesPage = () => {
               className="group"
             >
               <motion.div
-                className="bg-gradient-to-br from-orange-50 to-amber-50 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 p-6"
+                className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 p-6"
                 whileHover={{ y: -4 }}
               >
                 <div className="aspect-square bg-white rounded-lg overflow-hidden mb-4">
-                  {featuredProducts[0]?.thumbnail || featuredProducts[0]?.images?.[0] ? (
+                  {featuredProducts[0] ? (
                     <FirebaseImage
-                      src={featuredProducts[0]?.thumbnail || featuredProducts[0]?.images?.[0] || ''}
+                      src={
+                        (featuredProducts[0].images && featuredProducts[0].images.length > 0 && featuredProducts[0].images[0])
+                        || featuredProducts[0].thumbnail
+                        || 'https://images8.alphacoders.com/109/1095996.jpg'
+                      }
                       alt="Featured Products"
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                      fallbackIcon={<span className="text-6xl">⭐</span>}
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
@@ -328,7 +340,7 @@ const CategoriesPage = () => {
                     </div>
                   )}
                 </div>
-                <h3 className="text-lg font-bold text-gray-900 text-center group-hover:text-orange-500 transition-colors">
+                <h3 className="text-lg font-bold text-gray-900 text-center group-hover:text-green-500 transition-colors">
                   Featured Products
                 </h3>
                 <p className="text-sm text-gray-600 text-center mt-2">
@@ -343,16 +355,19 @@ const CategoriesPage = () => {
               className="group"
             >
               <motion.div
-                className="bg-gradient-to-br from-red-50 to-orange-50 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 p-6"
+                className="bg-gradient-to-br from-red-50 to-green-50 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 p-6"
                 whileHover={{ y: -4 }}
               >
                 <div className="aspect-square bg-white rounded-lg overflow-hidden mb-4">
-                  {bestSellers[0]?.thumbnail || bestSellers[0]?.images?.[0] ? (
+                  {bestSellers[0] ? (
                     <FirebaseImage
-                      src={bestSellers[0]?.thumbnail || bestSellers[0]?.images?.[0] || ''}
+                      src={
+                        (bestSellers[0].images && bestSellers[0].images.length > 0 && bestSellers[0].images[0])
+                        || bestSellers[0].thumbnail
+                        || 'https://images8.alphacoders.com/109/1095996.jpg'
+                      }
                       alt="Hot Products"
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                      fallbackIcon={<span className="text-6xl">🔥</span>}
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
@@ -360,7 +375,7 @@ const CategoriesPage = () => {
                     </div>
                   )}
                 </div>
-                <h3 className="text-lg font-bold text-gray-900 text-center group-hover:text-orange-500 transition-colors">
+                <h3 className="text-lg font-bold text-gray-900 text-center group-hover:text-green-500 transition-colors">
                   Hot Products
                 </h3>
                 <p className="text-sm text-gray-600 text-center mt-2">
@@ -375,16 +390,19 @@ const CategoriesPage = () => {
               className="group"
             >
               <motion.div
-                className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 p-6"
+                className="bg-gradient-to-br from-green-50 to-purple-50 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 p-6"
                 whileHover={{ y: -4 }}
               >
                 <div className="aspect-square bg-white rounded-lg overflow-hidden mb-4">
-                  {newArrivals[0]?.thumbnail || newArrivals[0]?.images?.[0] ? (
+                  {newArrivals[0] ? (
                     <FirebaseImage
-                      src={newArrivals[0]?.thumbnail || newArrivals[0]?.images?.[0] || ''}
+                      src={
+                        (newArrivals[0].images && newArrivals[0].images.length > 0 && newArrivals[0].images[0])
+                        || newArrivals[0].thumbnail
+                        || 'https://images8.alphacoders.com/109/1095996.jpg'
+                      }
                       alt="Trending Products"
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                      fallbackIcon={<span className="text-6xl">📈</span>}
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
@@ -392,7 +410,7 @@ const CategoriesPage = () => {
                     </div>
                   )}
                 </div>
-                <h3 className="text-lg font-bold text-gray-900 text-center group-hover:text-orange-500 transition-colors">
+                <h3 className="text-lg font-bold text-gray-900 text-center group-hover:text-green-500 transition-colors">
                   Trending Products
                 </h3>
                 <p className="text-sm text-gray-600 text-center mt-2">

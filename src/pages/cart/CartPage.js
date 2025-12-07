@@ -139,7 +139,7 @@ const CartPage = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-orange-500" />
+        <Loader2 className="w-8 h-8 animate-spin text-green-500" />
       </div>
     );
   }
@@ -150,14 +150,14 @@ const CartPage = () => {
 
   if (!cart || !hasItems) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-amber-50 via-orange-50 to-amber-50 flex items-center justify-center py-12 px-4">
+      <div className="min-h-screen bg-gradient-to-b from-green-50 via-green-50 to-green-50 flex items-center justify-center py-12 px-4">
         <div className="text-center">
           <ShoppingCart className="w-24 h-24 text-gray-300 mx-auto mb-4" />
           <h2 className="text-2xl font-bold text-gray-900 mb-2">Your cart is empty</h2>
           <p className="text-gray-600 mb-6">Add some products to get started</p>
           <Link
             to={ROUTES.SHOP}
-            className="inline-flex items-center gap-2 bg-orange-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-orange-600 transition-colors"
+            className="inline-flex items-center gap-2 bg-green-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-600 transition-colors"
           >
             Continue Shopping
             <ArrowRight className="w-5 h-5" />
@@ -168,7 +168,7 @@ const CartPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-amber-50 via-orange-50 to-amber-50 py-4 md:py-8">
+    <div className="min-h-screen bg-gradient-to-b from-green-50 via-green-50 to-green-50 py-4 md:py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Mobile Header */}
         <div className="md:hidden mb-4">
@@ -186,7 +186,7 @@ const CartPage = () => {
                   }
                 }
               }}
-              className="text-sm text-orange-500 hover:text-orange-600"
+              className="text-sm text-green-500 hover:text-green-600"
             >
               Clear cart
             </button>
@@ -232,7 +232,7 @@ const CartPage = () => {
 
                   <div className="flex-1 min-w-0">
                     <Link to={ROUTES.PRODUCT_DETAIL.replace(':slug', item.product?.slug)}>
-                      <h3 className="font-semibold text-gray-900 mb-1 hover:text-orange-600 text-sm md:text-base line-clamp-2">
+                      <h3 className="font-semibold text-gray-900 mb-1 hover:text-green-600 text-sm md:text-base line-clamp-2">
                         {item.product?.name}
                       </h3>
                     </Link>
@@ -255,7 +255,7 @@ const CartPage = () => {
                         <button
                           onClick={() => handleUpdateQuantity(item._id, item.quantity - 1)}
                           disabled={updating || item.quantity <= 1}
-                          className="p-1 md:p-1.5 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                          className="p-1 md:p-1.5 bg-green-500 text-white rounded hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                         >
                           <Minus className="w-3 h-3 md:w-4 md:h-4" />
                         </button>
@@ -263,7 +263,7 @@ const CartPage = () => {
                         <button
                           onClick={() => handleUpdateQuantity(item._id, item.quantity + 1)}
                           disabled={updating}
-                          className="p-1 md:p-1.5 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50 transition-colors"
+                          className="p-1 md:p-1.5 bg-green-500 text-white rounded hover:bg-green-600 disabled:opacity-50 transition-colors"
                         >
                           <Plus className="w-3 h-3 md:w-4 md:h-4" />
                         </button>
@@ -316,12 +316,12 @@ const CartPage = () => {
                         value={couponCode}
                         onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
                         placeholder="Enter promo code"
-                        className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                        className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
                       />
                       <button
                         type="submit"
                         disabled={applyingCoupon || !couponCode.trim()}
-                        className="px-4 py-2 bg-orange-500 text-white rounded-lg font-semibold hover:bg-orange-600 transition-colors disabled:opacity-50"
+                        className="px-4 py-2 bg-green-500 text-white rounded-lg font-semibold hover:bg-green-600 transition-colors disabled:opacity-50"
                       >
                         {applyingCoupon ? (
                           <Loader2 className="w-4 h-4 animate-spin" />
@@ -362,14 +362,14 @@ const CartPage = () => {
 
               <Link
                 to={ROUTES.CHECKOUT}
-                className="block w-full bg-blue-500 text-white text-center py-3 px-6 rounded-lg font-semibold hover:bg-blue-600 transition-colors"
+                className="block w-full bg-green-500 text-white text-center py-3 px-6 rounded-lg font-semibold hover:bg-green-600 transition-colors"
               >
                 Checkout
               </Link>
 
               <Link
                 to={ROUTES.SHOP}
-                className="block w-full text-center mt-3 text-gray-600 hover:text-orange-600"
+                className="block w-full text-center mt-3 text-gray-600 hover:text-green-600"
               >
                 Continue Shopping
               </Link>

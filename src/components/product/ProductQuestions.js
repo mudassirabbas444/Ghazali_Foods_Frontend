@@ -76,7 +76,7 @@ const ProductQuestions = ({ productId }) => {
         {isAuthenticated && !showForm && (
           <button
             onClick={() => setShowForm(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
           >
             <Plus className="w-4 h-4" />
             Ask a Question
@@ -96,13 +96,13 @@ const ProductQuestions = ({ productId }) => {
             onChange={(e) => setQuestion(e.target.value)}
             placeholder="Ask a question about this product..."
             rows={3}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 mb-3"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 mb-3"
           />
           <div className="flex items-center gap-3">
             <button
               type="submit"
               disabled={submitting}
-              className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors disabled:opacity-50"
+              className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors disabled:opacity-50"
             >
               {submitting ? 'Submitting...' : 'Submit Question'}
             </button>
@@ -158,7 +158,7 @@ const ProductQuestions = ({ productId }) => {
                   className="mt-3 pt-3 border-t border-gray-200"
                 >
                   <div className="flex items-center gap-2 mb-2">
-                    <span className="text-sm font-semibold text-orange-600">Seller Response:</span>
+                    <span className="text-sm font-semibold text-green-600">Seller Response:</span>
                   </div>
                   <p className="text-gray-700">{q.answer}</p>
                 </motion.div>

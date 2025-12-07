@@ -11,7 +11,7 @@ const getApiBaseUrl = () => {
     if (typeof console !== 'undefined' && console.warn) {
       console.warn('⚠️  REACT_APP_API_URL not set, using localhost fallback for development');
     }
-    return 'http://localhost:5000/api';
+    return 'https://ghazalifoodsbackend-production.up.railway.app/api';
   }
   
   // In production, use relative path as fallback (no console warnings in production builds)

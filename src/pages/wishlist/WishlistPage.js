@@ -85,7 +85,7 @@ const WishlistPage = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-orange-500" />
+        <Loader2 className="w-8 h-8 animate-spin text-green-500" />
       </div>
     );
   }
@@ -94,7 +94,7 @@ const WishlistPage = () => {
   const products = wishlist?.products || [];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-amber-50 via-orange-50 to-amber-50 py-8">
+    <div className="min-h-screen bg-gradient-to-b from-green-50 via-green-50 to-green-50 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-8">My Wishlist</h1>
 
@@ -105,7 +105,7 @@ const WishlistPage = () => {
             <p className="text-gray-600 mb-6">Add products you love to your wishlist</p>
             <Link
               to={ROUTES.SHOP}
-              className="inline-block bg-orange-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-orange-600 transition-colors"
+              className="inline-block bg-green-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-600 transition-colors"
             >
               Start Shopping
             </Link>
@@ -142,7 +142,7 @@ const WishlistPage = () => {
                   </Link>
 
                   <Link to={ROUTES.PRODUCT_DETAIL.replace(':slug', product.slug || product._id)}>
-                    <h3 className="font-semibold text-gray-900 mb-1 line-clamp-2 hover:text-orange-600">
+                    <h3 className="font-semibold text-gray-900 mb-1 line-clamp-2 hover:text-green-600">
                       {product.name}
                     </h3>
                   </Link>
@@ -167,7 +167,7 @@ const WishlistPage = () => {
                   <div className="flex items-center gap-2 mt-4">
                     <button
                       onClick={() => handleAddToCart(product)}
-                      className="flex-1 flex items-center justify-center gap-2 bg-orange-500 text-white py-2 px-4 rounded-lg hover:bg-orange-600 transition-colors"
+                      className="flex-1 flex items-center justify-center gap-2 bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 transition-colors"
                     >
                       <ShoppingCart className="w-4 h-4" />
                       Add to Cart

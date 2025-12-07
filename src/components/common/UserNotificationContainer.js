@@ -20,9 +20,9 @@ const UserNotificationContainer = () => {
       case 'error':
         return <XCircle className={`${iconClass} text-red-500`} />;
       case 'warning':
-        return <AlertCircle className={`${iconClass} text-orange-500`} />;
+        return <AlertCircle className={`${iconClass} text-green-500`} />;
       default:
-        return <Info className={`${iconClass} text-blue-500`} />;
+        return <Info className={`${iconClass} text-green-500`} />;
     }
   };
 
@@ -33,9 +33,9 @@ const UserNotificationContainer = () => {
       case 'error':
         return 'bg-red-50 border-red-200';
       case 'warning':
-        return 'bg-orange-50 border-orange-200';
+        return 'bg-green-50 border-green-200';
       default:
-        return 'bg-blue-50 border-blue-200';
+        return 'bg-green-50 border-green-200';
     }
   };
 
@@ -46,9 +46,9 @@ const UserNotificationContainer = () => {
       case 'error':
         return 'text-red-800';
       case 'warning':
-        return 'text-orange-800';
+        return 'text-green-800';
       default:
-        return 'text-blue-800';
+        return 'text-green-800';
     }
   };
 
@@ -59,9 +59,9 @@ const UserNotificationContainer = () => {
       case 'error':
         return 'bg-red-500';
       case 'warning':
-        return 'bg-orange-500';
+        return 'bg-green-500';
       default:
-        return 'bg-blue-500';
+        return 'bg-green-500';
     }
   };
 

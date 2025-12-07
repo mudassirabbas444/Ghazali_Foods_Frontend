@@ -74,17 +74,17 @@ const Footer = () => {
   ];
 
   return (
-    <footer className='bg-gradient-to-b from-orange-50 via-amber-50 to-orange-100 text-gray-900 border-t border-orange-200'>
+    <footer className='bg-gradient-to-b from-green-50 via-green-50 to-green-100 text-gray-900 border-t border-green-200'>
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-12'>
         {/* Mobile Layout */}
         <div className='md:hidden space-y-4'>
           {/* Company Info - Compact */}
           <div>
             <Link to='/' className='flex items-center space-x-2 mb-3'>
-              <div className='w-8 h-8 bg-gradient-to-br from-orange-500 to-red-500 rounded-full flex items-center justify-center shadow-lg'>
+              <div className='w-8 h-8 bg-gradient-to-br from-green-500 to-red-500 rounded-full flex items-center justify-center shadow-lg'>
                 <span className='text-white font-bold text-sm'>GF</span>
               </div>
-              <span className='text-lg font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent'>
+              <span className='text-lg font-bold bg-gradient-to-r from-green-600 to-red-600 bg-clip-text text-transparent'>
                 Ghazali Foods
               </span>
             </Link>
@@ -101,7 +101,7 @@ const Footer = () => {
                     href={social.href}
                     target='_blank'
                     rel='noopener noreferrer'
-                    className='p-1.5 bg-white/80 rounded-lg hover:bg-gradient-to-br hover:from-orange-500 hover:to-red-500 hover:text-white transition-colors text-gray-700 shadow-sm'
+                    className='p-1.5 bg-white/80 rounded-lg hover:bg-gradient-to-br hover:from-green-500 hover:to-red-500 hover:text-white transition-colors text-gray-700 shadow-sm'
                     aria-label={social.name}
                   >
                     <Icon className='h-4 w-4' />
@@ -113,7 +113,7 @@ const Footer = () => {
 
           {/* Collapsible Sections */}
           {/* Shipping Info */}
-          <div className='border-b border-orange-200 pb-2'>
+          <div className='border-b border-green-200 pb-2'>
             <button
               onClick={() => toggleSection('shipping')}
               className='w-full flex items-center justify-between text-left py-2'
@@ -131,7 +131,7 @@ const Footer = () => {
                   <li key={link.name}>
                     <Link
                       to={link.href}
-                      className='text-sm text-gray-700 hover:text-orange-600 transition-colors block py-1'
+                      className='text-sm text-gray-700 hover:text-green-600 transition-colors block py-1'
                     >
                       {link.name}
                     </Link>
@@ -142,12 +142,12 @@ const Footer = () => {
           </div>
 
           {/* Legal */}
-          <div className='border-b border-orange-200 pb-2'>
+          <div className='border-b border-green-200 pb-2'>
             <button
               onClick={() => toggleSection('legal')}
               className='w-full flex items-center justify-between text-left py-2'
             >
-              <h3 className='text-sm font-semibold text-orange-500'>Legal</h3>
+              <h3 className='text-sm font-semibold text-green-500'>Legal</h3>
               {expandedSections.legal ? (
                 <ChevronUp className='h-4 w-4 text-gray-500' />
               ) : (
@@ -160,7 +160,7 @@ const Footer = () => {
                   <li key={link.name}>
                     <Link
                       to={link.href}
-                      className='text-sm text-gray-700 hover:text-orange-600 transition-colors block py-1'
+                      className='text-sm text-gray-700 hover:text-green-600 transition-colors block py-1'
                     >
                       {link.name}
                     </Link>
@@ -171,12 +171,12 @@ const Footer = () => {
           </div>
 
           {/* Account */}
-          <div className='border-b border-orange-200 pb-2'>
+          <div className='border-b border-green-200 pb-2'>
             <button
               onClick={() => toggleSection('account')}
               className='w-full flex items-center justify-between text-left py-2'
             >
-              <h3 className='text-sm font-semibold text-orange-500'>Account</h3>
+              <h3 className='text-sm font-semibold text-green-500'>Account</h3>
               {expandedSections.account ? (
                 <ChevronUp className='h-4 w-4 text-gray-500' />
               ) : (
@@ -189,7 +189,7 @@ const Footer = () => {
                   <li key={link.name}>
                     <Link
                       to={link.href}
-                      className='text-sm text-gray-700 hover:text-orange-600 transition-colors block py-1'
+                      className='text-sm text-gray-700 hover:text-green-600 transition-colors block py-1'
                     >
                       {link.name}
                     </Link>
@@ -205,10 +205,10 @@ const Footer = () => {
           {/* Company Info */}
           <div className='lg:col-span-2'>
             <Link to='/' className='flex items-center space-x-2 mb-4'>
-              <div className='w-10 h-10 bg-gradient-to-br from-orange-500 to-red-500 rounded-full flex items-center justify-center shadow-lg'>
+              <div className='w-10 h-10 bg-gradient-to-br from-green-500 to-red-500 rounded-full flex items-center justify-center shadow-lg'>
                 <span className='text-white font-bold text-lg'>GF</span>
               </div>
-              <span className='text-xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent'>
+              <span className='text-xl font-bold bg-gradient-to-r from-green-600 to-red-600 bg-clip-text text-transparent'>
                 Ghazali Foods
               </span>
             </Link>
@@ -220,15 +220,15 @@ const Footer = () => {
             {/* Contact Info */}
             <div className='space-y-3 mb-6'>
               <div className='flex items-center space-x-3 text-gray-700'>
-                <Mail className='h-5 w-5 text-orange-600' />
+                <Mail className='h-5 w-5 text-green-600' />
                 <span>info@ghazalifoods.com</span>
               </div>
               <div className='flex items-center space-x-3 text-gray-700'>
-                <Phone className='h-5 w-5 text-orange-600' />
+                <Phone className='h-5 w-5 text-green-600' />
                 <span>+92 300 1234567</span>
               </div>
               <div className='flex items-center space-x-3 text-gray-700'>
-                <MapPin className='h-5 w-5 text-orange-600' />
+                <MapPin className='h-5 w-5 text-green-600' />
                 <span>Karachi, Pakistan</span>
               </div>
             </div>
@@ -243,7 +243,7 @@ const Footer = () => {
                     href={social.href}
                     target='_blank'
                     rel='noopener noreferrer'
-                    className='p-2 bg-white/80 rounded-lg hover:bg-gradient-to-br hover:from-orange-500 hover:to-red-500 hover:text-white transition-colors text-gray-700 shadow-sm'
+                    className='p-2 bg-white/80 rounded-lg hover:bg-gradient-to-br hover:from-green-500 hover:to-red-500 hover:text-white transition-colors text-gray-700 shadow-sm'
                     aria-label={social.name}
                   >
                     <Icon className='h-5 w-5' />
@@ -255,13 +255,13 @@ const Footer = () => {
 
           {/* Shop Links */}
           <div>
-            <h3 className='text-lg font-semibold mb-4 text-orange-500'>Shop</h3>
+            <h3 className='text-lg font-semibold mb-4 text-green-500'>Shop</h3>
             <ul className='space-y-3'>
               {footerLinks.shop.map((link) => (
                 <li key={link.name}>
                   <Link
                     to={link.href}
-                    className='text-gray-700 hover:text-orange-600 transition-colors'
+                    className='text-gray-700 hover:text-green-600 transition-colors'
                   >
                     {link.name}
                   </Link>
@@ -272,13 +272,13 @@ const Footer = () => {
 
           {/* Support Links */}
           <div>
-            <h3 className='text-lg font-semibold mb-4 text-orange-500'>Support</h3>
+            <h3 className='text-lg font-semibold mb-4 text-green-500'>Support</h3>
             <ul className='space-y-3'>
               {footerLinks.support.map((link) => (
                 <li key={link.name}>
                   <Link
                     to={link.href}
-                    className='text-gray-700 hover:text-orange-600 transition-colors'
+                    className='text-gray-700 hover:text-green-600 transition-colors'
                   >
                     {link.name}
                   </Link>
@@ -289,13 +289,13 @@ const Footer = () => {
 
           {/* Legal Links */}
           <div>
-            <h3 className='text-lg font-semibold mb-4 text-orange-500'>Legal</h3>
+            <h3 className='text-lg font-semibold mb-4 text-green-500'>Legal</h3>
             <ul className='space-y-3'>
               {footerLinks.legal.map((link) => (
                 <li key={link.name}>
                   <Link
                     to={link.href}
-                    className='text-gray-700 hover:text-orange-600 transition-colors'
+                    className='text-gray-700 hover:text-green-600 transition-colors'
                   >
                     {link.name}
                   </Link>
@@ -306,13 +306,13 @@ const Footer = () => {
 
           {/* Account Links */}
           <div>
-            <h3 className='text-lg font-semibold mb-4 text-orange-500'>Account</h3>
+            <h3 className='text-lg font-semibold mb-4 text-green-500'>Account</h3>
             <ul className='space-y-3'>
               {footerLinks.account.map((link) => (
                 <li key={link.name}>
                   <Link
                     to={link.href}
-                    className='text-gray-700 hover:text-orange-600 transition-colors'
+                    className='text-gray-700 hover:text-green-600 transition-colors'
                   >
                     {link.name}
                   </Link>
@@ -323,9 +323,9 @@ const Footer = () => {
         </div>
 
         {/* Newsletter Subscription */}
-        <div className='border-t border-orange-200 mt-6 md:mt-12 pt-4 md:pt-8'>
+        <div className='border-t border-green-200 mt-6 md:mt-12 pt-4 md:pt-8'>
           <div className='max-w-md mx-auto text-center px-4'>
-            <h3 className='text-base md:text-lg font-semibold mb-2 bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent'>
+            <h3 className='text-base md:text-lg font-semibold mb-2 bg-gradient-to-r from-green-600 to-red-600 bg-clip-text text-transparent'>
               Stay Inspired & Updated
             </h3>
             <p className='text-sm md:text-base text-gray-700 mb-3 md:mb-4'>
@@ -335,9 +335,9 @@ const Footer = () => {
               <input
                 type='email'
                 placeholder='Enter your email'
-                className='flex-1 px-3 md:px-4 py-2 bg-white border border-orange-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-sm md:text-base text-gray-900 placeholder-gray-500 min-w-0 shadow-sm'
+                className='flex-1 px-3 md:px-4 py-2 bg-white border border-green-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm md:text-base text-gray-900 placeholder-gray-500 min-w-0 shadow-sm'
               />
-              <button className='px-4 md:px-6 py-2 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg hover:from-orange-600 hover:to-red-600 transition-all whitespace-nowrap flex-shrink-0 shadow-lg hover:shadow-xl text-sm md:text-base'>
+              <button className='px-4 md:px-6 py-2 bg-gradient-to-r from-green-500 to-red-500 text-white rounded-lg hover:from-green-600 hover:to-red-600 transition-all whitespace-nowrap flex-shrink-0 shadow-lg hover:shadow-xl text-sm md:text-base'>
                 Subscribe
               </button>
             </div>
@@ -345,7 +345,7 @@ const Footer = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className='border-t border-orange-200 mt-4 md:mt-8 pt-4 md:pt-8'>
+        <div className='border-t border-green-200 mt-4 md:mt-8 pt-4 md:pt-8'>
           <div className='flex flex-col md:flex-row justify-between items-center text-center md:text-left'>
             <div className='flex items-center justify-center space-x-2 text-xs md:text-sm text-gray-700 mb-2 md:mb-0'>
               <span>&copy; {currentYear} Ghazali Foods. All rights reserved.</span>

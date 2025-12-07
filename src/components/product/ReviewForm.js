@@ -63,8 +63,8 @@ const ReviewForm = ({ productId, onReviewSubmitted, existingReview }) => {
   // Check if user can review (has delivered orders with this product)
   if (!existingReview && !loadingOrders && availableOrders.length === 0) {
     return (
-      <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 text-center">
-        <Package className="w-8 h-8 text-orange-600 mx-auto mb-2" />
+      <div className="bg-green-50 border border-green-200 rounded-lg p-4 text-center">
+        <Package className="w-8 h-8 text-green-600 mx-auto mb-2" />
         <p className="text-gray-700 font-medium mb-1">Review Not Available</p>
         <p className="text-sm text-gray-600">
           You can only review products you have purchased and received. Please complete an order first.
@@ -122,7 +122,7 @@ const ReviewForm = ({ productId, onReviewSubmitted, existingReview }) => {
     return (
       <button
         onClick={() => setShowForm(true)}
-        className="w-full bg-orange-500 text-white py-2 px-4 rounded-lg hover:bg-orange-600 transition-colors font-medium"
+        className="w-full bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 transition-colors font-medium"
       >
         Write a Review
       </button>
@@ -194,7 +194,7 @@ const ReviewForm = ({ productId, onReviewSubmitted, existingReview }) => {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Summarize your review"
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
           />
         </div>
 
@@ -206,7 +206,7 @@ const ReviewForm = ({ productId, onReviewSubmitted, existingReview }) => {
             <select
               value={selectedOrderId}
               onChange={(e) => setSelectedOrderId(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
             >
               <option value="">Select an order...</option>
               {availableOrders.map((order) => (
@@ -231,7 +231,7 @@ const ReviewForm = ({ productId, onReviewSubmitted, existingReview }) => {
             onChange={(e) => setComment(e.target.value)}
             placeholder="Share your experience with this product..."
             required
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
           />
         </div>
 
@@ -265,7 +265,7 @@ const ReviewForm = ({ productId, onReviewSubmitted, existingReview }) => {
           <button
             type="submit"
             disabled={submitting || rating === 0}
-            className="flex-1 bg-orange-500 text-white py-2 px-4 rounded-lg hover:bg-orange-600 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+            className="flex-1 bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
           >
             {submitting ? (
               <>

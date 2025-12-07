@@ -14,6 +14,7 @@ import orderService from '../../services/order';
 import { useAuth } from '../../context/AuthContext';
 import { toast } from 'react-toastify';
 import { ROUTES } from '../../constants';
+import FirebaseImage from '../../components/FirebaseImage';
 
 const OrdersPage = () => {
   const navigate = useNavigate();
@@ -62,7 +63,7 @@ const OrdersPage = () => {
   const getStatusColor = (status) => {
     const colors = {
       pending: 'bg-yellow-100 text-yellow-800',
-      processing: 'bg-blue-100 text-blue-800',
+      processing: 'bg-green-100 text-green-800',
       packed: 'bg-purple-100 text-purple-800',
       out_for_delivery: 'bg-indigo-100 text-indigo-800',
       delivered: 'bg-green-100 text-green-800',
@@ -88,13 +89,13 @@ const OrdersPage = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-orange-500" />
+        <Loader2 className="w-8 h-8 animate-spin text-green-500" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-amber-50 via-orange-50 to-amber-50 py-8">
+    <div className="min-h-screen bg-gradient-to-b from-green-50 via-green-50 to-green-50 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-8">My Orders</h1>
 
@@ -106,7 +107,7 @@ const OrdersPage = () => {
               onClick={() => setFilter(status)}
               className={`px-4 py-2 rounded-lg font-medium whitespace-nowrap transition-colors ${
                 filter === status
-                  ? 'bg-orange-500 text-white'
+                  ? 'bg-green-500 text-white'
                   : 'bg-white text-gray-700 hover:bg-gray-50'
               }`}
             >
@@ -122,7 +123,7 @@ const OrdersPage = () => {
             <p className="text-gray-600 mb-6">You haven't placed any orders yet</p>
             <Link
               to={ROUTES.SHOP}
-              className="inline-block bg-orange-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-orange-600 transition-colors"
+              className="inline-block bg-green-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-600 transition-colors"
             >
               Start Shopping
             </Link>
@@ -172,7 +173,7 @@ const OrdersPage = () => {
                     )}
                     <Link
                       to={ROUTES.ORDER_DETAIL.replace(':orderNumber', order.orderNumber)}
-                      className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors flex items-center gap-2"
+                      className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors flex items-center gap-2"
                     >
                       <Eye className="w-4 h-4" />
                       View Details
@@ -182,15 +183,52 @@ const OrdersPage = () => {
 
                 <div className="border-t pt-4">
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                    {order.items?.slice(0, 3).map((item, idx) => (
-                      <div key={idx} className="flex items-center gap-3">
-                        <div className="w-16 h-16 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
-                          <img
-                            src={item.image || 'https://images8.alphacoders.com/109/1095996.jpg'}
-                            alt={item.productName}
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
+                    {order.items?.slice(0, 3).map((item, idx) => {
+                      // Get image source with proper fallback
+                      let imageSrc = null;
+                      
+                      // Helper function to validate URL
+                      const isValidUrl = (url) => {
+                        if (!url || typeof url !== 'string') return false;
+                        const trimmed = url.trim();
+                        if (trimmed === '' || trimmed === 'null' || trimmed === 'undefined') return false;
+                        try {
+                          const urlObj = new URL(trimmed);
+                          return urlObj.protocol === 'http:' || urlObj.protocol === 'https:';
+                        } catch {
+                          return false;
+                        }
+                      };
+                      
+                      // Priority 1: product.images[0] (from populated product - most reliable)
+                      if (item.product?.images && Array.isArray(item.product.images) && item.product.images.length > 0) {
+                        const firstImage = item.product.images[0];
+                        if (isValidUrl(firstImage)) {
+                          imageSrc = firstImage.trim();
+                        }
+                      }
+                      // Priority 2: product.thumbnail
+                      if (!imageSrc && item.product?.thumbnail && isValidUrl(item.product.thumbnail)) {
+                        imageSrc = item.product.thumbnail.trim();
+                      }
+                      // Priority 3: item.image (stored when order was created - may be outdated)
+                      if (!imageSrc && item.image && isValidUrl(item.image)) {
+                        imageSrc = item.image.trim();
+                      }
+                      // Priority 4: fallback
+                      if (!imageSrc) {
+                        imageSrc = 'https://images8.alphacoders.com/109/1095996.jpg';
+                      }
+                      
+                      return (
+                        <div key={idx} className="flex items-center gap-3">
+                          <div className="w-16 h-16 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
+                            <FirebaseImage
+                              src={imageSrc}
+                              alt={item.productName || 'Product image'}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
                         <div>
                           <p className="font-semibold text-gray-900 text-sm">{item.productName}</p>
                           {item.variant && (
@@ -199,7 +237,8 @@ const OrdersPage = () => {
                           <p className="text-xs text-gray-600">Qty: {item.quantity}</p>
                         </div>
                       </div>
-                    ))}
+                      );
+                    })}
                     {order.items?.length > 3 && (
                       <div className="flex items-center justify-center">
                         <p className="text-sm text-gray-600">

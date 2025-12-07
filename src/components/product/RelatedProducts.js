@@ -122,7 +122,7 @@ const RelatedProducts = ({ product, limit = 8 }) => {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <Loader2 className="w-8 h-8 animate-spin text-orange-500" />
+        <Loader2 className="w-8 h-8 animate-spin text-green-500" />
       </div>
     );
   }
@@ -146,7 +146,11 @@ const RelatedProducts = ({ product, limit = 8 }) => {
             <Link to={ROUTES.PRODUCT_DETAIL.replace(':slug', item.slug)}>
               <div className="relative aspect-square mb-3 rounded-lg overflow-hidden bg-gray-100">
                 <FirebaseImage
-                  src={item.thumbnail || item.images?.[0]}
+                  src={
+                    (item.images && item.images.length > 0 && item.images[0])
+                    || item.thumbnail
+                    || 'https://images8.alphacoders.com/109/1095996.jpg'
+                  }
                   alt={item.name}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 />
@@ -156,12 +160,12 @@ const RelatedProducts = ({ product, limit = 8 }) => {
                   </span>
                 )}
                 {item.isBestSeller && (
-                  <span className="absolute bottom-2 left-2 bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded flex items-center gap-1">
+                  <span className="absolute bottom-2 left-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded flex items-center gap-1">
                     Hot 🔥
                   </span>
                 )}
                 {item.isNewArrival && !item.isBestSeller && (
-                  <span className="absolute bottom-2 left-2 bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded">
+                  <span className="absolute bottom-2 left-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded">
                     New
                   </span>
                 )}
@@ -177,7 +181,7 @@ const RelatedProducts = ({ product, limit = 8 }) => {
             </Link>
 
             <Link to={ROUTES.PRODUCT_DETAIL.replace(':slug', item.slug)}>
-              <h3 className="font-semibold text-gray-900 mb-1 line-clamp-2 text-sm hover:text-orange-600">
+              <h3 className="font-semibold text-gray-900 mb-1 line-clamp-2 text-sm hover:text-green-600">
                 {item.name}
               </h3>
             </Link>
@@ -202,7 +206,7 @@ const RelatedProducts = ({ product, limit = 8 }) => {
               </div>
               <button
                 onClick={(e) => handleAddToCart(item, e)}
-                className="p-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors opacity-0 group-hover:opacity-100"
+                className="p-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors opacity-0 group-hover:opacity-100"
               >
                 <ShoppingCart className="w-4 h-4" />
               </button>

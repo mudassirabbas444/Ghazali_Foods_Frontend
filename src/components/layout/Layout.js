@@ -6,7 +6,7 @@ import UserNotificationContainer from '../common/UserNotificationContainer';
 
 const Layout = ({ children }) => {
   return (
-    <div className='min-h-screen flex flex-col bg-gradient-to-b from-amber-50 via-orange-50 to-amber-50 transition-colors duration-700' style={{ overflow: 'visible' }}>
+    <div className='min-h-screen flex flex-col bg-gradient-to-b from-green-50 via-green-50 to-green-50 transition-colors duration-700' style={{ overflow: 'visible' }}>
       <Header />
 
       <main className='flex-1 pb-16 md:pb-0' style={{ overflow: 'visible' }}>

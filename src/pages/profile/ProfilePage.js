@@ -211,7 +211,7 @@ const ProfilePage = () => {
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-slate-900 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500"></div>
       </div>
     );
   }
@@ -290,15 +290,15 @@ const ProfilePage = () => {
                       <img
                         src={avatarPreview || user.avatar}
                         alt={user.fullName || 'User'}
-                        className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover border-2 border-orange-500 dark:border-orange-400"
+                        className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover border-2 border-green-500 dark:border-green-400"
                       />
                     ) : (
-                      <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center text-white text-2xl sm:text-3xl font-bold border-2 border-orange-500 dark:border-orange-400">
+                      <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-green-500 to-red-600 flex items-center justify-center text-white text-2xl sm:text-3xl font-bold border-2 border-green-500 dark:border-green-400">
                         {user.fullName?.charAt(0)?.toUpperCase() || 'U'}
                       </div>
                     )}
                     {isEditing && (
-                      <label className="absolute bottom-0 right-0 bg-orange-500 hover:bg-orange-600 text-white rounded-full p-1.5 sm:p-2 cursor-pointer shadow-lg transition-colors">
+                      <label className="absolute bottom-0 right-0 bg-green-500 hover:bg-green-600 text-white rounded-full p-1.5 sm:p-2 cursor-pointer shadow-lg transition-colors">
                         <Camera className="w-3 h-3 sm:w-4 sm:h-4" />
                         <input
                           type="file"
@@ -321,7 +321,7 @@ const ProfilePage = () => {
                 {!isEditing && (
                   <Button
                     onClick={handleEdit}
-                    className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white w-full sm:w-auto flex-shrink-0"
+                    className="flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white w-full sm:w-auto flex-shrink-0"
                   >
                     <Edit3 className="w-4 h-4" />
                     Edit Profile
@@ -390,7 +390,7 @@ const ProfilePage = () => {
                     <Button
                       type="submit"
                       loading={submitting}
-                      className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white flex-1"
+                      className="flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white flex-1"
                     >
                       <Save className="w-4 h-4" />
                       Save Changes
@@ -510,7 +510,7 @@ const ProfilePage = () => {
                           <Button
                             onClick={handleChangePassword}
                             loading={changingPassword}
-                            className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white"
+                            className="flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white"
                           >
                             <Save className="w-4 h-4" />
                             Update Password

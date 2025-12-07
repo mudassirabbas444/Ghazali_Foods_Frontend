@@ -59,7 +59,7 @@ const ContactPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-amber-50 via-orange-50 to-amber-50 py-12">
+    <div className="min-h-screen bg-gradient-to-b from-green-50 via-green-50 to-green-50 py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
@@ -69,7 +69,7 @@ const ContactPage = () => {
           className="text-center mb-12"
         >
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            Get in <span className="bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">Touch</span>
+            Get in <span className="bg-gradient-to-r from-green-600 to-red-600 bg-clip-text text-transparent">Touch</span>
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Have a question or need assistance? We're here to help! Reach out to us and we'll respond as soon as possible.
@@ -93,7 +93,7 @@ const ContactPage = () => {
                 className="bg-white rounded-2xl shadow-sm p-6 hover:shadow-lg transition-all duration-300"
               >
                 <div className="flex items-start gap-4">
-                  <div className="p-3 bg-yellow-100 rounded-lg text-orange-600">
+                  <div className="p-3 bg-yellow-100 rounded-lg text-green-600">
                     {info.icon}
                   </div>
                   <div>
@@ -101,7 +101,7 @@ const ContactPage = () => {
                     {info.link ? (
                       <a
                         href={info.link}
-                        className="text-gray-600 hover:text-orange-600 transition-colors"
+                        className="text-gray-600 hover:text-green-600 transition-colors"
                       >
                         {info.content}
                       </a>
@@ -126,7 +126,7 @@ const ContactPage = () => {
                   href="https://facebook.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-3 bg-blue-100 rounded-lg text-blue-600 hover:bg-blue-200 transition-colors"
+                  className="p-3 bg-green-100 rounded-lg text-green-600 hover:bg-green-200 transition-colors"
                   aria-label="Facebook"
                 >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -148,7 +148,7 @@ const ContactPage = () => {
                   href="https://twitter.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-3 bg-blue-100 rounded-lg text-blue-400 hover:bg-blue-200 transition-colors"
+                  className="p-3 bg-green-100 rounded-lg text-green-400 hover:bg-green-200 transition-colors"
                   aria-label="Twitter"
                 >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -168,7 +168,7 @@ const ContactPage = () => {
           >
             <div className="bg-white rounded-2xl shadow-sm p-8">
               <div className="flex items-center gap-3 mb-6">
-                <MessageSquare className="w-6 h-6 text-orange-500" />
+                <MessageSquare className="w-6 h-6 text-green-500" />
                 <h2 className="text-2xl font-bold text-gray-900">Send us a Message</h2>
               </div>
 
@@ -181,7 +181,7 @@ const ContactPage = () => {
                     <input
                       type="text"
                       {...register('name', { required: 'Name is required' })}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
                       placeholder="John Doe"
                     />
                     {errors.name && (
@@ -202,7 +202,7 @@ const ContactPage = () => {
                           message: 'Invalid email address'
                         }
                       })}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
                       placeholder="john@example.com"
                     />
                     {errors.email && (
@@ -218,7 +218,7 @@ const ContactPage = () => {
                   <input
                     type="tel"
                     {...register('phone')}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
                     placeholder="+92 300 1234567"
                   />
                 </div>
@@ -230,7 +230,7 @@ const ContactPage = () => {
                   <input
                     type="text"
                     {...register('subject', { required: 'Subject is required' })}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
                     placeholder="How can we help?"
                   />
                   {errors.subject && (
@@ -245,7 +245,7 @@ const ContactPage = () => {
                   <textarea
                     {...register('message', { required: 'Message is required' })}
                     rows={6}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors resize-none"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors resize-none"
                     placeholder="Tell us more about your inquiry..."
                   />
                   {errors.message && (
@@ -256,7 +256,7 @@ const ContactPage = () => {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white py-3 px-6 rounded-lg font-semibold hover:from-orange-600 hover:to-red-600 transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full bg-gradient-to-r from-green-500 to-red-500 text-white py-3 px-6 rounded-lg font-semibold hover:from-green-600 hover:to-red-600 transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {submitting ? (
                     <>

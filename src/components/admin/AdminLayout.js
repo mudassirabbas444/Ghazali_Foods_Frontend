@@ -88,7 +88,7 @@ const AdminLayout = ({ children }) => {
                       to={item.path}
                       className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
                         active
-                          ? 'bg-orange-50 text-orange-700 border-l-4 border-orange-500'
+                          ? 'bg-green-50 text-green-700 border-l-4 border-green-500'
                           : 'text-gray-700 hover:bg-gray-50'
                       }`}
                     >
@@ -156,7 +156,7 @@ const AdminLayout = ({ children }) => {
                           onClick={() => setMobileMenuOpen(false)}
                           className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
                             active
-                              ? 'bg-orange-50 text-orange-700 border-l-4 border-orange-500'
+                              ? 'bg-green-50 text-green-700 border-l-4 border-green-500'
                               : 'text-gray-700 hover:bg-gray-50'
                           }`}
                         >

@@ -166,7 +166,7 @@ const CategoryPage = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-orange-500" />
+        <Loader2 className="w-8 h-8 animate-spin text-green-500" />
       </div>
     );
   }
@@ -196,7 +196,7 @@ const CategoryPage = () => {
                 onClick={() => setSelectedSubCategory('')}
                 className={`px-4 py-2 rounded-lg whitespace-nowrap transition-colors ${
                   !selectedSubCategory
-                    ? 'bg-orange-500 text-white'
+                    ? 'bg-green-500 text-white'
                     : 'bg-white text-gray-700 hover:bg-gray-100'
                 }`}
               >
@@ -208,7 +208,7 @@ const CategoryPage = () => {
                   onClick={() => setSelectedSubCategory(subCat._id)}
                   className={`px-4 py-2 rounded-lg whitespace-nowrap transition-colors ${
                     selectedSubCategory === subCat._id
-                      ? 'bg-orange-500 text-white'
+                      ? 'bg-green-500 text-white'
                       : 'bg-white text-gray-700 hover:bg-gray-100'
                   }`}
                 >
@@ -223,13 +223,13 @@ const CategoryPage = () => {
             <div className="flex items-center border border-gray-300 rounded-lg overflow-hidden">
               <button
                 onClick={() => setViewMode('grid')}
-                className={`p-2 ${viewMode === 'grid' ? 'bg-orange-500 text-white' : 'bg-white text-gray-700'}`}
+                className={`p-2 ${viewMode === 'grid' ? 'bg-green-500 text-white' : 'bg-white text-gray-700'}`}
               >
                 <Grid className="w-4 h-4" />
               </button>
               <button
                 onClick={() => setViewMode('list')}
-                className={`p-2 ${viewMode === 'list' ? 'bg-orange-500 text-white' : 'bg-white text-gray-700'}`}
+                className={`p-2 ${viewMode === 'list' ? 'bg-green-500 text-white' : 'bg-white text-gray-700'}`}
               >
                 <List className="w-4 h-4" />
               </button>
@@ -318,7 +318,7 @@ const CategoryPage = () => {
                     
                     <button
                       onClick={() => handleAddToCart(product)}
-                      className="p-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors opacity-0 group-hover:opacity-100"
+                      className="p-2 bg-green-500 text-white rounded-lg hover:bg-orange-600 transition-colors opacity-0 group-hover:opacity-100"
                     >
                       <ShoppingCart className="w-5 h-5" />
                     </button>

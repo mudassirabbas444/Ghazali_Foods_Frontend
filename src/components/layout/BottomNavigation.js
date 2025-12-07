@@ -99,25 +99,25 @@ const BottomNavigation = () => {
                 <div className='relative'>
                   <Icon
                     className={`w-5 h-5 transition-colors duration-200 ${
-                      active ? 'text-orange-500' : 'text-gray-600'
+                      active ? 'text-green-500' : 'text-gray-600'
                     }`}
                   />
                   {item.badge && item.badge > 0 && (
-                    <span className='absolute -top-1 -right-1 bg-orange-500 text-white text-[10px] font-bold rounded-full min-w-[18px] h-[18px] px-1 flex items-center justify-center leading-none'>
+                    <span className='absolute -top-1 -right-1 bg-green-500 text-white text-[10px] font-bold rounded-full min-w-[18px] h-[18px] px-1 flex items-center justify-center leading-none'>
                       {item.badge > 99 ? '99+' : item.badge > 9 ? '9+' : item.badge}
                     </span>
                   )}
                 </div>
                 <span
                   className={`text-[10px] mt-1 transition-colors duration-200 ${
-                    active ? 'text-orange-500 font-semibold' : 'text-gray-600'
+                    active ? 'text-green-500 font-semibold' : 'text-gray-600'
                   }`}
                 >
                   {item.label}
                 </span>
                 {active && (
                   <motion.div
-                    className='absolute bottom-0 left-0 right-0 h-0.5 bg-orange-500'
+                    className='absolute bottom-0 left-0 right-0 h-0.5 bg-green-500'
                     layoutId='activeTab'
                     initial={false}
                     transition={{ type: 'spring', stiffness: 500, damping: 30 }}

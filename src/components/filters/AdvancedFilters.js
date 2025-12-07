@@ -85,7 +85,7 @@ const AdvancedFilters = ({ filters, onFilterChange, categories = [], brands = []
         <SlidersHorizontal className="w-5 h-5" />
         <span>Filters</span>
         {activeFilterCount > 0 && (
-          <span className="absolute -top-1 -right-1 bg-orange-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+          <span className="absolute -top-1 -right-1 bg-green-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
             {activeFilterCount}
           </span>
         )}
@@ -125,7 +125,7 @@ const AdvancedFilters = ({ filters, onFilterChange, categories = [], brands = []
                       value={localFilters.minPrice}
                       onChange={(e) => setLocalFilters({ ...localFilters, minPrice: e.target.value })}
                       placeholder="0"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
                     />
                   </div>
                   <div>
@@ -135,7 +135,7 @@ const AdvancedFilters = ({ filters, onFilterChange, categories = [], brands = []
                       value={localFilters.maxPrice}
                       onChange={(e) => setLocalFilters({ ...localFilters, maxPrice: e.target.value })}
                       placeholder="10000"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
                     />
                   </div>
                 </div>
@@ -155,7 +155,7 @@ const AdvancedFilters = ({ filters, onFilterChange, categories = [], brands = []
                           type="checkbox"
                           checked={(localFilters.categories || []).includes(category._id)}
                           onChange={() => toggleCategory(category._id)}
-                          className="w-4 h-4 text-orange-600 focus:ring-orange-500"
+                          className="w-4 h-4 text-green-600 focus:ring-green-500"
                         />
                         <span className="text-sm text-gray-700">{category.name}</span>
                       </label>
@@ -178,7 +178,7 @@ const AdvancedFilters = ({ filters, onFilterChange, categories = [], brands = []
                           type="checkbox"
                           checked={(localFilters.brands || []).includes(brand)}
                           onChange={() => toggleBrand(brand)}
-                          className="w-4 h-4 text-orange-600 focus:ring-orange-500"
+                          className="w-4 h-4 text-green-600 focus:ring-green-500"
                         />
                         <span className="text-sm text-gray-700">{brand}</span>
                       </label>
@@ -201,7 +201,7 @@ const AdvancedFilters = ({ filters, onFilterChange, categories = [], brands = []
                         name="rating"
                         checked={localFilters.rating === rating}
                         onChange={() => setLocalFilters({ ...localFilters, rating })}
-                        className="w-4 h-4 text-orange-600 focus:ring-orange-500"
+                        className="w-4 h-4 text-green-600 focus:ring-green-500"
                       />
                       <span className="text-sm text-gray-700">
                         {rating} stars & above
@@ -220,7 +220,7 @@ const AdvancedFilters = ({ filters, onFilterChange, categories = [], brands = []
                       type="checkbox"
                       checked={localFilters.inStock}
                       onChange={(e) => setLocalFilters({ ...localFilters, inStock: e.target.checked })}
-                      className="w-4 h-4 text-orange-600 focus:ring-orange-500"
+                      className="w-4 h-4 text-green-600 focus:ring-green-500"
                     />
                     <span className="text-sm text-gray-700">In Stock Only</span>
                   </label>
@@ -229,7 +229,7 @@ const AdvancedFilters = ({ filters, onFilterChange, categories = [], brands = []
                       type="checkbox"
                       checked={localFilters.onSale}
                       onChange={(e) => setLocalFilters({ ...localFilters, onSale: e.target.checked })}
-                      className="w-4 h-4 text-orange-600 focus:ring-orange-500"
+                      className="w-4 h-4 text-green-600 focus:ring-green-500"
                     />
                     <span className="text-sm text-gray-700">On Sale</span>
                   </label>
@@ -246,7 +246,7 @@ const AdvancedFilters = ({ filters, onFilterChange, categories = [], brands = []
               </button>
               <button
                 onClick={handleApply}
-                className="flex-1 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600"
+                className="flex-1 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
               >
                 Apply Filters
               </button>

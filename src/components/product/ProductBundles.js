@@ -82,7 +82,7 @@ const ProductBundles = ({ product }) => {
   return (
     <div className="mt-8 bg-white rounded-lg p-6 shadow-sm">
       <div className="flex items-center gap-2 mb-6">
-        <Package className="w-6 h-6 text-orange-600" />
+        <Package className="w-6 h-6 text-green-600" />
         <h2 className="text-2xl font-bold text-gray-900">Frequently Bought Together</h2>
       </div>
 
@@ -109,7 +109,7 @@ const ProductBundles = ({ product }) => {
                   <h3 className="font-medium text-gray-900 line-clamp-1">
                     {bundleProduct.name}
                   </h3>
-                  <p className="text-sm font-semibold text-orange-600">
+                  <p className="text-sm font-semibold text-green-600">
                     Rs. {(bundleProduct.basePrice || 0).toLocaleString()}
                   </p>
                 </div>
@@ -119,7 +119,7 @@ const ProductBundles = ({ product }) => {
         </div>
 
         {/* Bundle Info */}
-        <div className="bg-orange-50 rounded-lg p-6 border border-orange-200">
+        <div className="bg-green-50 rounded-lg p-6 border border-green-200">
           <h3 className="font-bold text-gray-900 mb-4">Bundle Price</h3>
           <div className="space-y-2 mb-4">
             <div className="flex items-center justify-between">
@@ -134,16 +134,16 @@ const ProductBundles = ({ product }) => {
                 -Rs. {bundle.savings.toLocaleString()}
               </span>
             </div>
-            <div className="flex items-center justify-between pt-2 border-t border-orange-200">
+            <div className="flex items-center justify-between pt-2 border-t border-green-200">
               <span className="font-bold text-gray-900">Total:</span>
-              <span className="text-2xl font-bold text-orange-600">
+              <span className="text-2xl font-bold text-green-600">
                 Rs. {bundle.totalPrice.toLocaleString()}
               </span>
             </div>
           </div>
           <button
             onClick={handleAddBundleToCart}
-            className="w-full bg-orange-500 text-white py-3 px-6 rounded-lg font-semibold hover:bg-orange-600 transition-colors flex items-center justify-center gap-2"
+            className="w-full bg-green-500 text-white py-3 px-6 rounded-lg font-semibold hover:bg-green-600 transition-colors flex items-center justify-center gap-2"
           >
             <ShoppingCart className="w-5 h-5" />
             Add Bundle to Cart
