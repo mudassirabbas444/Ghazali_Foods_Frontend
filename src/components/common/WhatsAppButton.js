@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 
 const WhatsAppButton = () => {
   // WhatsApp number - update this with your actual WhatsApp business number
-  const whatsappNumber = '923001234567'; // Format: country code + number (no + or spaces)
+  const whatsappNumber = '923101111659'; // Format: country code + number (no + or spaces)
   const defaultMessage = 'Hello! I would like to place an order.';
 
   const handleWhatsAppClick = () => {

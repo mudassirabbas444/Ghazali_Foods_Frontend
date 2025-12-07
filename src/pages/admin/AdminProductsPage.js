@@ -117,13 +117,13 @@ const AdminProductsPage = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search products..."
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-gray-900 bg-white"
             />
           </div>
           <select
             value={filterCategory}
             onChange={(e) => setFilterCategory(e.target.value)}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 text-gray-900 bg-white"
           >
             <option value="">All Categories</option>
             {categories.map((cat) => (
@@ -135,7 +135,7 @@ const AdminProductsPage = () => {
           <select
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 text-gray-900 bg-white"
           >
             <option value="all">All Status</option>
             <option value="active">Active</option>
@@ -420,7 +420,7 @@ const ProductModal = ({ product, categories, onClose, onSuccess }) => {
                   required
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 text-gray-900 bg-white"
                 />
               </div>
               <div>
@@ -431,7 +431,7 @@ const ProductModal = ({ product, categories, onClose, onSuccess }) => {
                   required
                   value={formData.category}
                   onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 text-gray-900 bg-white"
                 >
                   <option value="">Select Category</option>
                   {categories.map((cat) => (
@@ -452,7 +452,7 @@ const ProductModal = ({ product, categories, onClose, onSuccess }) => {
                 rows={4}
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 text-gray-900 bg-white"
               />
             </div>
 
@@ -469,7 +469,7 @@ const ProductModal = ({ product, categories, onClose, onSuccess }) => {
                   step="0.01"
                   value={formData.basePrice}
                   onChange={(e) => setFormData({ ...formData, basePrice: parseFloat(e.target.value) })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 text-gray-900 bg-white"
                 />
               </div>
               <div>
@@ -482,7 +482,7 @@ const ProductModal = ({ product, categories, onClose, onSuccess }) => {
                   step="0.01"
                   value={formData.compareAtPrice}
                   onChange={(e) => setFormData({ ...formData, compareAtPrice: parseFloat(e.target.value) })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 text-gray-900 bg-white"
                 />
               </div>
               <div>
@@ -495,7 +495,7 @@ const ProductModal = ({ product, categories, onClose, onSuccess }) => {
                   max="100"
                   value={formData.discount}
                   onChange={(e) => setFormData({ ...formData, discount: parseFloat(e.target.value) })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 text-gray-900 bg-white"
                 />
               </div>
             </div>
@@ -522,7 +522,7 @@ const ProductModal = ({ product, categories, onClose, onSuccess }) => {
                       placeholder="Weight (e.g., 250g)"
                       value={variant.weight}
                       onChange={(e) => updateVariant(index, 'weight', e.target.value)}
-                      className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+                      className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 text-gray-900 bg-white"
                     />
                     <input
                       type="number"
@@ -531,7 +531,7 @@ const ProductModal = ({ product, categories, onClose, onSuccess }) => {
                       step="0.01"
                       value={variant.price}
                       onChange={(e) => updateVariant(index, 'price', parseFloat(e.target.value))}
-                      className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+                      className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 text-gray-900 bg-white"
                     />
                     <input
                       type="number"
@@ -539,14 +539,14 @@ const ProductModal = ({ product, categories, onClose, onSuccess }) => {
                       min="0"
                       value={variant.stock}
                       onChange={(e) => updateVariant(index, 'stock', parseInt(e.target.value))}
-                      className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+                      className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 text-gray-900 bg-white"
                     />
                     <input
                       type="text"
                       placeholder="SKU"
                       value={variant.sku}
                       onChange={(e) => updateVariant(index, 'sku', e.target.value)}
-                      className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+                      className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 text-gray-900 bg-white"
                     />
                     <button
                       type="button"
