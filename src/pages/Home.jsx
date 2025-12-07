@@ -63,8 +63,19 @@ const Home = () => {
 
       if (bannersRes.success) {
         const allBanners = bannersRes.banners || bannersRes.data || [];
-        const homeBanners = allBanners.filter(b => b.position === 'home_slider' && b.isActive);
-        setBanners(homeBanners);
+        // Show all active banners (isActive is true or undefined)
+        // Prioritize by position: home_slider > home_banner > others
+        const activeBanners = allBanners.filter(b => b.isActive !== false);
+        
+        // Sort by position priority
+        const sortedBanners = activeBanners.sort((a, b) => {
+          const positionOrder = { 'home_slider': 1, 'home_banner': 2 };
+          const aOrder = positionOrder[a.position] || 3;
+          const bOrder = positionOrder[b.position] || 3;
+          return aOrder - bOrder;
+        });
+        
+        setBanners(sortedBanners);
       }
       if (categoriesRes.success) {
         // Show all categories (main categories only for navigation)
@@ -213,22 +224,24 @@ const Home = () => {
         {/* Banner Carousel Section - First */}
         {banners.length > 0 && (
           <section className="relative w-full bg-white">
-            <div className="relative w-full h-[250px] md:h-[400px] lg:h-[500px] overflow-hidden">
+            <div className="relative w-full h-[250px] md:h-[400px] lg:h-[500px] overflow-hidden bg-gray-100">
               {banners.map((banner, index) => (
                 <motion.div
-                  key={banner._id}
-                  initial={{ opacity: 0 }}
+                  key={banner._id || index}
+                  initial={false}
                   animate={{
                     opacity: index === currentBannerIndex ? 1 : 0,
                     x: index === currentBannerIndex ? 0 : index < currentBannerIndex ? '-100%' : '100%',
+                    scale: index === currentBannerIndex ? 1 : 0.95,
                   }}
-                  transition={{ duration: 0.5 }}
-                  className={`absolute inset-0 ${index === currentBannerIndex ? 'z-10' : 'z-0'}`}
+                  transition={{ duration: 0.5, ease: 'easeInOut' }}
+                  className={`absolute inset-0 ${index === currentBannerIndex ? 'z-10' : 'z-0 pointer-events-none'}`}
+                  style={{ display: index === currentBannerIndex ? 'block' : 'block' }}
                 >
                   <Link to={banner.link || '#'} className="block h-full w-full">
                     <FirebaseImage
                       src={banner.image}
-                      alt={banner.title || 'Banner'}
+                      alt={banner.title || `Banner ${index + 1}`}
                       className="w-full h-full object-cover"
                     />
                   </Link>
