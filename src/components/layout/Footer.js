@@ -11,6 +11,7 @@ import {
   Heart,
   ChevronDown,
   ChevronUp,
+  Clock,
 } from 'lucide-react';
 
 const Footer = () => {
@@ -211,17 +212,18 @@ const Footer = () => {
             </p>
 
             {/* Contact Info */}
-            <div className='space-y-3 mb-6'>
-              <div className='flex items-center space-x-3 text-gray-700'>
-                <Phone className='h-5 w-5 text-green-600' />
-                <span>+923101111659</span>
+            <div className='flex flex-wrap items-center gap-4 md:gap-6 mb-6'>
+              <div className='flex items-center space-x-2 text-gray-700'>
+                <Phone className='h-5 w-5 text-green-600 flex-shrink-0' />
+                <span className='text-sm md:text-base'>+923101111659</span>
               </div>
-              <div className='flex items-center space-x-3 text-gray-700'>
-                <MapPin className='h-5 w-5 text-green-600' />
-                <span>Multan, Pakistan</span>
+              <div className='flex items-center space-x-2 text-gray-700'>
+                <MapPin className='h-5 w-5 text-green-600 flex-shrink-0' />
+                <span className='text-sm md:text-base'>Multan, Pakistan</span>
               </div>
-              <div className='flex items-center space-x-3 text-gray-700'>
-                <span className='text-sm'>10am to 6pm</span>
+              <div className='flex items-center space-x-2 text-gray-700'>
+                <Clock className='h-5 w-5 text-green-600 flex-shrink-0' />
+                <span className='text-sm md:text-base'>10am to 6pm</span>
               </div>
             </div>
 
