@@ -410,6 +410,34 @@ class AdminService {
       throw error;
     }
   }
+
+  // Announcements
+  async createAnnouncement(announcementData) {
+    try {
+      const response = await apiService.post(API_ENDPOINTS.ANNOUNCEMENTS.GET, announcementData);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async updateAnnouncement(announcementId, announcementData) {
+    try {
+      const response = await apiService.put(API_ENDPOINTS.ANNOUNCEMENTS.GET_BY_ID.replace(':id', announcementId), announcementData);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async deleteAnnouncement(announcementId) {
+    try {
+      const response = await apiService.delete(API_ENDPOINTS.ANNOUNCEMENTS.GET_BY_ID.replace(':id', announcementId));
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 const adminService = new AdminService();

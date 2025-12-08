@@ -20,25 +20,19 @@ const ContactPage = () => {
     {
       icon: <Phone className="w-6 h-6" />,
       title: "Phone",
-      content: "+92 300 1234567",
-      link: "tel:+923001234567"
-    },
-    {
-      icon: <Mail className="w-6 h-6" />,
-      title: "Email",
-      content: "info@ghazalifoods.com",
-      link: "mailto:info@ghazalifoods.com"
+      content: "+923101111659",
+      link: "tel:+923101111659"
     },
     {
       icon: <MapPin className="w-6 h-6" />,
       title: "Address",
-      content: "123 Main Street, Karachi, Pakistan",
+      content: "Multan, Pakistan",
       link: null
     },
     {
       icon: <Clock className="w-6 h-6" />,
       title: "Business Hours",
-      content: "Mon - Sat: 9:00 AM - 8:00 PM",
+      content: "10am to 6pm",
       link: null
     }
   ];

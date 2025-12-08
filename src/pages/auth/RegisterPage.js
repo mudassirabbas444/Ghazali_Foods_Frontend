@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { motion } from 'framer-motion';
-import { Eye, EyeOff, Mail, Lock, User, AlertCircle, ArrowRight, Shield } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, User, AlertCircle, ArrowRight, Shield, Phone } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { Button, Input } from '../../components';
 import GoogleAuth from '../../components/auth/GoogleAuth';
@@ -58,10 +58,11 @@ const RegisterPage = () => {
   const onSubmit = async (data) => {
     if (isBlocked) return;
 
-    // Prepare registration data - only name, email, password
+    // Prepare registration data
     const registrationData = {
       fullName: data.name,
       email: data.email,
+      phone: data.phone,
       password: data.password,
     };
 
@@ -134,7 +135,7 @@ const RegisterPage = () => {
             >
               <Shield className='w-10 h-10 text-white' />
             </motion.div>
-            <h1 className='text-4xl font-bold text-gray-900 dark:text-white mb-2'>Join Ghazali Foods</h1>
+            <h1 className='text-4xl font-bold text-gray-900 dark:text-white mb-2'>Join Ghazali Food</h1>
             <p className='text-gray-600 dark:text-gray-400'>Create your account to get started</p>
           </motion.div>
 
@@ -228,6 +229,27 @@ const RegisterPage = () => {
                       const domain = value.split('@')[1];
                       return !disposableDomains.includes(domain) || 'Please use a permanent email address';
                     },
+                  },
+                })}
+              />
+
+              <Input
+                label='Phone Number'
+                type='tel'
+                autoComplete='tel'
+                placeholder='Enter your phone number'
+                leftIcon={<Phone className='h-5 w-5 text-gray-400' />}
+                error={errors.phone?.message}
+                className='bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 focus:bg-white dark:focus:bg-gray-600 focus:border-green-500 dark:focus:border-green-400'
+                {...register('phone', {
+                  required: 'Phone number is required',
+                  minLength: {
+                    value: 10,
+                    message: 'Phone number must be at least 10 digits',
+                  },
+                  pattern: {
+                    value: /^[0-9+\-\s()]+$/,
+                    message: 'Please enter a valid phone number',
                   },
                 })}
               />

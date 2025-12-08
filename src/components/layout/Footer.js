@@ -25,13 +25,6 @@ const Footer = () => {
   };
 
   const footerLinks = {
-    shop: [
-      { name: 'Shop All', href: '/shop' },
-      { name: 'Categories', href: '/shop' },
-      { name: 'Featured Products', href: '/shop?featured=true' },
-      { name: 'Best Sellers', href: '/shop?bestsellers=true' },
-      { name: 'New Arrivals', href: '/shop?new=true' },
-    ],
     support: [
       { name: 'Help Center', href: '/help' },
       { name: 'FAQ', href: '/faq' },
@@ -85,7 +78,7 @@ const Footer = () => {
                 <span className='text-white font-bold text-sm'>GF</span>
               </div>
               <span className='text-lg font-bold bg-gradient-to-r from-green-600 to-red-600 bg-clip-text text-transparent'>
-                Ghazali Foods
+                Ghazali Food
               </span>
             </Link>
             <p className='text-sm text-gray-700 mb-3'>
@@ -201,7 +194,7 @@ const Footer = () => {
         </div>
 
         {/* Desktop Layout */}
-        <div className='hidden md:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8'>
+        <div className='hidden md:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8'>
           {/* Company Info */}
           <div className='lg:col-span-2'>
             <Link to='/' className='flex items-center space-x-2 mb-4'>
@@ -209,7 +202,7 @@ const Footer = () => {
                 <span className='text-white font-bold text-lg'>GF</span>
               </div>
               <span className='text-xl font-bold bg-gradient-to-r from-green-600 to-red-600 bg-clip-text text-transparent'>
-                Ghazali Foods
+                Ghazali Food
               </span>
             </Link>
 
@@ -220,16 +213,15 @@ const Footer = () => {
             {/* Contact Info */}
             <div className='space-y-3 mb-6'>
               <div className='flex items-center space-x-3 text-gray-700'>
-                <Mail className='h-5 w-5 text-green-600' />
-                <span>info@ghazalifoods.com</span>
-              </div>
-              <div className='flex items-center space-x-3 text-gray-700'>
                 <Phone className='h-5 w-5 text-green-600' />
-                <span>+92 300 1234567</span>
+                <span>+923101111659</span>
               </div>
               <div className='flex items-center space-x-3 text-gray-700'>
                 <MapPin className='h-5 w-5 text-green-600' />
-                <span>Karachi, Pakistan</span>
+                <span>Multan, Pakistan</span>
+              </div>
+              <div className='flex items-center space-x-3 text-gray-700'>
+                <span className='text-sm'>10am to 6pm</span>
               </div>
             </div>
 
@@ -251,23 +243,6 @@ const Footer = () => {
                 );
               })}
             </div>
-          </div>
-
-          {/* Shop Links */}
-          <div>
-            <h3 className='text-lg font-semibold mb-4 text-green-500'>Shop</h3>
-            <ul className='space-y-3'>
-              {footerLinks.shop.map((link) => (
-                <li key={link.name}>
-                  <Link
-                    to={link.href}
-                    className='text-gray-700 hover:text-green-600 transition-colors'
-                  >
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
           </div>
 
           {/* Support Links */}
@@ -348,13 +323,13 @@ const Footer = () => {
         <div className='border-t border-green-200 mt-4 md:mt-8 pt-4 md:pt-8'>
           <div className='flex flex-col md:flex-row justify-between items-center text-center md:text-left'>
             <div className='flex items-center justify-center space-x-2 text-xs md:text-sm text-gray-700 mb-2 md:mb-0'>
-              <span>&copy; {currentYear} Ghazali Foods. All rights reserved.</span>
+              <span>&copy; {currentYear} Ghazali Food. All rights reserved.</span>
             </div>
 
             <div className='flex items-center justify-center space-x-2 text-xs md:text-sm text-gray-700'>
               <span>Made with</span>
               <Heart className='h-3 w-3 md:h-4 md:w-4 text-red-500 fill-red-500' />
-              <span>by Ghazali Foods</span>
+              <span>by Ghazali Food</span>
             </div>
           </div>
         </div>

@@ -81,7 +81,7 @@ export const LocationProvider = ({ children }) => {
         `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`,
         {
           headers: {
-            'User-Agent': 'Ghazali Foods Ecommerce App'
+            'User-Agent': 'Ghazali Food Ecommerce App'
           }
         }
       );

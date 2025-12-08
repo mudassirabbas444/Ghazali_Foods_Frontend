@@ -16,6 +16,7 @@ import {
   ChevronRight,
   Bell,
   MessageSquare,
+  Megaphone,
 } from 'lucide-react';
 import { useAdminAuth } from '../../context/AdminAuthContext';
 import { ROUTES } from '../../constants';
@@ -44,6 +45,7 @@ const AdminLayout = ({ children }) => {
     { icon: Users, label: 'Customers', path: ROUTES.ADMIN_CUSTOMERS },
     { icon: Tag, label: 'Coupons', path: ROUTES.ADMIN_COUPONS },
     { icon: Image, label: 'Banners', path: ROUTES.ADMIN_BANNERS },
+    { icon: Megaphone, label: 'Announcements', path: ROUTES.ADMIN_ANNOUNCEMENTS },
     { icon: Star, label: 'Reviews', path: ROUTES.ADMIN_REVIEWS },
     { icon: Bell, label: 'Stock Notifications', path: ROUTES.ADMIN_STOCK_NOTIFICATIONS },
     { icon: MessageSquare, label: 'Questions', path: ROUTES.ADMIN_QUESTIONS },

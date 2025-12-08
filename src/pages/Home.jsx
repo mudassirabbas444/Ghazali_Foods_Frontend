@@ -10,6 +10,10 @@ import {
   ChevronLeft,
   ChevronRight,
   Loader2,
+  Truck,
+  Shield,
+  RefreshCw,
+  Headphones,
 } from 'lucide-react';
 import { ROUTES } from '../constants';
 import productService from '../services/product';
@@ -288,6 +292,81 @@ const Home = () => {
             </div>
           </section>
         )}
+
+        {/* Features Section */}
+        <section className="bg-gray-50 py-8 px-4">
+          <div className="max-w-7xl mx-auto">
+            <div className="grid grid-cols-4 gap-2 md:gap-6">
+              {/* Free Shipping */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4 }}
+                className="bg-white rounded-lg p-2 md:p-6 text-center hover:shadow-md transition-shadow"
+              >
+                <div className="flex justify-center mb-2 md:mb-3">
+                  <div className="bg-green-100 rounded-full p-1.5 md:p-3">
+                    <Truck className="w-4 h-4 md:w-8 md:h-8 text-green-600" />
+                  </div>
+                </div>
+                <h3 className="font-semibold text-gray-900 mb-0.5 md:mb-1 text-[10px] md:text-base leading-tight">Free Shipping</h3>
+                <p className="text-[8px] md:text-sm text-gray-600 leading-tight">On orders over Rs. 5,000</p>
+              </motion.div>
+
+              {/* Secure Payments */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: 0.1 }}
+                className="bg-white rounded-lg p-2 md:p-6 text-center hover:shadow-md transition-shadow"
+              >
+                <div className="flex justify-center mb-2 md:mb-3">
+                  <div className="bg-green-100 rounded-full p-1.5 md:p-3">
+                    <Shield className="w-4 h-4 md:w-8 md:h-8 text-green-600" />
+                  </div>
+                </div>
+                <h3 className="font-semibold text-gray-900 mb-0.5 md:mb-1 text-[10px] md:text-base leading-tight">Secure Payments</h3>
+                <p className="text-[8px] md:text-sm text-gray-600 leading-tight">JazzCash, EasyPaisa & more</p>
+              </motion.div>
+
+              {/* Easy Returns */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: 0.2 }}
+                className="bg-white rounded-lg p-2 md:p-6 text-center hover:shadow-md transition-shadow"
+              >
+                <div className="flex justify-center mb-2 md:mb-3">
+                  <div className="bg-green-100 rounded-full p-1.5 md:p-3">
+                    <RefreshCw className="w-4 h-4 md:w-8 md:h-8 text-green-600" />
+                  </div>
+                </div>
+                <h3 className="font-semibold text-gray-900 mb-0.5 md:mb-1 text-[10px] md:text-base leading-tight">Easy Returns</h3>
+                <p className="text-[8px] md:text-sm text-gray-600 leading-tight">7-day return policy</p>
+              </motion.div>
+
+              {/* 24/7 Support */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: 0.3 }}
+                className="bg-white rounded-lg p-2 md:p-6 text-center hover:shadow-md transition-shadow"
+              >
+                <div className="flex justify-center mb-2 md:mb-3">
+                  <div className="bg-green-100 rounded-full p-1.5 md:p-3">
+                    <Headphones className="w-4 h-4 md:w-8 md:h-8 text-green-600" />
+                  </div>
+                </div>
+                <h3 className="font-semibold text-gray-900 mb-0.5 md:mb-1 text-[10px] md:text-base leading-tight">24/7 Support</h3>
+                <p className="text-[8px] md:text-sm text-gray-600 leading-tight">Dedicated support team</p>
+              </motion.div>
+            </div>
+          </div>
+        </section>
 
         {/* Shop by Category Section - Second */}
         {categories.length > 0 && (

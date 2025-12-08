@@ -36,7 +36,7 @@ if (process.env.REACT_APP_API_URL) {
 
 // App Configuration
 export const APP_CONFIG = {
-  NAME: process.env.REACT_APP_NAME || 'Ghazali Foods',
+  NAME: process.env.REACT_APP_NAME || 'Ghazali Food',
   VERSION: process.env.REACT_APP_VERSION || '1.0.0',
   DESCRIPTION:
     process.env.REACT_APP_DESCRIPTION ||
@@ -150,6 +150,12 @@ export const API_ENDPOINTS = {
     GET_BY_ID: '/banners/:id',
   },
 
+  // Announcement endpoints
+  ANNOUNCEMENTS: {
+    GET: '/announcements/',
+    GET_BY_ID: '/announcements/:id',
+  },
+
   // Stock Notification endpoints
   STOCK_NOTIFICATIONS: {
     SUBSCRIBE: '/stock-notifications/',
@@ -241,6 +247,7 @@ export const ROUTES = {
   ADMIN_CUSTOMERS: '/admin/customers',
   ADMIN_COUPONS: '/admin/coupons',
   ADMIN_BANNERS: '/admin/banners',
+  ADMIN_ANNOUNCEMENTS: '/admin/announcements',
   ADMIN_REVIEWS: '/admin/reviews',
   ADMIN_STOCK_NOTIFICATIONS: '/admin/stock-notifications',
   ADMIN_QUESTIONS: '/admin/questions',

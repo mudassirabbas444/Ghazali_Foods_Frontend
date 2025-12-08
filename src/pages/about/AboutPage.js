@@ -54,7 +54,7 @@ const AboutPage = () => {
           className="text-center mb-16"
         >
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            About <span className="bg-gradient-to-r from-green-600 to-green-700 bg-clip-text text-transparent">Ghazali Foods</span>
+            About <span className="bg-gradient-to-r from-green-600 to-green-700 bg-clip-text text-transparent">Ghazali Food</span>
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Your trusted partner for premium quality dry fruits, nuts, oils, chocolates, and gourmet food products.
@@ -72,7 +72,7 @@ const AboutPage = () => {
             <div>
               <h2 className="text-3xl font-bold text-gray-900 mb-4">Our Story</h2>
               <p className="text-gray-600 mb-4 leading-relaxed">
-                Ghazali Foods was founded with a simple mission: to bring the finest quality food products directly to your doorstep. 
+                Ghazali Food was founded with a simple mission: to bring the finest quality food products directly to your doorstep. 
                 We understand that quality matters, especially when it comes to what you and your family consume.
               </p>
               <p className="text-gray-600 mb-4 leading-relaxed">

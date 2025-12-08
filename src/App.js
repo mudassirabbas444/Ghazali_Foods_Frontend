@@ -46,6 +46,7 @@ import AdminOrdersPage from './pages/admin/AdminOrdersPage';
 import AdminCustomersPage from './pages/admin/AdminCustomersPage';
 import AdminCouponsPage from './pages/admin/AdminCouponsPage';
 import AdminBannersPage from './pages/admin/AdminBannersPage';
+import AdminAnnouncementsPage from './pages/admin/AdminAnnouncementsPage';
 import AdminReviewsPage from './pages/admin/AdminReviewsPage';
 import AdminStockNotificationsPage from './pages/admin/AdminStockNotificationsPage';
 import AdminQuestionsPage from './pages/admin/AdminQuestionsPage';
@@ -326,6 +327,16 @@ function AppWithToast() {
                       <AdminProtectedRoute>
                         <AdminLayout>
                           <AdminBannersPage />
+                        </AdminLayout>
+                      </AdminProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path={ROUTES.ADMIN_ANNOUNCEMENTS}
+                    element={
+                      <AdminProtectedRoute>
+                        <AdminLayout>
+                          <AdminAnnouncementsPage />
                         </AdminLayout>
                       </AdminProtectedRoute>
                     }

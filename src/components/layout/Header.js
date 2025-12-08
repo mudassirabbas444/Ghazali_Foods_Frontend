@@ -11,6 +11,7 @@ import {
   Package,
   MapPin,
   ChevronDown,
+  UserPlus,
 } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { useLocationContext } from '../../context/LocationContext';
@@ -21,6 +22,7 @@ import { getComparison } from '../../utils/productComparison';
 import { toast } from 'react-toastify';
 import logo from '../../assets/Logo.png';
 import UserNotificationBell from '../common/UserNotificationBell';
+import AnnouncementBanner from '../common/AnnouncementBanner';
 
 const Header = () => {
   const navigate = useNavigate();
@@ -93,13 +95,18 @@ const Header = () => {
   };
 
   return (
+    <>
+      {/* Announcement Banner */}
+      <AnnouncementBanner />
+      
     <motion.header 
       className={cn(
-        'sticky top-0 z-50 transition-all duration-500 bg-white/95 backdrop-blur-sm shadow-sm border-b border-gray-200'
+          'sticky top-0 z-[60] transition-all duration-500 bg-white/95 backdrop-blur-sm shadow-sm border-b border-gray-200 relative'
       )}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5 }}
+        style={{ isolation: 'isolate' }}
     >
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
         <div className='flex justify-between items-center h-16'>
@@ -118,7 +125,7 @@ const Header = () => {
                 {logo ? (
                   <motion.img
                     src={logo}
-                    alt='Ghazali Foods Logo'
+                    alt='Ghazali Food Logo'
                     className='h-full w-full object-cover rounded-full'
                   />
                 ) : (
@@ -126,7 +133,7 @@ const Header = () => {
                 )}
               </motion.div>
               <span className='text-lg sm:text-xl font-semibold text-gray-900 hidden sm:inline-block'>
-                Ghazali Foods
+                Ghazali Food
               </span>
             </Link>
           </motion.div>
@@ -313,29 +320,20 @@ const Header = () => {
                 </div>
               </>
             ) : (
-              <>
-                <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
-                  <Link
-                    to={ROUTES.LOGIN}
-                    className='text-gray-700 hover:text-green-600 transition-colors duration-300 font-medium'
-                  >
-                    Login
-                  </Link>
-                </motion.div>
                 <motion.button
-                  onClick={() => navigate(ROUTES.REGISTER)}
-                  className='inline-flex items-center px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-all duration-300 ml-4'
+                onClick={() => navigate(ROUTES.LOGIN)}
+                className='p-2.5 rounded-lg text-gray-700 hover:text-green-600 transition-colors duration-300'
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
+                title="Login / Sign Up"
                 >
-                  Sign Up
+                <UserPlus className='w-5 h-5' />
                 </motion.button>
-              </>
             )}
           </div>
 
           {/* Mobile Location */}
-          <div className='md:hidden flex items-center mr-2 location-menu-container'>
+          <div className='md:hidden flex items-center mr-2 location-menu-container relative'>
             <button
               onClick={() => setIsLocationMenuOpen(!isLocationMenuOpen)}
               className='flex items-center gap-1 px-2 py-1 hover:bg-gray-50 rounded-lg transition-colors'
@@ -345,15 +343,24 @@ const Header = () => {
                 <span className='text-[10px] text-gray-600 leading-none'>Deliver to</span>
                 <span className='text-xs font-medium text-green-600 flex items-center gap-0.5 leading-tight'>
                   {locationName.length > 12 ? locationName.substring(0, 12) + '...' : locationName}
-                  <ChevronDown className='w-3 h-3' />
+                  <ChevronDown className={`w-3 h-3 transition-transform ${isLocationMenuOpen ? 'rotate-180' : ''}`} />
                 </span>
               </div>
             </button>
             
             {isLocationMenuOpen && (
-              <div className='fixed inset-0 bg-black bg-opacity-50 z-40' onClick={() => setIsLocationMenuOpen(false)}>
-                <div className='absolute bottom-0 left-0 right-0 bg-white rounded-t-xl p-4 z-50 location-menu-container' onClick={(e) => e.stopPropagation()}>
-                  <h3 className='font-semibold mb-3'>Select Location</h3>
+              <>
+                {/* Click outside to close */}
+                <div 
+                  className='fixed inset-0 z-[45]' 
+                  onClick={() => setIsLocationMenuOpen(false)}
+                  style={{ top: '104px' }}
+                />
+                {/* Dropdown menu */}
+                <div 
+                  className='absolute top-full left-0 mt-2 w-64 bg-white rounded-lg shadow-2xl border border-gray-200 py-2 z-[50] location-menu-container'
+                  onClick={(e) => e.stopPropagation()}
+                >
                   <button
                     onClick={async () => {
                       try {
@@ -364,13 +371,13 @@ const Header = () => {
                         toast.error('Failed to get location');
                       }
                     }}
-                    className='w-full px-4 py-2 text-left hover:bg-gray-50 flex items-center gap-2 mb-2 rounded-lg'
+                    className='w-full px-4 py-2 text-left hover:bg-gray-50 flex items-center gap-2'
                   >
                     <MapPin className='w-4 h-4 text-green-500' />
                     <span className='text-sm'>Use Current Location</span>
                   </button>
-                  <div className='border-t border-gray-200 my-2'></div>
-                  <div className='px-2 py-1 mb-2'>
+                  <div className='border-t border-gray-200 my-1'></div>
+                  <div className='px-4 py-2'>
                     <span className='text-xs text-gray-500'>Popular Cities</span>
                   </div>
                   {['Islamabad', 'Lahore', 'Karachi', 'Rawalpindi', 'Faisalabad'].map((city) => (
@@ -380,13 +387,13 @@ const Header = () => {
                         updateLocationName(city);
                         setIsLocationMenuOpen(false);
                       }}
-                      className='w-full px-4 py-2 text-left hover:bg-gray-50 text-sm rounded-lg'
+                      className='w-full px-4 py-2 text-left hover:bg-gray-50 text-sm'
                     >
                       {city}
                     </button>
                   ))}
                 </div>
-              </div>
+              </>
             )}
           </div>
 
@@ -473,22 +480,14 @@ const Header = () => {
                     </button>
                   </>
                 ) : (
-                  <>
                     <Link
                       to={ROUTES.LOGIN}
-                      className='block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-colors duration-300'
+                    className='block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-colors duration-300 flex items-center gap-2'
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
-                      Login
+                    <UserPlus className='w-5 h-5' />
+                    Login / Sign Up
                     </Link>
-                    <Link
-                      to={ROUTES.REGISTER}
-                      className='block px-4 py-2 text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/20 rounded-xl transition-colors duration-300'
-                      onClick={() => setIsMobileMenuOpen(false)}
-                    >
-                      Sign Up
-                    </Link>
-                  </>
                 )}
               </div>
             </motion.div>
@@ -510,6 +509,7 @@ const Header = () => {
         )}
       </AnimatePresence>
     </motion.header>
+    </>
   );
 };
 
