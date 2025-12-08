@@ -195,9 +195,9 @@ const Footer = () => {
         </div>
 
         {/* Desktop Layout */}
-        <div className='hidden md:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8'>
+        <div className='hidden md:grid grid-cols-1 md:grid-cols-5 gap-8'>
           {/* Company Info */}
-          <div className='lg:col-span-2'>
+          <div className='md:col-span-2'>
             <Link to='/' className='flex items-center space-x-2 mb-4'>
               <div className='w-10 h-10 bg-gradient-to-br from-green-500 to-red-500 rounded-full flex items-center justify-center shadow-lg'>
                 <span className='text-white font-bold text-lg'>GF</span>
