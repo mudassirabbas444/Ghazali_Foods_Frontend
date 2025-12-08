@@ -5,14 +5,12 @@ import {
   User,
   Mail,
   Phone,
-  Wallet,
   Edit3,
   Save,
   X,
   Lock,
   CheckCircle,
   AlertCircle,
-  Copy,
   Camera,
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
@@ -61,7 +59,6 @@ const ProfilePage = () => {
           fullName: response.user.fullName || '',
           email: response.user.email || '',
           phone: response.user.phone || '',
-          walletInfo: response.user.walletInfo || '',
         });
       }
     } catch (err) {
@@ -88,7 +85,6 @@ const ProfilePage = () => {
       fullName: user?.fullName || '',
       email: user?.email || '',
       phone: user?.phone || '',
-      walletInfo: user?.walletInfo || '',
     });
   };
 
@@ -129,7 +125,6 @@ const ProfilePage = () => {
         formData.append('avatar', avatarFile);
         formData.append('fullName', data.fullName);
         formData.append('phone', data.phone);
-        formData.append('walletInfo', data.walletInfo || '');
       }
 
       const response = await authService.updateProfile(avatarFile ? formData : data);
@@ -203,10 +198,6 @@ const ProfilePage = () => {
     }
   };
 
-  const copyToClipboard = (text) => {
-    navigator.clipboard.writeText(text);
-    toast.success('Copied to clipboard!');
-  };
 
   if (loading) {
     return (
@@ -375,16 +366,6 @@ const ProfilePage = () => {
                     })}
                   />
 
-                  <Input
-                    label="Wallet Info"
-                    type="text"
-                    leftIcon={<Wallet className="w-5 h-5" />}
-                    error={errors.walletInfo?.message}
-                    placeholder="Enter your wallet address (optional)"
-                    {...register('walletInfo', {
-                      required: false,
-                    })}
-                  />
 
                   <div className="flex items-center gap-3 pt-4">
                     <Button
@@ -432,36 +413,7 @@ const ProfilePage = () => {
                         {user.phone || 'N/A'}
                       </p>
                     </div>
-                    <div className="bg-gray-50 dark:bg-slate-700/50 rounded-lg p-4">
-                      <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-1">
-                        Referral Code
-                      </p>
-                      <div className="flex items-center gap-2">
-                        <p className="text-sm sm:text-base font-mono font-semibold text-gray-900 dark:text-white">
-                          {user.refCode || 'N/A'}
-                        </p>
-                        {user.refCode && (
-                          <button
-                            onClick={() => copyToClipboard(user.refCode)}
-                            className="p-1 hover:bg-gray-200 dark:hover:bg-slate-600 rounded transition-colors"
-                          >
-                            <Copy className="w-4 h-4 text-gray-600 dark:text-gray-400" />
-                          </button>
-                        )}
-                      </div>
-                    </div>
                   </div>
-
-                  {user.walletInfo && (
-                    <div className="bg-gray-50 dark:bg-slate-700/50 rounded-lg p-4">
-                      <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-1">
-                        Wallet Info
-                      </p>
-                      <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white break-all">
-                        {user.walletInfo}
-                      </p>
-                    </div>
-                  )}
 
                   {/* Change Password Section */}
                   <div className="border-t border-gray-200 dark:border-slate-700 pt-6">
