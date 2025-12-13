@@ -7,7 +7,7 @@ import {
   Search,
   LayoutGrid,
   HelpCircle,
-  FileText,
+  Package,
 } from 'lucide-react';
 import { ROUTES } from '../../constants';
 import cartService from '../../services/cart';
@@ -63,9 +63,9 @@ const BottomNavigation = () => {
       path: ROUTES.CATEGORIES,
     },
     {
-      label: 'Blog',
-      icon: FileText,
-      path: ROUTES.BLOG,
+      label: 'Products',
+      icon: Package,
+      path: ROUTES.SHOP,
     },
     {
       label: 'Cart',
