@@ -189,6 +189,18 @@ class AdminService {
     }
   }
 
+  async updatePaymentStatus(orderId, paymentStatus) {
+    try {
+      const response = await apiService.put(
+        `/orders/${orderId}/payment-status`,
+        { paymentStatus }
+      );
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   // Customers
   async getAllUsers(filters = {}) {
     try {

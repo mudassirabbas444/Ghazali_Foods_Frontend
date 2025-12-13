@@ -285,6 +285,7 @@ const BlogModal = ({ blog, onClose, onSuccess }) => {
       const blogData = {
         ...formData,
         tags: formData.tags,
+        isPublished: formData.isPublished ? 'true' : 'false', // Explicitly convert to string for FormData
       };
 
       if (blog) {

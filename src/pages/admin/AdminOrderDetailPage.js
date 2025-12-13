@@ -27,9 +27,12 @@ const AdminOrderDetailPage = () => {
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showStatusModal, setShowStatusModal] = useState(false);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [status, setStatus] = useState('');
+  const [paymentStatus, setPaymentStatus] = useState('');
   const [adminNotes, setAdminNotes] = useState('');
   const [updating, setUpdating] = useState(false);
+  const [updatingPayment, setUpdatingPayment] = useState(false);
 
   useEffect(() => {
     fetchOrder();
@@ -43,6 +46,7 @@ const AdminOrderDetailPage = () => {
         const orderData = response.data || response.order;
         setOrder(orderData);
         setStatus(orderData.status);
+        setPaymentStatus(orderData.paymentStatus);
         setAdminNotes(orderData.adminNotes || '');
       } else {
         toast.error(response.message || 'Order not found');
@@ -68,6 +72,20 @@ const AdminOrderDetailPage = () => {
       toast.error(error.message || 'Failed to update order status');
     } finally {
       setUpdating(false);
+    }
+  };
+
+  const handlePaymentStatusUpdate = async () => {
+    try {
+      setUpdatingPayment(true);
+      await adminService.updatePaymentStatus(order._id, paymentStatus);
+      toast.success('Payment status updated successfully');
+      setShowPaymentModal(false);
+      fetchOrder();
+    } catch (error) {
+      toast.error(error.message || 'Failed to update payment status');
+    } finally {
+      setUpdatingPayment(false);
     }
   };
 
@@ -112,7 +130,7 @@ const AdminOrderDetailPage = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between">
         <div>
           <Link
             to={ROUTES.ADMIN_ORDERS}
@@ -124,13 +142,22 @@ const AdminOrderDetailPage = () => {
           <h1 className="text-3xl font-bold text-gray-900">Order Details</h1>
           <p className="text-gray-600 mt-1">Order #{order.orderNumber}</p>
         </div>
-        <button
-          onClick={() => setShowStatusModal(true)}
-          className="flex items-center gap-2 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors"
-        >
-          <Filter className="w-4 h-4" />
-          Update Status
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setShowPaymentModal(true)}
+            className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+          >
+            <Package className="w-4 h-4" />
+            Update Payment
+          </button>
+          <button
+            onClick={() => setShowStatusModal(true)}
+            className="flex items-center gap-2 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors"
+          >
+            <Filter className="w-4 h-4" />
+            Update Status
+          </button>
+        </div>
       </div>
 
       {/* Order Info Card */}
@@ -383,6 +410,67 @@ const AdminOrderDetailPage = () => {
                     className="px-6 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 disabled:opacity-50"
                   >
                     {updating ? 'Updating...' : 'Update Status'}
+                  </button>
+                </div>
+              </form>
+            </motion.div>
+          </div>
+        </div>
+      )}
+
+      {/* Payment Status Update Modal */}
+      {showPaymentModal && (
+        <div className="fixed inset-0 z-50 overflow-y-auto">
+          <div className="flex items-center justify-center min-h-screen p-4">
+            <div className="fixed inset-0 bg-black bg-opacity-50" onClick={() => setShowPaymentModal(false)} />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="relative bg-white rounded-lg shadow-xl max-w-md w-full"
+            >
+              <div className="px-6 py-4 border-b border-gray-200">
+                <h2 className="text-xl font-bold text-gray-900">Update Payment Status</h2>
+                <p className="text-sm text-gray-600 mt-1">Order #{order.orderNumber}</p>
+              </div>
+
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handlePaymentStatusUpdate();
+                }}
+                className="p-6 space-y-4"
+              >
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Payment Status *
+                  </label>
+                  <select
+                    value={paymentStatus}
+                    onChange={(e) => setPaymentStatus(e.target.value)}
+                    required
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="pending">Pending</option>
+                    <option value="paid">Paid</option>
+                    <option value="failed">Failed</option>
+                    <option value="refunded">Refunded</option>
+                  </select>
+                </div>
+
+                <div className="flex items-center justify-end gap-3 pt-4 border-t">
+                  <button
+                    type="button"
+                    onClick={() => setShowPaymentModal(false)}
+                    className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={updatingPayment}
+                    className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50"
+                  >
+                    {updatingPayment ? 'Updating...' : 'Update Payment Status'}
                   </button>
                 </div>
               </form>
