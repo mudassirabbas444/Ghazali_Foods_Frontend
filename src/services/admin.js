@@ -54,7 +54,7 @@ class AdminService {
         });
       }
 
-      const response = await apiService.upload(
+      const response = await apiService.uploadPut(
         API_ENDPOINTS.PRODUCTS.UPDATE.replace(':id', productId),
         formData
       );

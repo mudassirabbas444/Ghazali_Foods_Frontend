@@ -126,6 +126,22 @@ class ApiService {
     }
   }
 
+  // File upload with PUT method
+  async uploadPut(url, formData, config = {}) {
+    try {
+      const response = await api.put(url, formData, {
+        ...config,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          ...config.headers,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      throw this.handleError(error);
+    }
+  }
+
   // Error handler
   handleError(error) {
     const { response } = error;
