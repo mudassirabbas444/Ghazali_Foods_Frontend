@@ -89,6 +89,18 @@ const ShopPage = () => {
     setCurrentPage(1);
   }, [selectedCategory, sortBy, sortOrder, priceRange, debouncedSearch, selectedOrigins, selectedGrades]);
 
+  // Update URL when search or filters change
+  useEffect(() => {
+    const params = new URLSearchParams();
+    if (selectedCategory) params.append('category', selectedCategory);
+    if (debouncedSearch) params.append('search', debouncedSearch);
+    if (currentPage > 1) params.append('page', currentPage);
+    const newURL = `${ROUTES.SHOP}${params.toString() ? `?${params.toString()}` : ''}`;
+    if (window.location.pathname + window.location.search !== newURL) {
+      navigate(newURL, { replace: true });
+    }
+  }, [selectedCategory, debouncedSearch, currentPage, navigate]);
+
   useEffect(() => {
     fetchProducts();
     if (isAuthenticated) {
@@ -299,6 +311,28 @@ const ShopPage = () => {
               </span>
             </>
           )}
+        </div>
+
+        {/* Search Bar */}
+        <div className="mb-6">
+          <div className="relative">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Search products..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-12 pr-4 py-3 bg-darkGreen-900/50 border border-gold-950/30 rounded-lg text-gray-300 placeholder-gray-500 focus:ring-2 focus:ring-gold-950 focus:border-gold-950 outline-none transition-colors"
+            />
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery('')}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gold-950 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            )}
+          </div>
         </div>
 
         {/* Top Bar - Product Count & Sort */}

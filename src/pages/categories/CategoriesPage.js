@@ -64,24 +64,24 @@ const CategoriesPage = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
-        <Loader2 className="w-8 h-8 animate-spin text-green-500" />
+      <div className="min-h-screen flex items-center justify-center bg-darkGreen-950">
+        <Loader2 className="w-8 h-8 animate-spin text-gold-950" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-darkGreen-950">
       {/* Mobile Layout */}
       <div className="md:hidden">
         {/* Header */}
-        <div className="sticky top-0 z-10 bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between">
-          <h2 className="text-lg font-bold text-gray-900">Categories</h2>
+        <div className="sticky top-0 z-10 bg-darkGreen-950 border-b border-gold-950/20 px-4 py-3 flex items-center justify-between">
+          <h2 className="text-lg font-bold text-gold-950">Categories</h2>
           <button
             onClick={handleBack}
-            className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
+            className="p-2 rounded-lg hover:bg-darkGreen-900 transition-colors"
           >
-            <X className="w-5 h-5 text-gray-600" />
+            <X className="w-5 h-5 text-gray-300" />
           </button>
         </div>
 
@@ -90,12 +90,12 @@ const CategoriesPage = () => {
           {categories.length > 0 && (
             <div>
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-base font-bold text-gray-900">
+                <h3 className="text-base font-bold text-gold-950">
                   {categories[0]?.name || 'All Categories'}
                 </h3>
                 <Link
                   to={ROUTES.SHOP}
-                  className="text-sm text-gray-500 hover:text-green-500 transition-colors"
+                  className="text-sm text-gray-300 hover:text-gold-950 transition-colors"
                 >
                   View more
                 </Link>
@@ -108,7 +108,7 @@ const CategoriesPage = () => {
                     className="flex flex-col items-center"
                   >
                     <motion.div
-                      className="w-full aspect-square bg-gray-100 rounded-lg overflow-hidden mb-2"
+                      className="w-full aspect-square bg-darkGreen-900/50 border border-gold-950/20 rounded-lg overflow-hidden mb-2"
                       whileHover={{ scale: 1.05 }}
                       transition={{ duration: 0.2 }}
                     >
@@ -119,14 +119,14 @@ const CategoriesPage = () => {
                           className="w-full h-full object-cover"
                         />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-green-100 to-green-200">
-                          <span className="text-2xl font-bold text-green-500">
+                        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gold-950/20 to-gold-600/20">
+                          <span className="text-2xl font-bold text-gold-950">
                             {category.name.charAt(0).toUpperCase()}
                           </span>
                         </div>
                       )}
                     </motion.div>
-                    <span className="text-xs text-center text-gray-700 font-medium leading-tight">
+                    <span className="text-xs text-center text-gray-300 font-medium leading-tight">
                       {category.name}
                     </span>
                   </Link>
@@ -138,10 +138,10 @@ const CategoriesPage = () => {
           {/* New Products Section */}
           <div>
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-base font-bold text-gray-900">NAYE NAYE PRODUCTS</h3>
+              <h3 className="text-base font-bold text-gold-950">NAYE NAYE PRODUCTS</h3>
               <Link
                 to={ROUTES.SHOP}
-                className="text-sm text-gray-500 hover:text-green-500 transition-colors"
+                className="text-sm text-gray-300 hover:text-gold-950 transition-colors"
               >
                 View more
               </Link>
@@ -153,7 +153,7 @@ const CategoriesPage = () => {
                 className="flex flex-col items-center"
               >
                 <motion.div
-                  className="w-full aspect-square bg-gray-100 rounded-lg overflow-hidden mb-2"
+                  className="w-full aspect-square bg-darkGreen-900/50 border border-gold-950/20 rounded-lg overflow-hidden mb-2"
                   whileHover={{ scale: 1.05 }}
                   transition={{ duration: 0.2 }}
                 >
@@ -168,12 +168,12 @@ const CategoriesPage = () => {
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-green-100 to-green-200">
+                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gold-950/20 to-gold-600/20">
                       <span className="text-2xl">⭐</span>
                     </div>
                   )}
                 </motion.div>
-                <span className="text-xs text-center text-gray-700 font-medium">
+                <span className="text-xs text-center text-gray-300 font-medium">
                   Featured Products
                 </span>
               </Link>
@@ -184,7 +184,7 @@ const CategoriesPage = () => {
                 className="flex flex-col items-center"
               >
                 <motion.div
-                  className="w-full aspect-square bg-gray-100 rounded-lg overflow-hidden mb-2"
+                  className="w-full aspect-square bg-darkGreen-900/50 border border-gold-950/20 rounded-lg overflow-hidden mb-2"
                   whileHover={{ scale: 1.05 }}
                   transition={{ duration: 0.2 }}
                 >
@@ -199,12 +199,12 @@ const CategoriesPage = () => {
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-red-100 to-green-100">
+                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gold-950/20 to-gold-600/20">
                       <span className="text-2xl">🔥</span>
                     </div>
                   )}
                 </motion.div>
-                <span className="text-xs text-center text-gray-700 font-medium">
+                <span className="text-xs text-center text-gray-300 font-medium">
                   Hot Products
                 </span>
               </Link>
@@ -215,7 +215,7 @@ const CategoriesPage = () => {
                 className="flex flex-col items-center"
               >
                 <motion.div
-                  className="w-full aspect-square bg-gray-100 rounded-lg overflow-hidden mb-2"
+                  className="w-full aspect-square bg-darkGreen-900/50 border border-gold-950/20 rounded-lg overflow-hidden mb-2"
                   whileHover={{ scale: 1.05 }}
                   transition={{ duration: 0.2 }}
                 >
@@ -230,12 +230,12 @@ const CategoriesPage = () => {
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-green-100 to-purple-100">
+                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gold-950/20 to-gold-600/20">
                       <span className="text-2xl">📈</span>
                     </div>
                   )}
                 </motion.div>
-                <span className="text-xs text-center text-gray-700 font-medium">
+                <span className="text-xs text-center text-gray-300 font-medium">
                   Trending Products
                 </span>
               </Link>
@@ -248,18 +248,18 @@ const CategoriesPage = () => {
       <div className="hidden md:block max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">All Categories</h1>
-          <p className="text-gray-600">Browse our complete collection of products</p>
+          <h1 className="text-3xl font-bold text-gold-950 mb-2">All Categories</h1>
+          <p className="text-gray-300">Browse our complete collection of products</p>
         </div>
 
         {/* Categories Grid */}
         {categories.length > 0 && (
           <div className="mb-12">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-gray-900">Shop by Category</h2>
+              <h2 className="text-2xl font-bold text-gold-950">Shop by Category</h2>
               <Link
                 to={ROUTES.SHOP}
-                className="text-green-500 hover:text-green-600 font-medium flex items-center gap-1 transition-colors"
+                className="text-gold-950 hover:text-gold-600 font-medium flex items-center gap-1 transition-colors"
               >
                 View all
                 <ChevronRight className="w-4 h-4" />
@@ -273,10 +273,10 @@ const CategoriesPage = () => {
                   className="group"
                 >
                   <motion.div
-                    className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 p-4"
+                    className="bg-darkGreen-900/50 border border-gold-950/20 rounded-xl hover:border-gold-950/50 transition-all duration-300 p-4"
                     whileHover={{ y: -4 }}
                   >
-                    <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden mb-3">
+                    <div className="aspect-square bg-darkGreen-950 rounded-lg overflow-hidden mb-3">
                       {category.image ? (
                         <FirebaseImage
                           src={category.image}
@@ -284,14 +284,14 @@ const CategoriesPage = () => {
                           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                         />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-green-100 to-green-200">
-                          <span className="text-4xl font-bold text-green-500">
+                        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gold-950/20 to-gold-600/20">
+                          <span className="text-4xl font-bold text-gold-950">
                             {category.name.charAt(0).toUpperCase()}
                           </span>
                         </div>
                       )}
                     </div>
-                    <h3 className="text-sm font-semibold text-gray-900 text-center group-hover:text-green-500 transition-colors">
+                    <h3 className="text-sm font-semibold text-gray-200 text-center group-hover:text-gold-950 transition-colors">
                       {category.name}
                     </h3>
                   </motion.div>
@@ -304,10 +304,10 @@ const CategoriesPage = () => {
         {/* New Products Section - Desktop */}
         <div>
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-gray-900">New & Featured Products</h2>
+            <h2 className="text-2xl font-bold text-gold-950">New & Featured Products</h2>
             <Link
               to={ROUTES.SHOP}
-              className="text-green-500 hover:text-green-600 font-medium flex items-center gap-1 transition-colors"
+              className="text-gold-950 hover:text-gold-600 font-medium flex items-center gap-1 transition-colors"
             >
               View all
               <ChevronRight className="w-4 h-4" />
@@ -320,10 +320,10 @@ const CategoriesPage = () => {
               className="group"
             >
               <motion.div
-                className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 p-6"
+                className="bg-darkGreen-900/50 border border-gold-950/20 rounded-xl hover:border-gold-950/50 transition-all duration-300 p-6"
                 whileHover={{ y: -4 }}
               >
-                <div className="aspect-square bg-white rounded-lg overflow-hidden mb-4">
+                <div className="aspect-square bg-darkGreen-950 rounded-lg overflow-hidden mb-4">
                   {featuredProducts[0] ? (
                     <FirebaseImage
                       src={
@@ -340,10 +340,10 @@ const CategoriesPage = () => {
                     </div>
                   )}
                 </div>
-                <h3 className="text-lg font-bold text-gray-900 text-center group-hover:text-green-500 transition-colors">
+                <h3 className="text-lg font-bold text-gold-950 text-center group-hover:text-gold-600 transition-colors">
                   Featured Products
                 </h3>
-                <p className="text-sm text-gray-600 text-center mt-2">
+                <p className="text-sm text-gray-300 text-center mt-2">
                   Handpicked favorites
                 </p>
               </motion.div>
@@ -355,10 +355,10 @@ const CategoriesPage = () => {
               className="group"
             >
               <motion.div
-                className="bg-gradient-to-br from-red-50 to-green-50 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 p-6"
+                className="bg-darkGreen-900/50 border border-gold-950/20 rounded-xl hover:border-gold-950/50 transition-all duration-300 p-6"
                 whileHover={{ y: -4 }}
               >
-                <div className="aspect-square bg-white rounded-lg overflow-hidden mb-4">
+                <div className="aspect-square bg-darkGreen-950 rounded-lg overflow-hidden mb-4">
                   {bestSellers[0] ? (
                     <FirebaseImage
                       src={
@@ -375,10 +375,10 @@ const CategoriesPage = () => {
                     </div>
                   )}
                 </div>
-                <h3 className="text-lg font-bold text-gray-900 text-center group-hover:text-green-500 transition-colors">
+                <h3 className="text-lg font-bold text-gold-950 text-center group-hover:text-gold-600 transition-colors">
                   Hot Products
                 </h3>
-                <p className="text-sm text-gray-600 text-center mt-2">
+                <p className="text-sm text-gray-300 text-center mt-2">
                   Best sellers
                 </p>
               </motion.div>
@@ -390,10 +390,10 @@ const CategoriesPage = () => {
               className="group"
             >
               <motion.div
-                className="bg-gradient-to-br from-green-50 to-purple-50 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 p-6"
+                className="bg-darkGreen-900/50 border border-gold-950/20 rounded-xl hover:border-gold-950/50 transition-all duration-300 p-6"
                 whileHover={{ y: -4 }}
               >
-                <div className="aspect-square bg-white rounded-lg overflow-hidden mb-4">
+                <div className="aspect-square bg-darkGreen-950 rounded-lg overflow-hidden mb-4">
                   {newArrivals[0] ? (
                     <FirebaseImage
                       src={
@@ -410,10 +410,10 @@ const CategoriesPage = () => {
                     </div>
                   )}
                 </div>
-                <h3 className="text-lg font-bold text-gray-900 text-center group-hover:text-green-500 transition-colors">
+                <h3 className="text-lg font-bold text-gold-950 text-center group-hover:text-gold-600 transition-colors">
                   Trending Products
                 </h3>
-                <p className="text-sm text-gray-600 text-center mt-2">
+                <p className="text-sm text-gray-300 text-center mt-2">
                   New arrivals
                 </p>
               </motion.div>

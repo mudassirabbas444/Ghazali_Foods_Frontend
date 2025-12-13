@@ -438,6 +438,60 @@ class AdminService {
       throw error;
     }
   }
+
+  // Blogs
+  async createBlog(blogData, image) {
+    try {
+      const formData = new FormData();
+      Object.keys(blogData).forEach(key => {
+        if (key === 'tags') {
+          formData.append(key, JSON.stringify(blogData[key]));
+        } else if (blogData[key] !== undefined && blogData[key] !== null) {
+          formData.append(key, blogData[key]);
+        }
+      });
+      
+      if (image) {
+        formData.append('featuredImage', image);
+      }
+
+      const response = await apiService.upload(API_ENDPOINTS.BLOGS.GET, formData);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async updateBlog(blogId, blogData, image) {
+    try {
+      const formData = new FormData();
+      Object.keys(blogData).forEach(key => {
+        if (key === 'tags') {
+          formData.append(key, JSON.stringify(blogData[key]));
+        } else if (blogData[key] !== undefined && blogData[key] !== null) {
+          formData.append(key, blogData[key]);
+        }
+      });
+      
+      if (image) {
+        formData.append('featuredImage', image);
+      }
+
+      const response = await apiService.uploadPut(API_ENDPOINTS.BLOGS.GET_BY_ID.replace(':id', blogId), formData);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async deleteBlog(blogId) {
+    try {
+      const response = await apiService.delete(API_ENDPOINTS.BLOGS.GET_BY_ID.replace(':id', blogId));
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 const adminService = new AdminService();

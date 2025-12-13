@@ -36,6 +36,8 @@ import WishlistPage from './pages/wishlist/WishlistPage';
 import ProductComparisonPage from './pages/product/ProductComparisonPage';
 import AboutPage from './pages/about/AboutPage';
 import ContactPage from './pages/contact/ContactPage';
+import BlogPage from './pages/blog/BlogPage';
+import BlogDetailPage from './pages/blog/BlogDetailPage';
 
 // Admin Pages
 import AdminLoginPage from './pages/admin/AdminLoginPage';
@@ -47,6 +49,7 @@ import AdminCustomersPage from './pages/admin/AdminCustomersPage';
 import AdminCouponsPage from './pages/admin/AdminCouponsPage';
 import AdminBannersPage from './pages/admin/AdminBannersPage';
 import AdminAnnouncementsPage from './pages/admin/AdminAnnouncementsPage';
+import AdminBlogsPage from './pages/admin/AdminBlogsPage';
 import AdminReviewsPage from './pages/admin/AdminReviewsPage';
 import AdminStockNotificationsPage from './pages/admin/AdminStockNotificationsPage';
 import AdminQuestionsPage from './pages/admin/AdminQuestionsPage';
@@ -181,6 +184,8 @@ function AppWithToast() {
                   <Route path={ROUTES.SEARCH} element={<Layout><ShopPage /></Layout>} />
                   <Route path={ROUTES.ABOUT} element={<Layout><AboutPage /></Layout>} />
                   <Route path={ROUTES.CONTACT} element={<Layout><ContactPage /></Layout>} />
+                  <Route path={ROUTES.BLOG} element={<Layout><BlogPage /></Layout>} />
+                  <Route path={ROUTES.BLOG_DETAIL} element={<Layout><BlogDetailPage /></Layout>} />
 
                   {/* Protected Routes with Layout */}
                   <Route
@@ -337,6 +342,16 @@ function AppWithToast() {
                       <AdminProtectedRoute>
                         <AdminLayout>
                           <AdminAnnouncementsPage />
+                        </AdminLayout>
+                      </AdminProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path={ROUTES.ADMIN_BLOGS}
+                    element={
+                      <AdminProtectedRoute>
+                        <AdminLayout>
+                          <AdminBlogsPage />
                         </AdminLayout>
                       </AdminProtectedRoute>
                     }

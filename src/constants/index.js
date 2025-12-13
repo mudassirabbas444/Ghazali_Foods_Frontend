@@ -156,6 +156,13 @@ export const API_ENDPOINTS = {
     GET_BY_ID: '/announcements/:id',
   },
 
+  // Blog endpoints
+  BLOGS: {
+    GET: '/blogs/',
+    GET_BY_ID: '/blogs/:id',
+    GET_BY_SLUG: '/blogs/slug/:slug',
+  },
+
   // Stock Notification endpoints
   STOCK_NOTIFICATIONS: {
     SUBSCRIBE: '/stock-notifications/',
@@ -238,6 +245,8 @@ export const ROUTES = {
   COMPARE: '/compare',
   ABOUT: '/about',
   CONTACT: '/contact',
+  BLOG: '/blog',
+  BLOG_DETAIL: '/blog/:slug',
   // Admin routes
   ADMIN_LOGIN: '/admin/login',
   ADMIN_DASHBOARD: '/admin/dashboard',
@@ -248,6 +257,7 @@ export const ROUTES = {
   ADMIN_COUPONS: '/admin/coupons',
   ADMIN_BANNERS: '/admin/banners',
   ADMIN_ANNOUNCEMENTS: '/admin/announcements',
+  ADMIN_BLOGS: '/admin/blogs',
   ADMIN_REVIEWS: '/admin/reviews',
   ADMIN_STOCK_NOTIFICATIONS: '/admin/stock-notifications',
   ADMIN_QUESTIONS: '/admin/questions',
