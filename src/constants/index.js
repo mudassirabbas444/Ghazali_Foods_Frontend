@@ -253,6 +253,7 @@ export const ROUTES = {
   ADMIN_PRODUCTS: '/admin/products',
   ADMIN_CATEGORIES: '/admin/categories',
   ADMIN_ORDERS: '/admin/orders',
+  ADMIN_ORDER_DETAIL: '/admin/orders/:orderNumber',
   ADMIN_CUSTOMERS: '/admin/customers',
   ADMIN_COUPONS: '/admin/coupons',
   ADMIN_BANNERS: '/admin/banners',

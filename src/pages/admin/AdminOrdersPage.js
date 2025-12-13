@@ -238,7 +238,7 @@ const AdminOrdersPage = () => {
                           <Filter className="w-4 h-4" />
                         </button>
                         <Link
-                          to={ROUTES.ORDER_DETAIL.replace(':orderNumber', order.orderNumber)}
+                          to={ROUTES.ADMIN_ORDER_DETAIL.replace(':orderNumber', order.orderNumber)}
                           className="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-colors"
                           title="View Details"
                         >
