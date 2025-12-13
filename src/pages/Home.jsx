@@ -216,7 +216,7 @@ const Home = () => {
     return (
       <Layout>
         <div className="flex items-center justify-center min-h-screen">
-          <Loader2 className="w-8 h-8 animate-spin text-green-500" />
+          <Loader2 className="w-8 h-8 animate-spin text-gold-950" />
         </div>
       </Layout>
     );
@@ -294,7 +294,7 @@ const Home = () => {
         )}
 
         {/* Features Section */}
-        <section className="bg-gray-50 py-8 px-4">
+        <section className="bg-darkGreen-900/30 py-8 px-4">
           <div className="max-w-7xl mx-auto">
             <div className="grid grid-cols-4 gap-2 md:gap-6">
               {/* Free Shipping */}
@@ -303,15 +303,15 @@ const Home = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4 }}
-                className="bg-white rounded-lg p-2 md:p-6 text-center hover:shadow-md transition-shadow"
+                className="bg-darkGreen-900/50 border border-gold-950/20 rounded-lg p-2 md:p-6 text-center hover:border-gold-950/50 transition-shadow"
               >
                 <div className="flex justify-center mb-2 md:mb-3">
-                  <div className="bg-green-100 rounded-full p-1.5 md:p-3">
-                    <Truck className="w-4 h-4 md:w-8 md:h-8 text-green-600" />
+                  <div className="bg-gold-950/20 rounded-full p-1.5 md:p-3">
+                    <Truck className="w-4 h-4 md:w-8 md:h-8 text-gold-950" />
                   </div>
                 </div>
-                <h3 className="font-semibold text-gray-900 mb-0.5 md:mb-1 text-[10px] md:text-base leading-tight">Free Shipping</h3>
-                <p className="text-[8px] md:text-sm text-gray-600 leading-tight">On orders over Rs. 5,000</p>
+                <h3 className="font-semibold text-gray-200 mb-0.5 md:mb-1 text-[10px] md:text-base leading-tight">Free Shipping</h3>
+                <p className="text-[8px] md:text-sm text-gray-400 leading-tight">On orders over Rs. 5,000</p>
               </motion.div>
 
               {/* Secure Payments */}
@@ -320,15 +320,15 @@ const Home = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: 0.1 }}
-                className="bg-white rounded-lg p-2 md:p-6 text-center hover:shadow-md transition-shadow"
+                className="bg-darkGreen-900/50 border border-gold-950/20 rounded-lg p-2 md:p-6 text-center hover:border-gold-950/50 transition-shadow"
               >
                 <div className="flex justify-center mb-2 md:mb-3">
-                  <div className="bg-green-100 rounded-full p-1.5 md:p-3">
-                    <Shield className="w-4 h-4 md:w-8 md:h-8 text-green-600" />
+                  <div className="bg-gold-950/20 rounded-full p-1.5 md:p-3">
+                    <Shield className="w-4 h-4 md:w-8 md:h-8 text-gold-950" />
                   </div>
                 </div>
-                <h3 className="font-semibold text-gray-900 mb-0.5 md:mb-1 text-[10px] md:text-base leading-tight">Secure Payments</h3>
-                <p className="text-[8px] md:text-sm text-gray-600 leading-tight">JazzCash, EasyPaisa & more</p>
+                <h3 className="font-semibold text-gray-200 mb-0.5 md:mb-1 text-[10px] md:text-base leading-tight">Secure Payments</h3>
+                <p className="text-[8px] md:text-sm text-gray-400 leading-tight">JazzCash, EasyPaisa & more</p>
               </motion.div>
 
               {/* Easy Returns */}
@@ -337,15 +337,15 @@ const Home = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: 0.2 }}
-                className="bg-white rounded-lg p-2 md:p-6 text-center hover:shadow-md transition-shadow"
+                className="bg-darkGreen-900/50 border border-gold-950/20 rounded-lg p-2 md:p-6 text-center hover:border-gold-950/50 transition-shadow"
               >
                 <div className="flex justify-center mb-2 md:mb-3">
-                  <div className="bg-green-100 rounded-full p-1.5 md:p-3">
-                    <RefreshCw className="w-4 h-4 md:w-8 md:h-8 text-green-600" />
+                  <div className="bg-gold-950/20 rounded-full p-1.5 md:p-3">
+                    <RefreshCw className="w-4 h-4 md:w-8 md:h-8 text-gold-950" />
                   </div>
                 </div>
-                <h3 className="font-semibold text-gray-900 mb-0.5 md:mb-1 text-[10px] md:text-base leading-tight">Easy Returns</h3>
-                <p className="text-[8px] md:text-sm text-gray-600 leading-tight">7-day return policy</p>
+                <h3 className="font-semibold text-gray-200 mb-0.5 md:mb-1 text-[10px] md:text-base leading-tight">Easy Returns</h3>
+                <p className="text-[8px] md:text-sm text-gray-400 leading-tight">7-day return policy</p>
               </motion.div>
 
               {/* 24/7 Support */}
@@ -354,15 +354,15 @@ const Home = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: 0.3 }}
-                className="bg-white rounded-lg p-2 md:p-6 text-center hover:shadow-md transition-shadow"
+                className="bg-darkGreen-900/50 border border-gold-950/20 rounded-lg p-2 md:p-6 text-center hover:border-gold-950/50 transition-shadow"
               >
                 <div className="flex justify-center mb-2 md:mb-3">
-                  <div className="bg-green-100 rounded-full p-1.5 md:p-3">
-                    <Headphones className="w-4 h-4 md:w-8 md:h-8 text-green-600" />
+                  <div className="bg-gold-950/20 rounded-full p-1.5 md:p-3">
+                    <Headphones className="w-4 h-4 md:w-8 md:h-8 text-gold-950" />
                   </div>
                 </div>
-                <h3 className="font-semibold text-gray-900 mb-0.5 md:mb-1 text-[10px] md:text-base leading-tight">24/7 Support</h3>
-                <p className="text-[8px] md:text-sm text-gray-600 leading-tight">Dedicated support team</p>
+                <h3 className="font-semibold text-gray-200 mb-0.5 md:mb-1 text-[10px] md:text-base leading-tight">24/7 Support</h3>
+                <p className="text-[8px] md:text-sm text-gray-400 leading-tight">Dedicated support team</p>
               </motion.div>
             </div>
           </div>
@@ -370,14 +370,14 @@ const Home = () => {
 
         {/* Shop by Category Section - Second */}
         {categories.length > 0 && (
-          <section className="bg-white py-6 px-4">
-            <h2 className="text-xl font-bold text-gray-900 mb-4 px-2">Shop by Category</h2>
+          <section className="bg-darkGreen-900/30 py-6 px-4">
+            <h2 className="text-xl font-bold text-gold-950 mb-4 px-2">Shop by Category</h2>
             <div className="flex gap-4 overflow-x-auto scrollbar-hide pb-2">
               {categories.slice(0, 4).map((category) => (
                     <Link
                       key={category._id}
                       to={ROUTES.CATEGORY.replace(':slug', category.slug)}
-                  className="flex-shrink-0 w-[140px] bg-white rounded-lg border border-gray-200 p-4 hover:shadow-md transition-shadow"
+                  className="flex-shrink-0 w-[140px] bg-darkGreen-900/50 border border-gold-950/20 rounded-lg p-4 hover:border-gold-950/50 transition-shadow"
                     >
                   <div className="w-full aspect-square mb-3 rounded-lg overflow-hidden bg-gray-100 flex items-center justify-center">
                       {category.image ? (
@@ -390,7 +390,7 @@ const Home = () => {
                       <ShoppingBag className="w-12 h-12 text-gray-400" />
                     )}
                         </div>
-                  <p className="text-sm font-medium text-gray-900 text-center line-clamp-2">
+                  <p className="text-sm font-medium text-gray-200 text-center line-clamp-2">
                         {category.name}
                   </p>
                     </Link>
@@ -409,10 +409,10 @@ const Home = () => {
               {/* Category Header with Image */}
               <div className="mb-4">
                 <div className="flex items-center justify-between mb-3">
-                  <h2 className="text-xl font-bold text-gray-900">{category.name}</h2>
+                  <h2 className="text-xl font-bold text-gold-950">{category.name}</h2>
                 <Link
                     to={ROUTES.CATEGORY.replace(':slug', category.slug)}
-                    className="text-sm text-green-600 hover:text-green-700 font-medium"
+                    className="text-sm text-gold-950 hover:text-gold-600 font-medium"
                   >
                     View more →
                   </Link>
@@ -435,7 +435,7 @@ const Home = () => {
                 {products.map((product) => (
                   <div
                     key={product._id}
-                    className="flex-shrink-0 w-[140px] bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-md transition-shadow"
+                    className="flex-shrink-0 w-[140px] bg-darkGreen-900/50 border border-gold-950/20 rounded-lg overflow-hidden hover:border-gold-950/50 transition-shadow"
                   >
                     <Link to={ROUTES.PRODUCT_DETAIL.replace(':slug', product.slug)}>
                       <div className="relative aspect-square bg-gray-50">
@@ -457,12 +457,12 @@ const Home = () => {
                     </Link>
                     <div className="p-2">
                       <Link to={ROUTES.PRODUCT_DETAIL.replace(':slug', product.slug)}>
-                        <h3 className="font-medium text-gray-900 mb-1 line-clamp-2 text-xs leading-tight">
+                        <h3 className="font-medium text-gray-200 mb-1 line-clamp-2 text-xs leading-tight">
                           {product.name}
                         </h3>
                       </Link>
                       <div className="mb-2">
-                        <p className="text-xs font-bold text-gray-900">
+                        <p className="text-xs font-bold text-gold-950">
                           {getProductPrice(product)}
                         </p>
                         {product.compareAtPrice && (
@@ -473,7 +473,7 @@ const Home = () => {
                 </div>
                       <button
                         onClick={() => handleAddToCart(product)}
-                        className="w-full bg-green-500 hover:bg-green-600 text-white text-[10px] font-semibold py-1.5 rounded transition-colors"
+                        className="w-full bg-gold-950 hover:bg-gold-600 text-darkGreen-950 text-[10px] font-semibold py-1.5 rounded transition-colors"
                 >
                         Add To Cart
                       </button>
@@ -546,7 +546,7 @@ const ProductCard = ({ product, onAddToCart, onToggleWishlist, isInWishlist, get
 
         <button
           onClick={() => onAddToCart(product)}
-          className="w-full bg-green-500 hover:bg-green-600 text-white text-xs font-semibold py-2 rounded transition-colors"
+          className="w-full bg-gold-950 hover:bg-gold-600 text-darkGreen-950 text-xs font-semibold py-2 rounded transition-colors"
         >
           Add To Cart
         </button>
