@@ -134,7 +134,7 @@ class AdminService {
         formData.append('image', image);
       }
 
-      const response = await apiService.upload(
+      const response = await apiService.uploadPut(
         API_ENDPOINTS.CATEGORIES.UPDATE.replace(':id', categoryId),
         formData
       );
