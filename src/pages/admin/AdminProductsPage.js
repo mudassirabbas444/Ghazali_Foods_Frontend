@@ -301,6 +301,58 @@ const ProductModal = ({ product, categories, onClose, onSuccess }) => {
   const [imagesToRemove, setImagesToRemove] = useState([]);
   const [submitting, setSubmitting] = useState(false);
 
+  // Update formData when product changes
+  useEffect(() => {
+    if (product) {
+      setFormData({
+        name: product?.name || '',
+        description: product?.description || '',
+        shortDescription: product?.shortDescription || '',
+        category: product?.category?._id || product?.category || '',
+        subCategory: product?.subCategory?._id || product?.subCategory || '',
+        basePrice: product?.basePrice || 0,
+        compareAtPrice: product?.compareAtPrice || 0,
+        discount: product?.discount || 0,
+        stock: product?.stock || 0,
+        brand: product?.brand || '',
+        origin: product?.origin || '',
+        isFeatured: product?.isFeatured || false,
+        isBestSeller: product?.isBestSeller || false,
+        isNewArrival: product?.isNewArrival || false,
+        isActive: product?.isActive !== undefined ? product.isActive : true,
+      });
+      setVariants(product?.variants || [{ weight: '', price: 0, stock: 0, sku: '', isActive: true }]);
+      setExistingImages(product?.images || []);
+      setImages([]);
+      setImagePreviews([]);
+      setImagesToRemove([]);
+    } else {
+      // Reset form for new product
+      setFormData({
+        name: '',
+        description: '',
+        shortDescription: '',
+        category: '',
+        subCategory: '',
+        basePrice: 0,
+        compareAtPrice: 0,
+        discount: 0,
+        stock: 0,
+        brand: '',
+        origin: '',
+        isFeatured: false,
+        isBestSeller: false,
+        isNewArrival: false,
+        isActive: true,
+      });
+      setVariants([{ weight: '', price: 0, stock: 0, sku: '', isActive: true }]);
+      setExistingImages([]);
+      setImages([]);
+      setImagePreviews([]);
+      setImagesToRemove([]);
+    }
+  }, [product]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -467,8 +519,11 @@ const ProductModal = ({ product, categories, onClose, onSuccess }) => {
                   required
                   min="0"
                   step="0.01"
-                  value={formData.basePrice}
-                  onChange={(e) => setFormData({ ...formData, basePrice: parseFloat(e.target.value) })}
+                  value={formData.basePrice || ''}
+                  onChange={(e) => {
+                    const value = e.target.value === '' ? 0 : parseFloat(e.target.value) || 0;
+                    setFormData({ ...formData, basePrice: value });
+                  }}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 text-gray-900 bg-white"
                 />
               </div>
@@ -480,8 +535,11 @@ const ProductModal = ({ product, categories, onClose, onSuccess }) => {
                   type="number"
                   min="0"
                   step="0.01"
-                  value={formData.compareAtPrice}
-                  onChange={(e) => setFormData({ ...formData, compareAtPrice: parseFloat(e.target.value) })}
+                  value={formData.compareAtPrice || ''}
+                  onChange={(e) => {
+                    const value = e.target.value === '' ? 0 : parseFloat(e.target.value) || 0;
+                    setFormData({ ...formData, compareAtPrice: value });
+                  }}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 text-gray-900 bg-white"
                 />
               </div>
@@ -493,8 +551,11 @@ const ProductModal = ({ product, categories, onClose, onSuccess }) => {
                   type="number"
                   min="0"
                   max="100"
-                  value={formData.discount}
-                  onChange={(e) => setFormData({ ...formData, discount: parseFloat(e.target.value) })}
+                  value={formData.discount || ''}
+                  onChange={(e) => {
+                    const value = e.target.value === '' ? 0 : parseFloat(e.target.value) || 0;
+                    setFormData({ ...formData, discount: value });
+                  }}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 text-gray-900 bg-white"
                 />
               </div>
@@ -529,16 +590,22 @@ const ProductModal = ({ product, categories, onClose, onSuccess }) => {
                       placeholder="Price"
                       min="0"
                       step="0.01"
-                      value={variant.price}
-                      onChange={(e) => updateVariant(index, 'price', parseFloat(e.target.value))}
+                      value={variant.price || ''}
+                      onChange={(e) => {
+                        const value = e.target.value === '' ? 0 : parseFloat(e.target.value) || 0;
+                        updateVariant(index, 'price', value);
+                      }}
                       className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 text-gray-900 bg-white"
                     />
                     <input
                       type="number"
                       placeholder="Stock"
                       min="0"
-                      value={variant.stock}
-                      onChange={(e) => updateVariant(index, 'stock', parseInt(e.target.value))}
+                      value={variant.stock || ''}
+                      onChange={(e) => {
+                        const value = e.target.value === '' ? 0 : parseInt(e.target.value) || 0;
+                        updateVariant(index, 'stock', value);
+                      }}
                       className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 text-gray-900 bg-white"
                     />
                     <input
