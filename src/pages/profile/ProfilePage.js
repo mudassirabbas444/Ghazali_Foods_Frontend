@@ -343,12 +343,12 @@ const ProfilePage = () => {
                     leftIcon={<Mail className="w-5 h-5" />}
                     error={errors.email?.message}
                     disabled
-                    className="bg-gray-100 dark:bg-gray-700"
+                    className="bg-darkGreen-900/30"
                     {...register('email', {
                       required: 'Email is required',
                     })}
                   />
-                  <p className="text-xs text-gray-500 dark:text-gray-400 -mt-2">
+                  <p className="text-xs text-gray-400 -mt-2">
                     Email cannot be changed
                   </p>
 
@@ -462,7 +462,7 @@ const ProfilePage = () => {
                           <Button
                             onClick={handleChangePassword}
                             loading={changingPassword}
-                            className="flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white"
+                            className="flex items-center gap-2 bg-gold-950 hover:bg-gold-600 text-darkGreen-950"
                           >
                             <Save className="w-4 h-4" />
                             Update Password

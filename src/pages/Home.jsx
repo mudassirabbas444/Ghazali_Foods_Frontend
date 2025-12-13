@@ -224,11 +224,11 @@ const Home = () => {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-white">
+      <div className="min-h-screen bg-darkGreen-950">
         {/* Banner Carousel Section - First */}
         {banners.length > 0 && (
-          <section className="relative w-full bg-white">
-            <div className="relative w-full h-[250px] md:h-[400px] lg:h-[500px] overflow-hidden bg-gray-100">
+          <section className="relative w-full bg-darkGreen-950">
+            <div className="relative w-full h-[250px] md:h-[400px] lg:h-[500px] overflow-hidden bg-darkGreen-900">
               {banners.map((banner, index) => (
                 <motion.div
                   key={banner._id || index}
@@ -257,17 +257,17 @@ const Home = () => {
                 <>
                   <button
                     onClick={prevBanner}
-                    className="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-white/80 hover:bg-white rounded-full p-2 shadow-lg transition-all"
+                    className="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-darkGreen-900/80 hover:bg-darkGreen-900 border border-gold-950/30 rounded-full p-2 shadow-lg transition-all"
                     aria-label="Previous banner"
                   >
-                    <ChevronLeft className="w-6 h-6 text-gray-800" />
+                    <ChevronLeft className="w-6 h-6 text-gold-950" />
                   </button>
                   <button
                     onClick={nextBanner}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-white/80 hover:bg-white rounded-full p-2 shadow-lg transition-all"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-darkGreen-900/80 hover:bg-darkGreen-900 border border-gold-950/30 rounded-full p-2 shadow-lg transition-all"
                     aria-label="Next banner"
                   >
-                    <ChevronRight className="w-6 h-6 text-gray-800" />
+                    <ChevronRight className="w-6 h-6 text-gold-950" />
                   </button>
                 </>
               )}
@@ -281,8 +281,8 @@ const Home = () => {
                       onClick={() => setCurrentBannerIndex(index)}
                       className={`w-2 h-2 rounded-full transition-all ${
                         index === currentBannerIndex
-                          ? 'bg-white w-8'
-                          : 'bg-white/50 hover:bg-white/75'
+                          ? 'bg-gold-950 w-8'
+                          : 'bg-gold-950/50 hover:bg-gold-950/75'
                       }`}
                       aria-label={`Go to banner ${index + 1}`}
                     />
@@ -379,7 +379,7 @@ const Home = () => {
                       to={ROUTES.CATEGORY.replace(':slug', category.slug)}
                   className="flex-shrink-0 w-[140px] bg-darkGreen-900/50 border border-gold-950/20 rounded-lg p-4 hover:border-gold-950/50 transition-shadow"
                     >
-                  <div className="w-full aspect-square mb-3 rounded-lg overflow-hidden bg-gray-100 flex items-center justify-center">
+                  <div className="w-full aspect-square mb-3 rounded-lg overflow-hidden bg-darkGreen-950 flex items-center justify-center">
                       {category.image ? (
                         <FirebaseImage
                           src={category.image}
@@ -387,7 +387,7 @@ const Home = () => {
                         className="w-full h-full object-cover"
                         />
                       ) : (
-                      <ShoppingBag className="w-12 h-12 text-gray-400" />
+                      <ShoppingBag className="w-12 h-12 text-gray-600" />
                     )}
                         </div>
                   <p className="text-sm font-medium text-gray-200 text-center line-clamp-2">
@@ -405,7 +405,7 @@ const Home = () => {
           if (products.length === 0) return null;
 
           return (
-            <section key={category._id} className="px-4 py-6">
+            <section key={category._id} className="px-4 py-6 bg-darkGreen-950">
               {/* Category Header with Image */}
               <div className="mb-4">
                 <div className="flex items-center justify-between mb-3">
@@ -438,7 +438,7 @@ const Home = () => {
                     className="flex-shrink-0 w-[140px] bg-darkGreen-900/50 border border-gold-950/20 rounded-lg overflow-hidden hover:border-gold-950/50 transition-shadow"
                   >
                     <Link to={ROUTES.PRODUCT_DETAIL.replace(':slug', product.slug)}>
-                      <div className="relative aspect-square bg-gray-50">
+                      <div className="relative aspect-square bg-darkGreen-950">
                         <FirebaseImage
                           src={
                             (product.images && product.images.length > 0 && product.images[0])
@@ -505,10 +505,10 @@ const ProductCard = ({ product, onAddToCart, onToggleWishlist, isInWishlist, get
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-300"
+      className="bg-darkGreen-900/50 border border-gold-950/20 rounded-lg overflow-hidden hover:border-gold-950/50 transition-all duration-300"
     >
       <Link to={ROUTES.PRODUCT_DETAIL.replace(':slug', product.slug)}>
-        <div className="relative aspect-square bg-gray-50">
+        <div className="relative aspect-square bg-darkGreen-950">
           <FirebaseImage
             src={
               (product.images && product.images.length > 0 && product.images[0])
@@ -528,7 +528,7 @@ const ProductCard = ({ product, onAddToCart, onToggleWishlist, isInWishlist, get
 
       <div className="p-2">
       <Link to={ROUTES.PRODUCT_DETAIL.replace(':slug', product.slug)}>
-          <h3 className="font-medium text-gray-900 mb-1 line-clamp-2 text-xs leading-tight">
+          <h3 className="font-medium text-gray-200 mb-1 line-clamp-2 text-xs leading-tight">
           {product.name}
         </h3>
       </Link>
@@ -537,10 +537,10 @@ const ProductCard = ({ product, onAddToCart, onToggleWishlist, isInWishlist, get
           {discount > 0 && originalPrice > displayPrice ? (
             <>
               <p className="text-xs text-gray-500 line-through">Rs. {originalPrice.toLocaleString()}</p>
-              <p className="text-sm font-bold text-gray-900">Rs. {displayPrice.toLocaleString()}</p>
+              <p className="text-sm font-bold text-gold-950">Rs. {displayPrice.toLocaleString()}</p>
             </>
           ) : (
-            <p className="text-sm font-bold text-gray-900">Rs. {displayPrice.toLocaleString()}</p>
+            <p className="text-sm font-bold text-gold-950">Rs. {displayPrice.toLocaleString()}</p>
           )}
         </div>
 

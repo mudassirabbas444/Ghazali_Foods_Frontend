@@ -263,7 +263,7 @@ const CategoryPage = () => {
                   to={ROUTES.PRODUCT_DETAIL.replace(':slug', product.slug)}
                   className={viewMode === 'list' ? 'flex-shrink-0' : 'block'}
                 >
-                  <div className={`relative ${viewMode === 'list' ? 'w-32 h-32' : 'w-full aspect-square'} mb-4 rounded-xl overflow-hidden bg-white/50`}>
+                  <div className={`relative ${viewMode === 'list' ? 'w-32 h-32' : 'w-full aspect-square'} mb-4 rounded-xl overflow-hidden bg-darkGreen-950`}>
                     <FirebaseImage
                       src={
                         (product.images && product.images.length > 0 && product.images[0])
@@ -274,7 +274,7 @@ const CategoryPage = () => {
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                     {product.isBestSeller ? (
-                      <span className="absolute top-3 left-3 bg-gray-800 text-white text-xs font-semibold px-3 py-1.5 rounded-lg">
+                      <span className="absolute top-3 left-3 bg-darkGreen-800 text-gold-950 text-xs font-semibold px-3 py-1.5 rounded-lg">
                         Best Seller
                       </span>
                     ) : product.discount > 0 && (
@@ -284,13 +284,13 @@ const CategoryPage = () => {
                     )}
                     <button
                       onClick={(e) => handleToggleWishlist(product._id, e)}
-                      className="absolute top-3 right-3 p-2 bg-white/90 backdrop-blur-sm rounded-full shadow-md hover:bg-white transition-colors opacity-0 group-hover:opacity-100"
+                      className="absolute top-3 right-3 p-2 bg-darkGreen-900/90 backdrop-blur-sm border border-gold-950/30 rounded-full shadow-md hover:bg-darkGreen-900 transition-colors opacity-0 group-hover:opacity-100"
                     >
                       <Heart
                         className={`w-4 h-4 ${
                           wishlistItems.has(product._id)
-                            ? 'fill-red-500 text-red-500'
-                            : 'text-gray-700'
+                            ? 'fill-red-400 text-red-400'
+                            : 'text-gray-300'
                         }`}
                       />
                     </button>

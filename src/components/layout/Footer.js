@@ -68,21 +68,21 @@ const Footer = () => {
   ];
 
   return (
-    <footer className='bg-gradient-to-b from-green-50 via-green-50 to-green-100 text-gray-900 border-t border-green-200'>
+    <footer className='bg-darkGreen-950 text-gray-300 border-t border-gold-950/20'>
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-12'>
         {/* Mobile Layout */}
         <div className='md:hidden space-y-4'>
           {/* Company Info - Compact */}
           <div>
             <Link to='/' className='flex items-center space-x-2 mb-3'>
-              <div className='w-8 h-8 bg-gradient-to-br from-green-500 to-red-500 rounded-full flex items-center justify-center shadow-lg'>
-                <span className='text-white font-bold text-sm'>GF</span>
+              <div className='w-8 h-8 bg-gradient-to-br from-gold-950 to-gold-600 rounded-full flex items-center justify-center shadow-lg'>
+                <span className='text-darkGreen-950 font-bold text-sm'>GF</span>
               </div>
-              <span className='text-lg font-bold bg-gradient-to-r from-green-600 to-red-600 bg-clip-text text-transparent'>
+              <span className='text-lg font-bold text-gold-950'>
                 Ghazali Food
               </span>
             </Link>
-            <p className='text-sm text-gray-700 mb-3'>
+            <p className='text-sm text-gray-300 mb-3'>
               Premium quality dry fruits, nuts, and gourmet food products.
             </p>
             {/* Social Links - Compact */}
@@ -95,7 +95,7 @@ const Footer = () => {
                     href={social.href}
                     target='_blank'
                     rel='noopener noreferrer'
-                    className='p-1.5 bg-white/80 rounded-lg hover:bg-gradient-to-br hover:from-green-500 hover:to-red-500 hover:text-white transition-colors text-gray-700 shadow-sm'
+                    className='p-1.5 bg-gold-950/20 border border-gold-950/30 rounded-lg hover:bg-gold-950 hover:text-darkGreen-950 transition-colors text-gold-950'
                     aria-label={social.name}
                   >
                     <Icon className='h-4 w-4' />
@@ -107,16 +107,16 @@ const Footer = () => {
 
           {/* Collapsible Sections */}
           {/* Shipping Info */}
-          <div className='border-b border-green-200 pb-2'>
+          <div className='border-b border-gold-950/20 pb-2'>
             <button
               onClick={() => toggleSection('shipping')}
               className='w-full flex items-center justify-between text-left py-2'
             >
-              <h3 className='text-sm font-semibold text-gray-700'>Shipping Info</h3>
+              <h3 className='text-sm font-semibold text-gray-300'>Shipping Info</h3>
               {expandedSections.shipping ? (
-                <ChevronUp className='h-4 w-4 text-gray-500' />
+                <ChevronUp className='h-4 w-4 text-gray-400' />
               ) : (
-                <ChevronDown className='h-4 w-4 text-gray-500' />
+                <ChevronDown className='h-4 w-4 text-gray-400' />
               )}
             </button>
             {expandedSections.shipping && (
@@ -125,7 +125,7 @@ const Footer = () => {
                   <li key={link.name}>
                     <Link
                       to={link.href}
-                      className='text-sm text-gray-700 hover:text-green-600 transition-colors block py-1'
+                      className='text-sm text-gray-300 hover:text-gold-950 transition-colors block py-1'
                     >
                       {link.name}
                     </Link>
@@ -136,16 +136,16 @@ const Footer = () => {
           </div>
 
           {/* Legal */}
-          <div className='border-b border-green-200 pb-2'>
+          <div className='border-b border-gold-950/20 pb-2'>
             <button
               onClick={() => toggleSection('legal')}
               className='w-full flex items-center justify-between text-left py-2'
             >
-              <h3 className='text-sm font-semibold text-green-500'>Legal</h3>
+              <h3 className='text-sm font-semibold text-gold-950'>Legal</h3>
               {expandedSections.legal ? (
-                <ChevronUp className='h-4 w-4 text-gray-500' />
+                <ChevronUp className='h-4 w-4 text-gray-400' />
               ) : (
-                <ChevronDown className='h-4 w-4 text-gray-500' />
+                <ChevronDown className='h-4 w-4 text-gray-400' />
               )}
             </button>
             {expandedSections.legal && (
@@ -154,7 +154,7 @@ const Footer = () => {
                   <li key={link.name}>
                     <Link
                       to={link.href}
-                      className='text-sm text-gray-700 hover:text-green-600 transition-colors block py-1'
+                      className='text-sm text-gray-300 hover:text-gold-950 transition-colors block py-1'
                     >
                       {link.name}
                     </Link>
@@ -165,16 +165,16 @@ const Footer = () => {
           </div>
 
           {/* Account */}
-          <div className='border-b border-green-200 pb-2'>
+          <div className='border-b border-gold-950/20 pb-2'>
             <button
               onClick={() => toggleSection('account')}
               className='w-full flex items-center justify-between text-left py-2'
             >
-              <h3 className='text-sm font-semibold text-green-500'>Account</h3>
+              <h3 className='text-sm font-semibold text-gold-950'>Account</h3>
               {expandedSections.account ? (
-                <ChevronUp className='h-4 w-4 text-gray-500' />
+                <ChevronUp className='h-4 w-4 text-gray-400' />
               ) : (
-                <ChevronDown className='h-4 w-4 text-gray-500' />
+                <ChevronDown className='h-4 w-4 text-gray-400' />
               )}
             </button>
             {expandedSections.account && (
@@ -183,7 +183,7 @@ const Footer = () => {
                   <li key={link.name}>
                     <Link
                       to={link.href}
-                      className='text-sm text-gray-700 hover:text-green-600 transition-colors block py-1'
+                      className='text-sm text-gray-300 hover:text-gold-950 transition-colors block py-1'
                     >
                       {link.name}
                     </Link>
@@ -199,30 +199,30 @@ const Footer = () => {
           {/* Company Info */}
           <div className='md:col-span-2'>
             <Link to='/' className='flex items-center space-x-2 mb-4'>
-              <div className='w-10 h-10 bg-gradient-to-br from-green-500 to-red-500 rounded-full flex items-center justify-center shadow-lg'>
-                <span className='text-white font-bold text-lg'>GF</span>
+              <div className='w-10 h-10 bg-gradient-to-br from-gold-950 to-gold-600 rounded-full flex items-center justify-center shadow-lg'>
+                <span className='text-darkGreen-950 font-bold text-lg'>GF</span>
               </div>
-              <span className='text-xl font-bold bg-gradient-to-r from-green-600 to-red-600 bg-clip-text text-transparent'>
+              <span className='text-xl font-bold text-gold-950'>
                 Ghazali Food
               </span>
             </Link>
 
-            <p className='text-gray-700 mb-6 max-w-md'>
+            <p className='text-gray-300 mb-6 max-w-md'>
               Your trusted source for premium quality dry fruits, nuts, oils, chocolates, and gourmet food products. Fresh, authentic, and delivered to your doorstep.
             </p>
 
             {/* Contact Info */}
             <div className='flex flex-wrap items-center gap-4 md:gap-6 mb-6'>
-              <div className='flex items-center space-x-2 text-gray-700'>
-                <Phone className='h-5 w-5 text-green-600 flex-shrink-0' />
+              <div className='flex items-center space-x-2 text-gray-300'>
+                <Phone className='h-5 w-5 text-gold-950 flex-shrink-0' />
                 <span className='text-sm md:text-base'>+923101111659</span>
               </div>
-              <div className='flex items-center space-x-2 text-gray-700'>
-                <MapPin className='h-5 w-5 text-green-600 flex-shrink-0' />
+              <div className='flex items-center space-x-2 text-gray-300'>
+                <MapPin className='h-5 w-5 text-gold-950 flex-shrink-0' />
                 <span className='text-sm md:text-base'>Multan, Pakistan</span>
               </div>
-              <div className='flex items-center space-x-2 text-gray-700'>
-                <Clock className='h-5 w-5 text-green-600 flex-shrink-0' />
+              <div className='flex items-center space-x-2 text-gray-300'>
+                <Clock className='h-5 w-5 text-gold-950 flex-shrink-0' />
                 <span className='text-sm md:text-base'>10am to 6pm</span>
               </div>
             </div>
@@ -237,7 +237,7 @@ const Footer = () => {
                     href={social.href}
                     target='_blank'
                     rel='noopener noreferrer'
-                    className='p-2 bg-white/80 rounded-lg hover:bg-gradient-to-br hover:from-green-500 hover:to-red-500 hover:text-white transition-colors text-gray-700 shadow-sm'
+                    className='p-2 bg-gold-950/20 border border-gold-950/30 rounded-lg hover:bg-gold-950 hover:text-darkGreen-950 transition-colors text-gold-950'
                     aria-label={social.name}
                   >
                     <Icon className='h-5 w-5' />
@@ -249,13 +249,13 @@ const Footer = () => {
 
           {/* Support Links */}
           <div>
-            <h3 className='text-lg font-semibold mb-4 text-green-500'>Support</h3>
+            <h3 className='text-lg font-semibold mb-4 text-gold-950'>Support</h3>
             <ul className='space-y-3'>
               {footerLinks.support.map((link) => (
                 <li key={link.name}>
                   <Link
                     to={link.href}
-                    className='text-gray-700 hover:text-green-600 transition-colors'
+                    className='text-gray-300 hover:text-gold-950 transition-colors'
                   >
                     {link.name}
                   </Link>
@@ -266,13 +266,13 @@ const Footer = () => {
 
           {/* Legal Links */}
           <div>
-            <h3 className='text-lg font-semibold mb-4 text-green-500'>Legal</h3>
+            <h3 className='text-lg font-semibold mb-4 text-gold-950'>Legal</h3>
             <ul className='space-y-3'>
               {footerLinks.legal.map((link) => (
                 <li key={link.name}>
                   <Link
                     to={link.href}
-                    className='text-gray-700 hover:text-green-600 transition-colors'
+                    className='text-gray-300 hover:text-gold-950 transition-colors'
                   >
                     {link.name}
                   </Link>
@@ -283,13 +283,13 @@ const Footer = () => {
 
           {/* Account Links */}
           <div>
-            <h3 className='text-lg font-semibold mb-4 text-green-500'>Account</h3>
+            <h3 className='text-lg font-semibold mb-4 text-gold-950'>Account</h3>
             <ul className='space-y-3'>
               {footerLinks.account.map((link) => (
                 <li key={link.name}>
                   <Link
                     to={link.href}
-                    className='text-gray-700 hover:text-green-600 transition-colors'
+                    className='text-gray-300 hover:text-gold-950 transition-colors'
                   >
                     {link.name}
                   </Link>
@@ -300,21 +300,21 @@ const Footer = () => {
         </div>
 
         {/* Newsletter Subscription */}
-        <div className='border-t border-green-200 mt-6 md:mt-12 pt-4 md:pt-8'>
+        <div className='border-t border-gold-950/20 mt-6 md:mt-12 pt-4 md:pt-8'>
           <div className='max-w-md mx-auto text-center px-4'>
-            <h3 className='text-base md:text-lg font-semibold mb-2 bg-gradient-to-r from-green-600 to-red-600 bg-clip-text text-transparent'>
+            <h3 className='text-base md:text-lg font-semibold mb-2 text-gold-950'>
               Stay Inspired & Updated
             </h3>
-            <p className='text-sm md:text-base text-gray-700 mb-3 md:mb-4'>
+            <p className='text-sm md:text-base text-gray-300 mb-3 md:mb-4'>
               Receive the latest trends and tips on premium food products, healthy living, and exclusive offers.
             </p>
             <div className='flex flex-col sm:flex-row gap-2 sm:space-x-2'>
               <input
                 type='email'
                 placeholder='Enter your email'
-                className='flex-1 px-3 md:px-4 py-2 bg-white border border-green-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm md:text-base text-gray-900 placeholder-gray-500 min-w-0 shadow-sm'
+                className='flex-1 px-3 md:px-4 py-2 bg-darkGreen-900 border border-gold-950/30 rounded-lg focus:ring-2 focus:ring-gold-950 focus:border-gold-950 text-sm md:text-base text-gray-300 placeholder-gray-500 min-w-0'
               />
-              <button className='px-4 md:px-6 py-2 bg-gradient-to-r from-green-500 to-red-500 text-white rounded-lg hover:from-green-600 hover:to-red-600 transition-all whitespace-nowrap flex-shrink-0 shadow-lg hover:shadow-xl text-sm md:text-base'>
+              <button className='px-4 md:px-6 py-2 bg-gold-950 text-darkGreen-950 rounded-lg hover:bg-gold-600 transition-all whitespace-nowrap flex-shrink-0 shadow-lg hover:shadow-xl text-sm md:text-base font-semibold'>
                 Subscribe
               </button>
             </div>
@@ -322,15 +322,15 @@ const Footer = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className='border-t border-green-200 mt-4 md:mt-8 pt-4 md:pt-8'>
+        <div className='border-t border-gold-950/20 mt-4 md:mt-8 pt-4 md:pt-8'>
           <div className='flex flex-col md:flex-row justify-between items-center text-center md:text-left'>
-            <div className='flex items-center justify-center space-x-2 text-xs md:text-sm text-gray-700 mb-2 md:mb-0'>
+            <div className='flex items-center justify-center space-x-2 text-xs md:text-sm text-gray-300 mb-2 md:mb-0'>
               <span>&copy; {currentYear} Ghazali Food. All rights reserved.</span>
             </div>
 
-            <div className='flex items-center justify-center space-x-2 text-xs md:text-sm text-gray-700'>
+            <div className='flex items-center justify-center space-x-2 text-xs md:text-sm text-gray-300'>
               <span>Made with</span>
-              <Heart className='h-3 w-3 md:h-4 md:w-4 text-red-500 fill-red-500' />
+              <Heart className='h-3 w-3 md:h-4 md:w-4 text-red-400 fill-red-400' />
               <span>by Ghazali Food</span>
             </div>
           </div>

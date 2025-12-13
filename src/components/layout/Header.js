@@ -101,7 +101,7 @@ const Header = () => {
       
     <motion.header 
       className={cn(
-          'sticky top-0 z-[60] transition-all duration-500 bg-white/95 backdrop-blur-sm shadow-sm border-b border-gray-200 relative'
+          'sticky top-0 z-[60] transition-all duration-500 bg-darkGreen-950/95 backdrop-blur-sm shadow-sm border-b border-gold-950/20 relative'
       )}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
@@ -118,7 +118,7 @@ const Header = () => {
           >
             <Link to='/' className='flex items-center space-x-2 sm:space-x-3'>
               <motion.div
-                className='h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center shadow-md overflow-hidden'
+                className='h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-gradient-to-br from-gold-950 to-gold-600 flex items-center justify-center shadow-md overflow-hidden'
                 whileHover={{ scale: 1.05 }}
                 transition={{ duration: 0.2 }}
               >
@@ -129,10 +129,10 @@ const Header = () => {
                     className='h-full w-full object-cover rounded-full'
                   />
                 ) : (
-                  <span className='text-white font-bold text-lg sm:text-xl'>GF</span>
+                  <span className='text-darkGreen-950 font-bold text-lg sm:text-xl'>GF</span>
                 )}
               </motion.div>
-              <span className='text-lg sm:text-xl font-semibold text-gray-900 hidden sm:inline-block'>
+              <span className='text-lg sm:text-xl font-semibold text-gold-950 hidden sm:inline-block'>
                 Ghazali Food
               </span>
             </Link>
@@ -143,12 +143,12 @@ const Header = () => {
             <div className='relative location-menu-container'>
               <button
                 onClick={() => setIsLocationMenuOpen(!isLocationMenuOpen)}
-                className='flex items-center gap-1 px-3 py-1.5 hover:bg-gray-50 rounded-lg transition-colors'
+                className='flex items-center gap-1 px-3 py-1.5 hover:bg-darkGreen-900 rounded-lg transition-colors'
               >
-                <MapPin className='w-4 h-4 text-gray-700' />
+                <MapPin className='w-4 h-4 text-gray-300' />
                 <div className='flex flex-col items-start'>
-                  <span className='text-xs text-gray-600'>Deliver to</span>
-                  <span className='text-sm font-medium text-green-600 flex items-center gap-1'>
+                  <span className='text-xs text-gray-400'>Deliver to</span>
+                  <span className='text-sm font-medium text-gold-950 flex items-center gap-1'>
                     {locationName}
                     <ChevronDown className='w-3 h-3' />
                   </span>
@@ -156,7 +156,7 @@ const Header = () => {
               </button>
               
               {isLocationMenuOpen && (
-                <div className='absolute top-full left-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50 location-menu-container'>
+                <div className='absolute top-full left-0 mt-2 w-64 bg-darkGreen-900 border border-gold-950/20 rounded-lg shadow-lg py-2 z-50 location-menu-container'>
                   <button
                     onClick={async () => {
                       try {
@@ -167,14 +167,14 @@ const Header = () => {
                         toast.error('Failed to get location');
                       }
                     }}
-                    className='w-full px-4 py-2 text-left hover:bg-gray-50 flex items-center gap-2'
+                    className='w-full px-4 py-2 text-left hover:bg-darkGreen-800 flex items-center gap-2 text-gray-300'
                   >
-                    <MapPin className='w-4 h-4 text-green-500' />
+                    <MapPin className='w-4 h-4 text-gold-950' />
                     <span className='text-sm'>Use Current Location</span>
                   </button>
-                  <div className='border-t border-gray-200 my-1'></div>
+                  <div className='border-t border-gold-950/20 my-1'></div>
                   <div className='px-4 py-2'>
-                    <span className='text-xs text-gray-500'>Popular Cities</span>
+                    <span className='text-xs text-gray-400'>Popular Cities</span>
                   </div>
                   {['Islamabad', 'Lahore', 'Karachi', 'Rawalpindi', 'Faisalabad'].map((city) => (
                     <button
@@ -183,7 +183,7 @@ const Header = () => {
                         updateLocationName(city);
                         setIsLocationMenuOpen(false);
                       }}
-                      className='w-full px-4 py-2 text-left hover:bg-gray-50 text-sm'
+                      className='w-full px-4 py-2 text-left hover:bg-darkGreen-800 text-sm text-gray-300'
                     >
                       {city}
                     </button>
@@ -198,7 +198,7 @@ const Header = () => {
             <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
               <Link 
                 to={ROUTES.HOME}
-                className='text-gray-700 hover:text-green-600 transition-colors duration-300 font-medium'
+                className='text-gray-300 hover:text-gold-950 transition-colors duration-300 font-medium'
               >
                 Home
               </Link>
@@ -206,7 +206,7 @@ const Header = () => {
             <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
               <Link 
                 to={ROUTES.SHOP}
-                className='text-gray-700 hover:text-green-600 transition-colors duration-300 font-medium'
+                className='text-gray-300 hover:text-gold-950 transition-colors duration-300 font-medium'
               >
                 Shop
               </Link>
@@ -214,7 +214,7 @@ const Header = () => {
             <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
               <Link 
                 to='/about'
-                className='text-gray-700 hover:text-green-600 transition-colors duration-300 font-medium'
+                className='text-gray-300 hover:text-gold-950 transition-colors duration-300 font-medium'
               >
                 About Us
               </Link>
@@ -222,7 +222,7 @@ const Header = () => {
             <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
               <Link 
                 to='/contact'
-                className='text-gray-700 hover:text-green-600 transition-colors duration-300 font-medium'
+                className='text-gray-300 hover:text-gold-950 transition-colors duration-300 font-medium'
               >
                 Contact
               </Link>
@@ -236,36 +236,36 @@ const Header = () => {
                 <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
                   <Link 
                     to={ROUTES.WISHLIST}
-                    className='relative p-2.5 rounded-lg text-gray-700 transition-colors duration-300'
+                    className='relative p-2.5 rounded-lg text-gray-300 hover:text-gold-950 transition-colors duration-300'
                   >
                     <Heart className='w-5 h-5' />
                   </Link>
                 </motion.div>
-                <div className='h-6 w-px bg-green-200 mx-2' />
+                <div className='h-6 w-px bg-gold-950/30 mx-2' />
                 <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
                   <Link 
                     to={ROUTES.CART}
-                    className='relative p-2.5 rounded-lg text-gray-700 transition-colors duration-300 flex flex-col items-center'
+                    className='relative p-2.5 rounded-lg text-gray-300 hover:text-gold-950 transition-colors duration-300 flex flex-col items-center'
                   >
                     <div className='relative'>
                     <ShoppingCart className='w-5 h-5' />
                     </div>
                     {cartCount > 0 && (
-                      <span className='absolute -bottom-1 left-1/2 -translate-x-1/2 bg-green-500 text-white text-[10px] font-bold rounded-full min-w-[18px] h-[18px] px-1 flex items-center justify-center leading-none whitespace-nowrap'>
+                      <span className='absolute -bottom-1 left-1/2 -translate-x-1/2 bg-gold-950 text-darkGreen-950 text-[10px] font-bold rounded-full min-w-[18px] h-[18px] px-1 flex items-center justify-center leading-none whitespace-nowrap'>
                         {cartCount > 99 ? '99+' : cartCount > 9 ? '9+' : cartCount}
                       </span>
                     )}
                   </Link>
                 </motion.div>
-                <div className='h-6 w-px bg-green-200 mx-2' />
+                <div className='h-6 w-px bg-gold-950/30 mx-2' />
                 {/* Notifications */}
                 <UserNotificationBell />
-                <div className='h-6 w-px bg-green-200 mx-2' />
+                <div className='h-6 w-px bg-gold-950/30 mx-2' />
                 {/* User Menu */}
                 <div className='relative'>
                   <motion.button
                     onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                    className='p-2.5 rounded-lg text-gray-700 transition-colors duration-300'
+                    className='p-2.5 rounded-lg text-gray-300 hover:text-gold-950 transition-colors duration-300'
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
@@ -276,7 +276,7 @@ const Header = () => {
                         className='w-5 h-5 rounded-full object-cover'
                       />
                     ) : (
-                      <User className='w-5 h-5 text-gray-700' />
+                      <User className='w-5 h-5 text-gray-300' />
                     )}
                   </motion.button>
 
@@ -284,7 +284,7 @@ const Header = () => {
                   <AnimatePresence>
                     {isUserMenuOpen && (
                       <motion.div 
-                        className='absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 py-1 z-50'
+                        className='absolute right-0 mt-2 w-48 bg-darkGreen-900 border border-gold-950/20 rounded-xl shadow-lg py-1 z-50'
                         initial={{ opacity: 0, y: -10, scale: 0.95 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: -10, scale: 0.95 }}
@@ -292,7 +292,7 @@ const Header = () => {
                       >
                         <Link
                           to={ROUTES.PROFILE}
-                          className='flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200'
+                          className='flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-darkGreen-800 transition-colors duration-200'
                           onClick={() => setIsUserMenuOpen(false)}
                         >
                           <User className='h-4 w-4 mr-3' />
@@ -300,16 +300,16 @@ const Header = () => {
                         </Link>
                         <Link
                           to={ROUTES.ORDERS}
-                          className='flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200'
+                          className='flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-darkGreen-800 transition-colors duration-200'
                           onClick={() => setIsUserMenuOpen(false)}
                         >
                           <Package className='h-4 w-4 mr-3' />
                           Orders
                         </Link>
-                        <hr className='my-1 border-gray-200 dark:border-gray-700' />
+                        <hr className='my-1 border-gold-950/20' />
                         <button
                           onClick={handleLogout}
-                          className='flex items-center w-full px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200'
+                          className='flex items-center w-full px-4 py-2 text-sm text-red-400 hover:bg-red-500/20 transition-colors duration-200'
                         >
                           <LogOut className='h-4 w-4 mr-3' />
                           Logout
@@ -322,7 +322,7 @@ const Header = () => {
             ) : (
                 <motion.button
                 onClick={() => navigate(ROUTES.LOGIN)}
-                className='p-2.5 rounded-lg text-gray-700 hover:text-green-600 transition-colors duration-300'
+                className='p-2.5 rounded-lg text-gray-300 hover:text-gold-950 transition-colors duration-300'
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 title="Login / Sign Up"
@@ -336,12 +336,12 @@ const Header = () => {
           <div className='md:hidden flex items-center mr-2 location-menu-container relative'>
             <button
               onClick={() => setIsLocationMenuOpen(!isLocationMenuOpen)}
-              className='flex items-center gap-1 px-2 py-1 hover:bg-gray-50 rounded-lg transition-colors'
+              className='flex items-center gap-1 px-2 py-1 hover:bg-darkGreen-900 rounded-lg transition-colors'
             >
-              <MapPin className='w-4 h-4 text-gray-700' />
+              <MapPin className='w-4 h-4 text-gray-300' />
               <div className='flex flex-col items-start'>
-                <span className='text-[10px] text-gray-600 leading-none'>Deliver to</span>
-                <span className='text-xs font-medium text-green-600 flex items-center gap-0.5 leading-tight'>
+                <span className='text-[10px] text-gray-400 leading-none'>Deliver to</span>
+                <span className='text-xs font-medium text-gold-950 flex items-center gap-0.5 leading-tight'>
                   {locationName.length > 12 ? locationName.substring(0, 12) + '...' : locationName}
                   <ChevronDown className={`w-3 h-3 transition-transform ${isLocationMenuOpen ? 'rotate-180' : ''}`} />
                 </span>
@@ -358,7 +358,7 @@ const Header = () => {
                 />
                 {/* Dropdown menu */}
                 <div 
-                  className='absolute top-full left-0 mt-2 w-64 bg-white rounded-lg shadow-2xl border border-gray-200 py-2 z-[50] location-menu-container'
+                  className='absolute top-full left-0 mt-2 w-64 bg-darkGreen-900 border border-gold-950/20 rounded-lg shadow-2xl py-2 z-[50] location-menu-container'
                   onClick={(e) => e.stopPropagation()}
                 >
                   <button
@@ -371,14 +371,14 @@ const Header = () => {
                         toast.error('Failed to get location');
                       }
                     }}
-                    className='w-full px-4 py-2 text-left hover:bg-gray-50 flex items-center gap-2'
+                    className='w-full px-4 py-2 text-left hover:bg-darkGreen-800 flex items-center gap-2 text-gray-300'
                   >
-                    <MapPin className='w-4 h-4 text-green-500' />
+                    <MapPin className='w-4 h-4 text-gold-950' />
                     <span className='text-sm'>Use Current Location</span>
                   </button>
-                  <div className='border-t border-gray-200 my-1'></div>
+                  <div className='border-t border-gold-950/20 my-1'></div>
                   <div className='px-4 py-2'>
-                    <span className='text-xs text-gray-500'>Popular Cities</span>
+                    <span className='text-xs text-gray-400'>Popular Cities</span>
                   </div>
                   {['Islamabad', 'Lahore', 'Karachi', 'Rawalpindi', 'Faisalabad'].map((city) => (
                     <button
@@ -387,7 +387,7 @@ const Header = () => {
                         updateLocationName(city);
                         setIsLocationMenuOpen(false);
                       }}
-                      className='w-full px-4 py-2 text-left hover:bg-gray-50 text-sm'
+                      className='w-full px-4 py-2 text-left hover:bg-darkGreen-800 text-sm text-gray-300'
                     >
                       {city}
                     </button>
@@ -404,10 +404,10 @@ const Header = () => {
                 <UserNotificationBell />
                 <Link to={ROUTES.CART} className='relative p-2 flex flex-col items-center'>
                   <div className='relative'>
-                  <ShoppingCart className='w-6 h-6 text-gray-600 dark:text-gray-400' />
+                  <ShoppingCart className='w-6 h-6 text-gray-300' />
                   </div>
                   {cartCount > 0 && (
-                    <span className='absolute -bottom-1 left-1/2 -translate-x-1/2 bg-green-500 text-white text-[10px] font-bold rounded-full min-w-[18px] h-[18px] px-1 flex items-center justify-center leading-none whitespace-nowrap'>
+                    <span className='absolute -bottom-1 left-1/2 -translate-x-1/2 bg-gold-950 text-darkGreen-950 text-[10px] font-bold rounded-full min-w-[18px] h-[18px] px-1 flex items-center justify-center leading-none whitespace-nowrap'>
                       {cartCount > 99 ? '99+' : cartCount > 9 ? '9+' : cartCount}
                     </span>
                   )}
@@ -416,14 +416,14 @@ const Header = () => {
             )}
             <motion.button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className='p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-300'
+              className='p-2 rounded-xl hover:bg-darkGreen-900 transition-colors duration-300'
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
               {isMobileMenuOpen ? (
-                <X className='h-6 w-6 text-gray-600 dark:text-gray-400' />
+                <X className='h-6 w-6 text-gray-300' />
               ) : (
-                <Menu className='h-6 w-6 text-gray-600 dark:text-gray-400' />
+                <Menu className='h-6 w-6 text-gray-300' />
               )}
             </motion.button>
           </div>
@@ -433,7 +433,7 @@ const Header = () => {
         <AnimatePresence>
           {isMobileMenuOpen && (
             <motion.div 
-              className='md:hidden border-t border-gray-200 dark:border-gray-700 py-4'
+              className='md:hidden border-t border-gold-950/20 py-4'
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
@@ -442,7 +442,7 @@ const Header = () => {
               <div className='space-y-2'>
                 <Link
                   to={ROUTES.SHOP}
-                  className='block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-colors duration-300'
+                  className='block px-4 py-2 text-gray-300 hover:bg-darkGreen-900 rounded-xl transition-colors duration-300'
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Shop
@@ -452,29 +452,29 @@ const Header = () => {
                   <>
                     <Link
                       to={ROUTES.WISHLIST}
-                      className='block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-colors duration-300'
+                      className='block px-4 py-2 text-gray-300 hover:bg-darkGreen-900 rounded-xl transition-colors duration-300'
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
                       Wishlist
                     </Link>
                     <Link
                       to={ROUTES.ORDERS}
-                      className='block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-colors duration-300'
+                      className='block px-4 py-2 text-gray-300 hover:bg-darkGreen-900 rounded-xl transition-colors duration-300'
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
                       Orders
                     </Link>
                     <Link
                       to={ROUTES.PROFILE}
-                      className='block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-colors duration-300'
+                      className='block px-4 py-2 text-gray-300 hover:bg-darkGreen-900 rounded-xl transition-colors duration-300'
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
                       Profile
                     </Link>
-                    <hr className='my-2 border-gray-200 dark:border-gray-700' />
+                    <hr className='my-2 border-gold-950/20' />
                     <button
                       onClick={handleLogout}
-                      className='block w-full text-left px-4 py-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-colors duration-300'
+                      className='block w-full text-left px-4 py-2 text-red-400 hover:bg-red-500/20 rounded-xl transition-colors duration-300'
                     >
                       Logout
                     </button>
@@ -482,7 +482,7 @@ const Header = () => {
                 ) : (
                     <Link
                       to={ROUTES.LOGIN}
-                    className='block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-colors duration-300 flex items-center gap-2'
+                    className='block px-4 py-2 text-gray-300 hover:bg-darkGreen-900 rounded-xl transition-colors duration-300 flex items-center gap-2'
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
                     <UserPlus className='w-5 h-5' />

@@ -272,14 +272,14 @@ const ShopPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="flex items-center gap-3 mb-4">
             <span className="px-4 py-1.5 bg-gold-950/20 border border-gold-950/30 rounded-full text-gold-950 text-sm font-semibold">
-              EXCLUSIVE HARVEST
+              PREMIUM QUALITY
             </span>
           </div>
           <h1 className="text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-gold-950 via-gold-600 to-gold-950 bg-clip-text text-transparent">
-            The Royal Saffron Collection
+            Premium Dry Fruits Collection
           </h1>
           <p className="text-lg md:text-xl text-gray-300 max-w-2xl">
-            Hand-picked red gold from the fields of Herat. Experience aroma and color like never before.
+            Hand-selected premium dry fruits, nuts, and gourmet products. Fresh, authentic, and delivered to your doorstep.
           </p>
         </div>
       </div>
