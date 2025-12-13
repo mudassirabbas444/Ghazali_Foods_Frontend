@@ -89,15 +89,15 @@ const OrdersPage = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-green-500" />
+        <Loader2 className="w-8 h-8 animate-spin text-gold-950" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-green-50 via-green-50 to-green-50 py-8">
+    <div className="min-h-screen bg-darkGreen-950 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8">My Orders</h1>
+        <h1 className="text-3xl font-bold text-gold-950 mb-8">My Orders</h1>
 
         {/* Filter Tabs */}
         <div className="flex gap-2 mb-6 overflow-x-auto">
@@ -107,8 +107,8 @@ const OrdersPage = () => {
               onClick={() => setFilter(status)}
               className={`px-4 py-2 rounded-lg font-medium whitespace-nowrap transition-colors ${
                 filter === status
-                  ? 'bg-green-500 text-white'
-                  : 'bg-white text-gray-700 hover:bg-gray-50'
+                  ? 'bg-gold-950 text-darkGreen-950'
+                  : 'bg-darkGreen-900/50 text-gray-300 border border-gold-950/30 hover:border-gold-950'
               }`}
             >
               {status.charAt(0).toUpperCase() + status.slice(1).replace('_', ' ')}
@@ -117,13 +117,13 @@ const OrdersPage = () => {
         </div>
 
         {orders.length === 0 ? (
-          <div className="text-center py-20 bg-white rounded-2xl shadow-sm">
-            <Package className="w-24 h-24 text-gray-300 mx-auto mb-4" />
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">No orders found</h2>
-            <p className="text-gray-600 mb-6">You haven't placed any orders yet</p>
+          <div className="text-center py-20 bg-darkGreen-900/50 border border-gold-950/20 rounded-2xl">
+            <Package className="w-24 h-24 text-gray-600 mx-auto mb-4" />
+            <h2 className="text-2xl font-bold text-gold-950 mb-2">No orders found</h2>
+            <p className="text-gray-300 mb-6">You haven't placed any orders yet</p>
             <Link
               to={ROUTES.SHOP}
-              className="inline-block bg-green-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-600 transition-colors"
+              className="inline-block bg-gold-950 text-darkGreen-950 px-6 py-3 rounded-lg font-semibold hover:bg-gold-600 transition-colors"
             >
               Start Shopping
             </Link>
@@ -135,12 +135,12 @@ const OrdersPage = () => {
                 key={order._id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 p-6"
+                className="bg-darkGreen-900/50 border border-gold-950/20 rounded-2xl hover:border-gold-950/50 transition-all duration-300 p-6"
               >
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
                   <div>
                     <div className="flex items-center gap-3 mb-2">
-                      <h3 className="text-lg font-bold text-gray-900">
+                      <h3 className="text-lg font-bold text-gold-950">
                         Order #{order.orderNumber}
                       </h3>
                       <span
@@ -152,11 +152,11 @@ const OrdersPage = () => {
                         {order.status.replace('_', ' ').toUpperCase()}
                       </span>
                     </div>
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-gray-300">
                       Placed on {new Date(order.createdAt).toLocaleDateString()}
                     </p>
                     {order.estimatedDelivery && (
-                      <p className="text-sm text-gray-600">
+                      <p className="text-sm text-gray-300">
                         Estimated delivery: {new Date(order.estimatedDelivery).toLocaleDateString()}
                       </p>
                     )}
@@ -173,7 +173,7 @@ const OrdersPage = () => {
                     )}
                     <Link
                       to={ROUTES.ORDER_DETAIL.replace(':orderNumber', order.orderNumber)}
-                      className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors flex items-center gap-2"
+                      className="px-4 py-2 bg-gold-950 text-darkGreen-950 rounded-lg hover:bg-gold-600 transition-colors flex items-center gap-2"
                     >
                       <Eye className="w-4 h-4" />
                       View Details
@@ -181,7 +181,7 @@ const OrdersPage = () => {
                   </div>
                 </div>
 
-                <div className="border-t pt-4">
+                <div className="border-t border-gold-950/20 pt-4">
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                     {order.items?.slice(0, 3).map((item, idx) => {
                       // Get image source with proper fallback
@@ -222,7 +222,7 @@ const OrdersPage = () => {
                       
                       return (
                         <div key={idx} className="flex items-center gap-3">
-                          <div className="w-16 h-16 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
+                          <div className="w-16 h-16 rounded-lg overflow-hidden bg-darkGreen-950 flex-shrink-0">
                             <FirebaseImage
                               src={imageSrc}
                               alt={item.productName || 'Product image'}
@@ -230,34 +230,34 @@ const OrdersPage = () => {
                             />
                           </div>
                         <div>
-                          <p className="font-semibold text-gray-900 text-sm">{item.productName}</p>
+                          <p className="font-semibold text-gray-200 text-sm">{item.productName}</p>
                           {item.variant && (
-                            <p className="text-xs text-gray-600">{item.variant}</p>
+                            <p className="text-xs text-gray-400">{item.variant}</p>
                           )}
-                          <p className="text-xs text-gray-600">Qty: {item.quantity}</p>
+                          <p className="text-xs text-gray-400">Qty: {item.quantity}</p>
                         </div>
                       </div>
                       );
                     })}
                     {order.items?.length > 3 && (
                       <div className="flex items-center justify-center">
-                        <p className="text-sm text-gray-600">
+                        <p className="text-sm text-gray-400">
                           +{order.items.length - 3} more items
                         </p>
                       </div>
                     )}
                   </div>
 
-                  <div className="flex items-center justify-between border-t pt-4">
+                  <div className="flex items-center justify-between border-t border-gold-950/20 pt-4">
                     <div>
-                      <p className="text-sm text-gray-600">Payment Method</p>
-                      <p className="font-semibold text-gray-900 capitalize">
+                      <p className="text-sm text-gray-300">Payment Method</p>
+                      <p className="font-semibold text-gray-200 capitalize">
                         {order.paymentMethod?.replace('_', ' ')}
                       </p>
                     </div>
                     <div className="text-right">
-                      <p className="text-sm text-gray-600">Total Amount</p>
-                      <p className="text-xl font-bold text-gray-900">
+                      <p className="text-sm text-gray-300">Total Amount</p>
+                      <p className="text-xl font-bold text-gold-950">
                         Rs. {order.total?.toLocaleString()}
                       </p>
                     </div>

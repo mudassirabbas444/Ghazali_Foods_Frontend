@@ -182,7 +182,7 @@ const CheckoutPage = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-green-500" />
+        <Loader2 className="w-8 h-8 animate-spin text-gold-950" />
       </div>
     );
   }
@@ -192,35 +192,35 @@ const CheckoutPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-amber-50 via-green-50 to-amber-50 py-8">
+    <div className="min-h-screen bg-darkGreen-950 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8">Checkout</h1>
+        <h1 className="text-3xl font-bold text-gold-950 mb-8">Checkout</h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Checkout Form */}
           <div className="lg:col-span-2 space-y-6">
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
               {/* Contact Information */}
-              <div className="bg-white rounded-2xl shadow-sm p-6">
-                <h2 className="text-xl font-bold text-gray-900 mb-4">Contact Information</h2>
+              <div className="bg-darkGreen-900/50 border border-gold-950/20 rounded-2xl p-6">
+                <h2 className="text-xl font-bold text-gold-950 mb-4">Contact Information</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-200 mb-2">
                       Full Name
                     </label>
                     <input
                       type="text"
                       {...register('fullName', { required: 'Full name is required' })}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                      className="w-full px-4 py-2 bg-darkGreen-950 border border-gold-950/30 rounded-lg text-gray-300 focus:ring-2 focus:ring-gold-950 focus:border-gold-950"
                       placeholder="Enter your full name"
                     />
                     {errors.fullName && (
-                      <p className="text-red-500 text-sm mt-1">{errors.fullName.message}</p>
+                      <p className="text-red-400 text-sm mt-1">{errors.fullName.message}</p>
                     )}
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-200 mb-2">
                       Email Address
                     </label>
                     <input
@@ -232,41 +232,41 @@ const CheckoutPage = () => {
                           message: 'Invalid email address',
                         },
                       })}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                      className="w-full px-4 py-2 bg-darkGreen-950 border border-gold-950/30 rounded-lg text-gray-300 focus:ring-2 focus:ring-gold-950 focus:border-gold-950"
                       placeholder="you@example.com"
                     />
                     {errors.email && (
-                      <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+                      <p className="text-red-400 text-sm mt-1">{errors.email.message}</p>
                     )}
                   </div>
 
                   <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-200 mb-2">
                       Mobile Number
                     </label>
                     <div className="flex gap-2">
-                      <select className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500">
+                      <select className="px-3 py-2 bg-darkGreen-950 border border-gold-950/30 rounded-lg text-gray-300 focus:ring-2 focus:ring-gold-950">
                         <option value="+92">+92</option>
                         <option value="+1">+1</option>
                       </select>
                       <input
                         type="tel"
                         {...register('phone', { required: 'Phone number is required' })}
-                        className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                        className="flex-1 px-4 py-2 bg-darkGreen-950 border border-gold-950/30 rounded-lg text-gray-300 focus:ring-2 focus:ring-gold-950 focus:border-gold-950"
                         placeholder="300 1234567"
                       />
                     </div>
                     {errors.phone && (
-                      <p className="text-red-500 text-sm mt-1">{errors.phone.message}</p>
+                      <p className="text-red-400 text-sm mt-1">{errors.phone.message}</p>
                     )}
                   </div>
                 </div>
               </div>
 
               {/* Delivery Address */}
-              <div className="bg-white rounded-2xl shadow-sm p-6">
+              <div className="bg-darkGreen-900/50 border border-gold-950/20 rounded-2xl p-6">
                 <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-xl font-bold text-gray-900">Delivery Address</h2>
+                  <h2 className="text-xl font-bold text-gold-950">Delivery Address</h2>
                   <button
                     type="button"
                     onClick={async () => {
@@ -284,7 +284,7 @@ const CheckoutPage = () => {
                       }
                     }}
                     disabled={isGettingLocation || usingCurrentLocation}
-                    className="flex items-center gap-2 px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
+                    className="flex items-center gap-2 px-4 py-2 bg-gold-950 hover:bg-gold-600 text-darkGreen-950 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
                   >
                     {isGettingLocation ? (
                       <>
@@ -307,8 +307,8 @@ const CheckoutPage = () => {
                         key={address._id}
                         className={`block p-4 border-2 rounded-lg cursor-pointer transition-colors ${
                           selectedAddress?._id === address._id
-                            ? 'border-green-500 bg-green-50'
-                            : 'border-gray-200 hover:border-green-300'
+                            ? 'border-gold-950 bg-gold-950/20'
+                            : 'border-gold-950/30 hover:border-gold-950'
                         }`}
                         onClick={() => {
                           setSelectedAddress(address);
@@ -327,14 +327,14 @@ const CheckoutPage = () => {
                           className="sr-only"
                         />
                         <div className="flex items-start gap-3">
-                          <MapPin className="w-5 h-5 text-green-500 mt-0.5" />
+                          <MapPin className="w-5 h-5 text-gold-950 mt-0.5" />
                           <div>
-                            <p className="font-semibold text-gray-900">{address.fullName}</p>
-                            <p className="text-sm text-gray-600">{address.address}</p>
-                            <p className="text-sm text-gray-600">
+                            <p className="font-semibold text-gray-200">{address.fullName}</p>
+                            <p className="text-sm text-gray-300">{address.address}</p>
+                            <p className="text-sm text-gray-300">
                               {address.city}, {address.area} {address.postalCode}
                             </p>
-                            <p className="text-sm text-gray-600">{address.phone}</p>
+                            <p className="text-sm text-gray-300">{address.phone}</p>
                           </div>
                         </div>
                       </label>
@@ -343,13 +343,13 @@ const CheckoutPage = () => {
                 )}
 
                 {usingCurrentLocation && (
-                  <div className="mb-4 p-4 bg-green-50 border-2 border-green-500 rounded-lg">
+                  <div className="mb-4 p-4 bg-gold-950/20 border-2 border-gold-950 rounded-lg">
                     <div className="flex items-start gap-3">
-                      <MapPin className="w-5 h-5 text-green-500 mt-0.5" />
+                      <MapPin className="w-5 h-5 text-gold-950 mt-0.5" />
                       <div>
-                        <p className="font-semibold text-gray-900">Current Location</p>
-                        <p className="text-sm text-gray-600">{locationName}</p>
-                        <p className="text-xs text-gray-500 mt-1">
+                        <p className="font-semibold text-gold-950">Current Location</p>
+                        <p className="text-sm text-gray-300">{locationName}</p>
+                        <p className="text-xs text-gray-400 mt-1">
                           Please fill in your complete address details below
                         </p>
                       </div>
@@ -359,55 +359,55 @@ const CheckoutPage = () => {
 
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-200 mb-2">
                       Full Address
                     </label>
                     <input
                       type="text"
                       {...register('address', { required: !selectedAddress && !usingCurrentLocation ? 'Address is required' : false })}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                      className="w-full px-4 py-2 bg-darkGreen-950 border border-gold-950/30 rounded-lg text-gray-300 focus:ring-2 focus:ring-gold-950 focus:border-gold-950"
                       placeholder="House No. Street, Area"
                       disabled={!!selectedAddress}
                     />
                     {errors.address && (
-                      <p className="text-red-500 text-sm mt-1">{errors.address.message}</p>
+                      <p className="text-red-400 text-sm mt-1">{errors.address.message}</p>
                     )}
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">City</label>
+                      <label className="block text-sm font-medium text-gray-200 mb-2">City</label>
                       <input
                         type="text"
                         {...register('city', { required: !selectedAddress && !usingCurrentLocation ? 'City is required' : false })}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
+                        className="w-full px-4 py-2 bg-darkGreen-950 border border-gold-950/30 rounded-lg text-gray-300 focus:ring-2 focus:ring-gold-950"
                         disabled={!!selectedAddress}
                         placeholder={usingCurrentLocation ? locationName : 'Enter city'}
                       />
                       {errors.city && (
-                        <p className="text-red-500 text-sm mt-1">{errors.city.message}</p>
+                        <p className="text-red-400 text-sm mt-1">{errors.city.message}</p>
                       )}
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Area</label>
+                      <label className="block text-sm font-medium text-gray-200 mb-2">Area</label>
                       <input
                         type="text"
                         {...register('area')}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
+                        className="w-full px-4 py-2 bg-darkGreen-950 border border-gold-950/30 rounded-lg text-gray-300 focus:ring-2 focus:ring-gold-950"
                         disabled={!!selectedAddress}
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-200 mb-2">
                       Special Instructions/Allergies
                     </label>
                     <textarea
                       {...register('specialInstructions')}
                       rows={3}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                      className="w-full px-4 py-2 bg-darkGreen-950 border border-gold-950/30 rounded-lg text-gray-300 focus:ring-2 focus:ring-gold-950 focus:border-gold-950"
                       placeholder="e.g., Please call before arrival or specify any nut allergies."
                     />
                   </div>
@@ -415,8 +415,8 @@ const CheckoutPage = () => {
               </div>
 
               {/* Payment Method */}
-              <div className="bg-white rounded-2xl shadow-sm p-6">
-                <h2 className="text-xl font-bold text-gray-900 mb-4">Payment Method</h2>
+              <div className="bg-darkGreen-900/50 border border-gold-950/20 rounded-2xl p-6">
+                <h2 className="text-xl font-bold text-gold-950 mb-4">Payment Method</h2>
                 <div className="space-y-3">
                   {[
                     { value: 'cod', label: 'Cash on Delivery', icon: Wallet },
@@ -430,8 +430,8 @@ const CheckoutPage = () => {
                         key={method.value}
                         className={`flex items-center gap-3 p-4 border-2 rounded-lg cursor-pointer transition-colors ${
                           paymentMethod === method.value
-                            ? 'border-green-500 bg-green-50'
-                            : 'border-gray-200 hover:border-green-300'
+                            ? 'border-gold-950 bg-gold-950/20'
+                            : 'border-gold-950/30 hover:border-gold-950'
                         }`}
                       >
                         <input
@@ -442,13 +442,13 @@ const CheckoutPage = () => {
                           onChange={(e) => setPaymentMethod(e.target.value)}
                           className="sr-only"
                         />
-                        <Icon className="w-5 h-5 text-green-500" />
-                        <span className="font-medium text-gray-900">{method.label}</span>
+                        <Icon className="w-5 h-5 text-gold-950" />
+                        <span className="font-medium text-gray-200">{method.label}</span>
                       </label>
                     );
                   })}
                 </div>
-                <div className="mt-4 flex items-center gap-2 text-sm text-green-600">
+                <div className="mt-4 flex items-center gap-2 text-sm text-gold-950">
                   <Lock className="w-4 h-4" />
                   <span>All transactions are secure and encrypted.</span>
                 </div>
@@ -457,7 +457,7 @@ const CheckoutPage = () => {
               <button
                 type="submit"
                 disabled={placingOrder}
-                className="w-full bg-green-500 text-white py-4 px-6 rounded-lg font-semibold text-lg hover:bg-green-600 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+                className="w-full bg-gold-950 text-darkGreen-950 py-4 px-6 rounded-lg font-semibold text-lg hover:bg-gold-600 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
               >
                 {placingOrder ? (
                   <>
@@ -473,13 +473,13 @@ const CheckoutPage = () => {
 
           {/* Order Summary */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-2xl shadow-sm p-6 sticky top-4">
-              <h2 className="text-xl font-bold text-gray-900 mb-4">Your Order Summary</h2>
+            <div className="bg-darkGreen-900/50 border border-gold-950/20 rounded-2xl p-6 sticky top-4">
+              <h2 className="text-xl font-bold text-gold-950 mb-4">Your Order Summary</h2>
 
               <div className="space-y-4 mb-6">
                 {cart.items.map((item) => (
                   <div key={item._id} className="flex gap-3">
-                    <div className="w-16 h-16 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
+                    <div className="w-16 h-16 rounded-lg overflow-hidden bg-darkGreen-950 flex-shrink-0">
                       <FirebaseImage
                         src={
                           (item.product?.images && item.product.images.length > 0 && item.product.images[0])
@@ -491,12 +491,12 @@ const CheckoutPage = () => {
                       />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="font-semibold text-gray-900 truncate">{item.product?.name}</p>
+                      <p className="font-semibold text-gray-200 truncate">{item.product?.name}</p>
                       {item.variant && (
-                        <p className="text-sm text-gray-600">{item.variant}</p>
+                        <p className="text-sm text-gray-400">{item.variant}</p>
                       )}
-                      <p className="text-sm text-gray-600">x{item.quantity}</p>
-                      <p className="text-sm font-semibold text-gray-900">
+                      <p className="text-sm text-gray-400">x{item.quantity}</p>
+                      <p className="text-sm font-semibold text-gold-950">
                         Rs. {((item.price || 0) * (item.quantity || 0)).toLocaleString()}
                       </p>
                     </div>
@@ -505,36 +505,36 @@ const CheckoutPage = () => {
               </div>
 
               {cart.coupon && (
-                <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg">
-                  <p className="text-sm font-semibold text-green-800">
+                <div className="mb-4 p-3 bg-gold-950/20 border border-gold-950/30 rounded-lg">
+                  <p className="text-sm font-semibold text-gold-950">
                     Coupon: {cart.coupon.code}
                   </p>
                 </div>
               )}
 
-              <div className="space-y-2 border-t pt-4">
-                <div className="flex justify-between text-gray-700">
+              <div className="space-y-2 border-t border-gold-950/20 pt-4">
+                <div className="flex justify-between text-gray-300">
                   <span>Subtotal</span>
                   <span className="font-semibold">Rs. {totals.subtotal.toLocaleString()}</span>
                 </div>
                 {totals.discount > 0 && (
-                  <div className="flex justify-between text-green-600">
+                  <div className="flex justify-between text-gold-950">
                     <span>Discount</span>
                     <span className="font-semibold">- Rs. {totals.discount.toLocaleString()}</span>
                   </div>
                 )}
-                <div className="flex justify-between text-gray-700">
+                <div className="flex justify-between text-gray-300">
                   <span>Delivery Charges</span>
                   <span className="font-semibold">Rs. {totals.delivery.toLocaleString()}</span>
                 </div>
-                <div className="flex justify-between text-gray-700">
+                <div className="flex justify-between text-gray-300">
                   <span>FBR POS Charges</span>
                   <span className="font-semibold">Rs. 15</span>
                 </div>
-                <div className="border-t pt-2 mt-2">
+                <div className="border-t border-gold-950/20 pt-2 mt-2">
                   <div className="flex justify-between">
-                    <span className="text-lg font-bold text-gray-900">Grand Total</span>
-                    <span className="text-lg font-bold text-gray-900">
+                    <span className="text-lg font-bold text-gold-950">Grand Total</span>
+                    <span className="text-lg font-bold text-gold-950">
                       Rs. {(totals.total + 15).toLocaleString()}
                     </span>
                   </div>

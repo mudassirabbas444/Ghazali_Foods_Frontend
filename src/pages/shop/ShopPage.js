@@ -462,7 +462,7 @@ const ShopPage = () => {
           {/* Mobile Sidebar */}
           {showSidebar && (
             <div className="md:hidden fixed inset-0 z-50 bg-black/50" onClick={() => setShowSidebar(false)}>
-              <div className="absolute right-0 top-0 bottom-0 w-80 bg-darkGreen-900 border-l border-gold-950/20 overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+              <div className="absolute right-0 top-0 bottom-0 w-64 bg-darkGreen-900 border-l border-gold-950/20 overflow-y-auto" onClick={(e) => e.stopPropagation()}>
                 <div className="p-6 space-y-6">
                   <div className="flex items-center justify-between mb-4">
                     <h2 className="text-gold-950 font-bold text-xl">Filters</h2>

@@ -53,7 +53,7 @@ const ContactPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-green-50 via-green-50 to-green-50 py-12">
+    <div className="min-h-screen bg-darkGreen-950 py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
@@ -62,10 +62,10 @@ const ContactPage = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            Get in <span className="bg-gradient-to-r from-green-600 to-red-600 bg-clip-text text-transparent">Touch</span>
+          <h1 className="text-4xl md:text-5xl font-bold text-gold-950 mb-4">
+            Get in <span className="bg-gradient-to-r from-gold-950 to-gold-600 bg-clip-text text-transparent">Touch</span>
           </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
             Have a question or need assistance? We're here to help! Reach out to us and we'll respond as soon as possible.
           </p>
         </motion.div>
@@ -84,23 +84,23 @@ const ContactPage = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: 0.3 + index * 0.1 }}
-                className="bg-white rounded-2xl shadow-sm p-6 hover:shadow-lg transition-all duration-300"
+                className="bg-darkGreen-900/50 border border-gold-950/20 rounded-2xl p-6 hover:border-gold-950/50 transition-all duration-300"
               >
                 <div className="flex items-start gap-4">
-                  <div className="p-3 bg-yellow-100 rounded-lg text-green-600">
+                  <div className="p-3 bg-gold-950/20 rounded-lg text-gold-950">
                     {info.icon}
                   </div>
                   <div>
-                    <h3 className="font-bold text-gray-900 mb-1">{info.title}</h3>
+                    <h3 className="font-bold text-gold-950 mb-1">{info.title}</h3>
                     {info.link ? (
                       <a
                         href={info.link}
-                        className="text-gray-600 hover:text-green-600 transition-colors"
+                        className="text-gray-300 hover:text-gold-950 transition-colors"
                       >
                         {info.content}
                       </a>
                     ) : (
-                      <p className="text-gray-600">{info.content}</p>
+                      <p className="text-gray-300">{info.content}</p>
                     )}
                   </div>
                 </div>
@@ -112,15 +112,15 @@ const ContactPage = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: 0.7 }}
-              className="bg-white rounded-2xl shadow-sm p-6"
+              className="bg-darkGreen-900/50 border border-gold-950/20 rounded-2xl p-6"
             >
-              <h3 className="font-bold text-gray-900 mb-4">Follow Us</h3>
+              <h3 className="font-bold text-gold-950 mb-4">Follow Us</h3>
               <div className="flex gap-4">
                 <a
                   href="https://facebook.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-3 bg-green-100 rounded-lg text-green-600 hover:bg-green-200 transition-colors"
+                  className="p-3 bg-gold-950/20 rounded-lg text-gold-950 hover:bg-gold-950/30 transition-colors"
                   aria-label="Facebook"
                 >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -142,7 +142,7 @@ const ContactPage = () => {
                   href="https://twitter.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-3 bg-green-100 rounded-lg text-green-400 hover:bg-green-200 transition-colors"
+                  className="p-3 bg-gold-950/20 rounded-lg text-gold-950 hover:bg-gold-950/30 transition-colors"
                   aria-label="Twitter"
                 >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -160,31 +160,31 @@ const ContactPage = () => {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="lg:col-span-2"
           >
-            <div className="bg-white rounded-2xl shadow-sm p-8">
+            <div className="bg-darkGreen-900/50 border border-gold-950/20 rounded-2xl p-8">
               <div className="flex items-center gap-3 mb-6">
-                <MessageSquare className="w-6 h-6 text-green-500" />
-                <h2 className="text-2xl font-bold text-gray-900">Send us a Message</h2>
+                <MessageSquare className="w-6 h-6 text-gold-950" />
+                <h2 className="text-2xl font-bold text-gold-950">Send us a Message</h2>
               </div>
 
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-200 mb-2">
                       Full Name *
                     </label>
                     <input
                       type="text"
                       {...register('name', { required: 'Name is required' })}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
+                      className="w-full px-4 py-3 bg-darkGreen-950 border border-gold-950/30 rounded-lg text-gray-300 focus:ring-2 focus:ring-gold-950 focus:border-gold-950 transition-colors"
                       placeholder="John Doe"
                     />
                     {errors.name && (
-                      <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
+                      <p className="text-red-400 text-sm mt-1">{errors.name.message}</p>
                     )}
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-200 mb-2">
                       Email Address *
                     </label>
                     <input
@@ -196,61 +196,61 @@ const ContactPage = () => {
                           message: 'Invalid email address'
                         }
                       })}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
+                      className="w-full px-4 py-3 bg-darkGreen-950 border border-gold-950/30 rounded-lg text-gray-300 focus:ring-2 focus:ring-gold-950 focus:border-gold-950 transition-colors"
                       placeholder="john@example.com"
                     />
                     {errors.email && (
-                      <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+                      <p className="text-red-400 text-sm mt-1">{errors.email.message}</p>
                     )}
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-200 mb-2">
                     Phone Number
                   </label>
                   <input
                     type="tel"
                     {...register('phone')}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
+                    className="w-full px-4 py-3 bg-darkGreen-950 border border-gold-950/30 rounded-lg text-gray-300 focus:ring-2 focus:ring-gold-950 focus:border-gold-950 transition-colors"
                     placeholder="+92 300 1234567"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-200 mb-2">
                     Subject *
                   </label>
                   <input
                     type="text"
                     {...register('subject', { required: 'Subject is required' })}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
+                    className="w-full px-4 py-3 bg-darkGreen-950 border border-gold-950/30 rounded-lg text-gray-300 focus:ring-2 focus:ring-gold-950 focus:border-gold-950 transition-colors"
                     placeholder="How can we help?"
                   />
                   {errors.subject && (
-                    <p className="text-red-500 text-sm mt-1">{errors.subject.message}</p>
+                    <p className="text-red-400 text-sm mt-1">{errors.subject.message}</p>
                   )}
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-200 mb-2">
                     Message *
                   </label>
                   <textarea
                     {...register('message', { required: 'Message is required' })}
                     rows={6}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors resize-none"
+                    className="w-full px-4 py-3 bg-darkGreen-950 border border-gold-950/30 rounded-lg text-gray-300 focus:ring-2 focus:ring-gold-950 focus:border-gold-950 transition-colors resize-none"
                     placeholder="Tell us more about your inquiry..."
                   />
                   {errors.message && (
-                    <p className="text-red-500 text-sm mt-1">{errors.message.message}</p>
+                    <p className="text-red-400 text-sm mt-1">{errors.message.message}</p>
                   )}
                 </div>
 
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="w-full bg-gradient-to-r from-green-500 to-red-500 text-white py-3 px-6 rounded-lg font-semibold hover:from-green-600 hover:to-red-600 transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full bg-gold-950 text-darkGreen-950 py-3 px-6 rounded-lg font-semibold hover:bg-gold-600 transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {submitting ? (
                     <>

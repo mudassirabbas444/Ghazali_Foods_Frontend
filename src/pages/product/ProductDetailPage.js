@@ -237,7 +237,7 @@ const ProductDetailPage = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-green-500" />
+        <Loader2 className="w-8 h-8 animate-spin text-gold-950" />
       </div>
     );
   }
@@ -247,23 +247,23 @@ const ProductDetailPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-darkGreen-950 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Breadcrumb */}
         <div className="mb-6">
           <Link
             to={ROUTES.SHOP}
-            className="text-gray-600 hover:text-green-600 flex items-center gap-1"
+            className="text-gray-300 hover:text-gold-950 flex items-center gap-1"
           >
             <ChevronLeft className="w-4 h-4" />
             Back to Shop
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 bg-white rounded-lg p-6 shadow-sm">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 bg-darkGreen-900/50 border border-gold-950/20 rounded-lg p-6">
           {/* Product Images */}
           <div>
-            <div className="aspect-square rounded-lg overflow-hidden bg-gray-100 mb-4">
+            <div className="aspect-square rounded-lg overflow-hidden bg-darkGreen-950 mb-4">
               <FirebaseImage
                 src={
                   (product.images && product.images.length > 0 && product.images[selectedImage]) 
@@ -290,7 +290,7 @@ const ProductDetailPage = () => {
                       }
                     }}
                     className={`aspect-square rounded-lg overflow-hidden border-2 cursor-pointer ${
-                      selectedImage === idx ? 'border-green-500' : 'border-gray-200'
+                      selectedImage === idx ? 'border-gold-950' : 'border-gold-950/30'
                     }`}
                   >
                     <FirebaseImage
@@ -306,7 +306,7 @@ const ProductDetailPage = () => {
 
           {/* Product Info */}
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">{product.name}</h1>
+            <h1 className="text-3xl font-bold text-gold-950 mb-2">{product.name}</h1>
             
             {product.averageRating > 0 && (
               <div className="flex items-center gap-2 mb-4">
@@ -322,7 +322,7 @@ const ProductDetailPage = () => {
                     />
                   ))}
                 </div>
-                <span className="text-sm text-gray-600">
+                <span className="text-sm text-gray-300">
                   ({product.totalReviews} reviews)
                 </span>
               </div>
@@ -330,11 +330,11 @@ const ProductDetailPage = () => {
 
             <div className="mb-6">
               <div className="flex items-baseline gap-3">
-                <span className="text-3xl font-bold text-gray-900">
+                <span className="text-3xl font-bold text-gold-950">
                   Rs. {getCurrentPrice().toLocaleString()}
                 </span>
                 {getComparePrice() && (
-                  <span className="text-xl text-gray-500 line-through">
+                  <span className="text-xl text-gray-400 line-through">
                     Rs. {getComparePrice().toLocaleString()}
                   </span>
                 )}
@@ -346,14 +346,14 @@ const ProductDetailPage = () => {
               </div>
             </div>
 
-            <p className="text-gray-700 mb-6 leading-relaxed">
+            <p className="text-gray-300 mb-6 leading-relaxed">
               {product.description}
             </p>
 
             {/* Variants */}
             {product.variants && product.variants.length > 0 && (
               <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-200 mb-2">
                   Select Weight:
                 </label>
                 <div className="flex flex-wrap gap-2">
@@ -363,8 +363,8 @@ const ProductDetailPage = () => {
                       onClick={() => setSelectedVariant(variant)}
                       className={`px-4 py-2 rounded-lg border-2 transition-colors ${
                         selectedVariant?.weight === variant.weight
-                          ? 'border-green-500 bg-green-50 text-green-700'
-                          : 'border-gray-300 hover:border-green-300'
+                          ? 'border-gold-950 bg-gold-950/20 text-gold-950'
+                          : 'border-gold-950/30 text-gray-300 hover:border-gold-950'
                       }`}
                     >
                       {variant.weight} - Rs. {variant.price.toLocaleString()}
@@ -376,20 +376,20 @@ const ProductDetailPage = () => {
 
             {/* Quantity */}
             <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-200 mb-2">
                 Quantity:
               </label>
               <div className="flex items-center gap-3">
                 <button
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="p-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+                  className="p-2 border border-gold-950/30 rounded-lg hover:bg-darkGreen-900 text-gray-300"
                 >
                   <Minus className="w-4 h-4" />
                 </button>
-                <span className="text-lg font-semibold w-12 text-center">{quantity}</span>
+                <span className="text-lg font-semibold w-12 text-center text-gray-200">{quantity}</span>
                 <button
                   onClick={() => setQuantity(quantity + 1)}
-                  className="p-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+                  className="p-2 border border-gold-950/30 rounded-lg hover:bg-darkGreen-900 text-gray-300"
                 >
                   <Plus className="w-4 h-4" />
                 </button>
@@ -402,7 +402,7 @@ const ProductDetailPage = () => {
                 <button
                   onClick={handleAddToCart}
                   disabled={addingToCart}
-                  className="flex-1 bg-green-500 text-white py-3 px-6 rounded-lg font-semibold hover:bg-green-600 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+                  className="flex-1 bg-gold-950 text-darkGreen-950 py-3 px-6 rounded-lg font-semibold hover:bg-gold-600 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
                 >
                   {addingToCart ? (
                     <>
@@ -452,8 +452,8 @@ const ProductDetailPage = () => {
                   onClick={handleToggleWishlist}
                   className={`flex-1 p-3 rounded-lg border-2 transition-colors ${
                     isInWishlist
-                      ? 'border-red-500 bg-red-50 text-red-600'
-                      : 'border-gray-300 hover:border-red-300'
+                      ? 'border-red-500 bg-red-500/20 text-red-400'
+                      : 'border-gold-950/30 text-gray-300 hover:border-red-400'
                   }`}
                   title="Add to Wishlist"
                 >
@@ -463,7 +463,7 @@ const ProductDetailPage = () => {
                 </button>
                 <button
                   onClick={handleShare}
-                  className="flex-1 p-3 rounded-lg border-2 border-gray-300 hover:border-green-300 transition-colors"
+                  className="flex-1 p-3 rounded-lg border-2 border-gold-950/30 text-gray-300 hover:border-gold-950 transition-colors"
                   title="Share Product"
                 >
                   <Share2 className="w-5 h-5 mx-auto" />
@@ -479,9 +479,9 @@ const ProductDetailPage = () => {
             )}
 
             {/* Product Details */}
-            <div className="border-t pt-6">
-              <h3 className="font-semibold text-gray-900 mb-2">Product Details</h3>
-              <ul className="space-y-2 text-sm text-gray-600">
+            <div className="border-t border-gold-950/20 pt-6">
+              <h3 className="font-semibold text-gold-950 mb-2">Product Details</h3>
+              <ul className="space-y-2 text-sm text-gray-300">
                 {product.brand && <li><strong>Brand:</strong> {product.brand}</li>}
                 {product.origin && <li><strong>Origin:</strong> {product.origin}</li>}
                 {product.category && <li><strong>Category:</strong> {product.category.name}</li>}
@@ -497,9 +497,9 @@ const ProductDetailPage = () => {
         </div>
 
         {/* Reviews Section */}
-        <div className="mt-8 bg-white rounded-lg p-6 shadow-sm">
+        <div className="mt-8 bg-darkGreen-900/50 border border-gold-950/20 rounded-lg p-6">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-gray-900">
+            <h2 className="text-2xl font-bold text-gold-950">
               Reviews ({reviews.length})
             </h2>
           </div>
@@ -522,24 +522,24 @@ const ProductDetailPage = () => {
           {reviews.length > 0 ? (
             <div className="space-y-6">
               {reviews.map((review) => (
-                <div key={review._id} className="border-b pb-6 last:border-0">
+                <div key={review._id} className="border-b border-gold-950/20 pb-6 last:border-0">
                   <div className="flex items-start justify-between mb-2">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
-                        <span className="text-green-600 font-semibold">
+                      <div className="w-10 h-10 rounded-full bg-gold-950/20 flex items-center justify-center">
+                        <span className="text-gold-950 font-semibold">
                           {(review.user?.fullName || 'A').charAt(0).toUpperCase()}
                         </span>
                       </div>
                       <div>
-                        <p className="font-semibold text-gray-900">
+                        <p className="font-semibold text-gray-200">
                           {review.user?.fullName || 'Anonymous'}
                         </p>
                         {review.isVerifiedPurchase && (
-                          <span className="text-xs text-green-600">Verified Purchase</span>
+                          <span className="text-xs text-gold-950">Verified Purchase</span>
                         )}
                       </div>
                     </div>
-                    <span className="text-sm text-gray-500">
+                    <span className="text-sm text-gray-400">
                       {new Date(review.createdAt).toLocaleDateString()}
                     </span>
                   </div>
@@ -550,17 +550,17 @@ const ProductDetailPage = () => {
                           key={i}
                           className={`w-4 h-4 ${
                             i < review.rating
-                              ? 'fill-yellow-400 text-yellow-400'
-                              : 'text-gray-300'
+                              ? 'fill-gold-950 text-gold-950'
+                              : 'text-gray-600'
                           }`}
                         />
                       ))}
                     </div>
                     {review.title && (
-                      <span className="font-semibold text-gray-900">{review.title}</span>
+                      <span className="font-semibold text-gray-200">{review.title}</span>
                     )}
                   </div>
-                  <p className="text-gray-700 mb-3">{review.comment}</p>
+                  <p className="text-gray-300 mb-3">{review.comment}</p>
                   {review.images && review.images.length > 0 && (
                     <div className="flex gap-2 mb-3">
                       {review.images.map((img, idx) => (
@@ -577,7 +577,7 @@ const ProductDetailPage = () => {
               ))}
             </div>
           ) : (
-            <p className="text-gray-500 text-center py-8">
+            <p className="text-gray-400 text-center py-8">
               No reviews yet. Be the first to review this product!
             </p>
           )}

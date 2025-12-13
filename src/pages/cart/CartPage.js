@@ -139,7 +139,7 @@ const CartPage = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-green-500" />
+        <Loader2 className="w-8 h-8 animate-spin text-gold-950" />
       </div>
     );
   }
@@ -150,14 +150,14 @@ const CartPage = () => {
 
   if (!cart || !hasItems) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-green-50 via-green-50 to-green-50 flex items-center justify-center py-12 px-4">
+      <div className="min-h-screen bg-darkGreen-950 flex items-center justify-center py-12 px-4">
         <div className="text-center">
-          <ShoppingCart className="w-24 h-24 text-gray-300 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Your cart is empty</h2>
-          <p className="text-gray-600 mb-6">Add some products to get started</p>
+          <ShoppingCart className="w-24 h-24 text-gray-600 mx-auto mb-4" />
+          <h2 className="text-2xl font-bold text-gold-950 mb-2">Your cart is empty</h2>
+          <p className="text-gray-300 mb-6">Add some products to get started</p>
           <Link
             to={ROUTES.SHOP}
-            className="inline-flex items-center gap-2 bg-green-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-600 transition-colors"
+            className="inline-flex items-center gap-2 bg-gold-950 text-darkGreen-950 px-6 py-3 rounded-lg font-semibold hover:bg-gold-600 transition-colors"
           >
             Continue Shopping
             <ArrowRight className="w-5 h-5" />
@@ -168,12 +168,12 @@ const CartPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-green-50 via-green-50 to-green-50 py-4 md:py-8">
+    <div className="min-h-screen bg-darkGreen-950 py-4 md:py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Mobile Header */}
         <div className="md:hidden mb-4">
           <div className="flex items-center justify-between mb-4">
-            <h1 className="text-xl font-bold text-gray-900">Your Cart</h1>
+            <h1 className="text-xl font-bold text-gold-950">Your Cart</h1>
             <button
               onClick={async () => {
                 if (window.confirm('Are you sure you want to clear your cart?')) {
@@ -186,7 +186,7 @@ const CartPage = () => {
                   }
                 }
               }}
-              className="text-sm text-green-500 hover:text-green-600"
+              className="text-sm text-gold-950 hover:text-gold-600"
             >
               Clear cart
             </button>
@@ -194,7 +194,7 @@ const CartPage = () => {
         </div>
 
         {/* Desktop Header */}
-        <h1 className="hidden md:block text-3xl font-bold text-gray-900 mb-8">Shopping Cart</h1>
+        <h1 className="hidden md:block text-3xl font-bold text-gold-950 mb-8">Shopping Cart</h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-8">
           {/* Cart Items */}
@@ -211,13 +211,13 @@ const CartPage = () => {
                   key={item._id}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="bg-white rounded-xl md:rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 p-3 md:p-4 flex gap-3 md:gap-4"
+                  className="bg-darkGreen-900/50 border border-gold-950/20 rounded-xl md:rounded-2xl hover:border-gold-950/50 transition-all duration-300 p-3 md:p-4 flex gap-3 md:gap-4"
                 >
                   <Link
                     to={ROUTES.PRODUCT_DETAIL.replace(':slug', item.product?.slug)}
                     className="flex-shrink-0"
                   >
-                    <div className="w-20 h-20 md:w-24 md:h-24 rounded-lg overflow-hidden bg-gray-100">
+                    <div className="w-20 h-20 md:w-24 md:h-24 rounded-lg overflow-hidden bg-darkGreen-950">
                       <FirebaseImage
                         src={
                           (item.product?.images && item.product.images.length > 0 && item.product.images[0])
@@ -232,20 +232,20 @@ const CartPage = () => {
 
                   <div className="flex-1 min-w-0">
                     <Link to={ROUTES.PRODUCT_DETAIL.replace(':slug', item.product?.slug)}>
-                      <h3 className="font-semibold text-gray-900 mb-1 hover:text-green-600 text-sm md:text-base line-clamp-2">
+                      <h3 className="font-semibold text-gray-200 mb-1 hover:text-gold-950 text-sm md:text-base line-clamp-2">
                         {item.product?.name}
                       </h3>
                     </Link>
-                    <p className="text-xs md:text-sm text-gray-600 mb-2 line-clamp-2">
+                    <p className="text-xs md:text-sm text-gray-400 mb-2 line-clamp-2">
                       {item.product?.shortDescription || item.product?.description?.substring(0, 60) + '...'}
                     </p>
                     <div className="flex items-center gap-2 mb-2">
                       {originalPrice && originalPrice > currentPrice && (
-                        <span className="text-xs md:text-sm text-red-500 line-through">
+                        <span className="text-xs md:text-sm text-red-400 line-through">
                           Rs. {originalPrice.toLocaleString()}
                         </span>
                       )}
-                      <span className="text-base md:text-lg font-bold text-gray-900">
+                      <span className="text-base md:text-lg font-bold text-gold-950">
                         Rs. {currentPrice?.toLocaleString()}
                       </span>
                     </div>
@@ -255,7 +255,7 @@ const CartPage = () => {
                         <button
                           onClick={() => handleUpdateQuantity(item._id, item.quantity - 1)}
                           disabled={updating || item.quantity <= 1}
-                          className="p-1 md:p-1.5 bg-green-500 text-white rounded hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                          className="p-1 md:p-1.5 bg-gold-950 text-darkGreen-950 rounded hover:bg-gold-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                         >
                           <Minus className="w-3 h-3 md:w-4 md:h-4" />
                         </button>
@@ -285,24 +285,24 @@ const CartPage = () => {
 
           {/* Order Summary */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-xl md:rounded-2xl shadow-sm p-4 md:p-6 sticky top-4">
-              <h2 className="text-lg md:text-xl font-bold text-gray-900 mb-4">Order Summary</h2>
+            <div className="bg-darkGreen-900/50 border border-gold-950/20 rounded-xl md:rounded-2xl p-4 md:p-6 sticky top-4">
+              <h2 className="text-lg md:text-xl font-bold text-gold-950 mb-4">Order Summary</h2>
 
               {/* Coupon Section */}
               <div className="mb-6">
                 {cart.coupon ? (
-                  <div className="bg-green-50 border border-green-200 rounded-lg p-3 mb-3">
+                  <div className="bg-gold-950/20 border border-gold-950/30 rounded-lg p-3 mb-3">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <Tag className="w-4 h-4 text-green-600" />
-                        <span className="text-sm font-semibold text-green-800">
+                        <Tag className="w-4 h-4 text-gold-950" />
+                        <span className="text-sm font-semibold text-gold-950">
                           {cart.coupon.code}
                         </span>
                       </div>
                       <button
                         onClick={handleRemoveCoupon}
                         disabled={applyingCoupon}
-                        className="text-xs text-green-700 hover:text-green-900"
+                        className="text-xs text-gold-950 hover:text-gold-600"
                       >
                         Remove
                       </button>
@@ -316,12 +316,12 @@ const CartPage = () => {
                         value={couponCode}
                         onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
                         placeholder="Enter promo code"
-                        className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                        className="flex-1 px-3 py-2 bg-darkGreen-950 border border-gold-950/30 rounded-lg text-gray-300 focus:ring-2 focus:ring-gold-950 focus:border-gold-950"
                       />
                       <button
                         type="submit"
                         disabled={applyingCoupon || !couponCode.trim()}
-                        className="px-4 py-2 bg-green-500 text-white rounded-lg font-semibold hover:bg-green-600 transition-colors disabled:opacity-50"
+                        className="px-4 py-2 bg-gold-950 text-darkGreen-950 rounded-lg font-semibold hover:bg-gold-600 transition-colors disabled:opacity-50"
                       >
                         {applyingCoupon ? (
                           <Loader2 className="w-4 h-4 animate-spin" />
@@ -336,24 +336,24 @@ const CartPage = () => {
 
               {/* Price Breakdown */}
               <div className="space-y-2 md:space-y-3 mb-4 md:mb-6">
-                <div className="flex justify-between text-sm md:text-base text-gray-700">
+                <div className="flex justify-between text-sm md:text-base text-gray-300">
                   <span>Subtotal</span>
                   <span className="font-semibold">Rs. {totals.subtotal.toLocaleString()}</span>
                 </div>
                 {totals.discount > 0 && (
-                  <div className="flex justify-between text-sm md:text-base text-green-600">
+                  <div className="flex justify-between text-sm md:text-base text-gold-950">
                     <span>Discount</span>
                     <span className="font-semibold">- Rs. {totals.discount.toLocaleString()}</span>
                   </div>
                 )}
-                <div className="flex justify-between text-sm md:text-base text-gray-700">
+                <div className="flex justify-between text-sm md:text-base text-gray-300">
                   <span>FBR POS Charges</span>
                   <span className="font-semibold">Rs. 1</span>
                 </div>
-                <div className="border-t pt-2 md:pt-3">
+                <div className="border-t border-gold-950/20 pt-2 md:pt-3">
                   <div className="flex justify-between">
-                    <span className="text-base md:text-lg font-bold text-gray-900">Grand total</span>
-                    <span className="text-base md:text-lg font-bold text-gray-900">
+                    <span className="text-base md:text-lg font-bold text-gold-950">Grand total</span>
+                    <span className="text-base md:text-lg font-bold text-gold-950">
                       Rs. {(totals.total + 1).toLocaleString()}
                     </span>
                   </div>
@@ -362,14 +362,14 @@ const CartPage = () => {
 
               <Link
                 to={ROUTES.CHECKOUT}
-                className="block w-full bg-green-500 text-white text-center py-3 px-6 rounded-lg font-semibold hover:bg-green-600 transition-colors"
+                className="block w-full bg-gold-950 text-darkGreen-950 text-center py-3 px-6 rounded-lg font-semibold hover:bg-gold-600 transition-colors"
               >
                 Checkout
               </Link>
 
               <Link
                 to={ROUTES.SHOP}
-                className="block w-full text-center mt-3 text-gray-600 hover:text-green-600"
+                className="block w-full text-center mt-3 text-gray-300 hover:text-gold-950"
               >
                 Continue Shopping
               </Link>

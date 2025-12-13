@@ -95,7 +95,7 @@ const OrderDetailPage = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-green-500" />
+        <Loader2 className="w-8 h-8 animate-spin text-gold-950" />
       </div>
     );
   }
@@ -105,22 +105,22 @@ const OrderDetailPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-green-50 via-green-50 to-green-50 py-8">
+    <div className="min-h-screen bg-darkGreen-950 py-8">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <Link
           to={ROUTES.ORDERS}
-          className="text-gray-600 hover:text-green-600 mb-6 inline-block"
+          className="text-gray-300 hover:text-gold-950 mb-6 inline-block"
         >
           ← Back to Orders
         </Link>
 
-        <div className="bg-white rounded-2xl shadow-sm p-6 mb-6">
+        <div className="bg-darkGreen-900/50 border border-gold-950/20 rounded-2xl p-6 mb-6">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900 mb-2">
+              <h1 className="text-2xl font-bold text-gold-950 mb-2">
                 Order #{order.orderNumber}
               </h1>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-gray-300">
                 Placed on {new Date(order.createdAt).toLocaleDateString()}
               </p>
             </div>
@@ -137,7 +137,7 @@ const OrderDetailPage = () => {
           {order.status === 'pending' && (
             <button
               onClick={handleCancelOrder}
-              className="px-4 py-2 border border-red-300 text-red-600 rounded-lg hover:bg-red-50 transition-colors"
+              className="px-4 py-2 border border-red-400 text-red-400 rounded-lg hover:bg-red-500/20 transition-colors"
             >
               Cancel Order
             </button>
@@ -145,8 +145,8 @@ const OrderDetailPage = () => {
         </div>
 
         {/* Order Items */}
-        <div className="bg-white rounded-2xl shadow-sm p-6 mb-6">
-          <h2 className="text-xl font-bold text-gray-900 mb-4">Order Items</h2>
+        <div className="bg-darkGreen-900/50 border border-gold-950/20 rounded-2xl p-6 mb-6">
+          <h2 className="text-xl font-bold text-gold-950 mb-4">Order Items</h2>
           <div className="space-y-4">
             {order.items?.map((item, idx) => {
               // Get image source with proper fallback
@@ -186,8 +186,8 @@ const OrderDetailPage = () => {
               }
               
               return (
-                <div key={idx} className="flex gap-4 pb-4 border-b last:border-0">
-                  <div className="w-20 h-20 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
+                <div key={idx} className="flex gap-4 pb-4 border-b border-gold-950/20 last:border-0">
+                  <div className="w-20 h-20 rounded-lg overflow-hidden bg-darkGreen-950 flex-shrink-0">
                     <FirebaseImage
                       src={imageSrc}
                       alt={item.productName || 'Product image'}
@@ -195,12 +195,12 @@ const OrderDetailPage = () => {
                     />
                   </div>
                 <div className="flex-1">
-                  <h3 className="font-semibold text-gray-900">{item.productName}</h3>
+                  <h3 className="font-semibold text-gray-200">{item.productName}</h3>
                   {item.variant && (
-                    <p className="text-sm text-gray-600">Weight: {item.variant}</p>
+                    <p className="text-sm text-gray-400">Weight: {item.variant}</p>
                   )}
-                  <p className="text-sm text-gray-600">Quantity: {item.quantity}</p>
-                  <p className="text-sm font-semibold text-gray-900 mt-1">
+                  <p className="text-sm text-gray-400">Quantity: {item.quantity}</p>
+                  <p className="text-sm font-semibold text-gold-950 mt-1">
                     Rs. {item.total?.toLocaleString()}
                   </p>
                 </div>
@@ -211,12 +211,12 @@ const OrderDetailPage = () => {
         </div>
 
         {/* Shipping Address */}
-        <div className="bg-white rounded-2xl shadow-sm p-6 mb-6">
-          <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+        <div className="bg-darkGreen-900/50 border border-gold-950/20 rounded-2xl p-6 mb-6">
+          <h2 className="text-xl font-bold text-gold-950 mb-4 flex items-center gap-2">
             <MapPin className="w-5 h-5" />
             Delivery Address
           </h2>
-          <div className="text-gray-700">
+          <div className="text-gray-300">
             <p className="font-semibold">{order.shippingAddress?.fullName}</p>
             <p>{order.shippingAddress?.address}</p>
             <p>
@@ -231,50 +231,50 @@ const OrderDetailPage = () => {
         </div>
 
         {/* Order Summary */}
-        <div className="bg-white rounded-lg shadow-sm p-6">
-          <h2 className="text-xl font-bold text-gray-900 mb-4">Order Summary</h2>
+        <div className="bg-darkGreen-900/50 border border-gold-950/20 rounded-lg p-6">
+          <h2 className="text-xl font-bold text-gold-950 mb-4">Order Summary</h2>
           <div className="space-y-3">
-            <div className="flex justify-between text-gray-700">
+            <div className="flex justify-between text-gray-300">
               <span>Subtotal</span>
               <span className="font-semibold">Rs. {order.subtotal?.toLocaleString()}</span>
             </div>
             {order.discount > 0 && (
-              <div className="flex justify-between text-green-600">
+              <div className="flex justify-between text-gold-950">
                 <span>Discount</span>
                 <span className="font-semibold">- Rs. {order.discount?.toLocaleString()}</span>
               </div>
             )}
-            <div className="flex justify-between text-gray-700">
+            <div className="flex justify-between text-gray-300">
               <span>Delivery Charges</span>
               <span className="font-semibold">Rs. {order.deliveryCharges?.toLocaleString() || '0'}</span>
             </div>
-            <div className="border-t pt-3">
+            <div className="border-t border-gold-950/20 pt-3">
               <div className="flex justify-between">
-                <span className="text-lg font-bold text-gray-900">Grand Total</span>
-                <span className="text-lg font-bold text-gray-900">
+                <span className="text-lg font-bold text-gold-950">Grand Total</span>
+                <span className="text-lg font-bold text-gold-950">
                   Rs. {order.total?.toLocaleString()}
                 </span>
               </div>
             </div>
           </div>
 
-          <div className="mt-6 pt-6 border-t">
+          <div className="mt-6 pt-6 border-t border-gold-950/20">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Payment Method</p>
-                <p className="font-semibold text-gray-900 capitalize">
+                <p className="text-sm text-gray-300">Payment Method</p>
+                <p className="font-semibold text-gray-200 capitalize">
                   {order.paymentMethod?.replace('_', ' ')}
                 </p>
               </div>
               <div className="text-right">
-                <p className="text-sm text-gray-600">Payment Status</p>
+                <p className="text-sm text-gray-300">Payment Status</p>
                 <p
                   className={`font-semibold capitalize ${
                     order.paymentStatus === 'paid'
-                      ? 'text-green-600'
+                      ? 'text-gold-950'
                       : order.paymentStatus === 'failed'
-                      ? 'text-red-600'
-                      : 'text-yellow-600'
+                      ? 'text-red-400'
+                      : 'text-yellow-400'
                   }`}
                 >
                   {order.paymentStatus}
@@ -284,9 +284,9 @@ const OrderDetailPage = () => {
           </div>
 
           {order.trackingNumber && (
-            <div className="mt-6 pt-6 border-t">
-              <p className="text-sm text-gray-600 mb-1">Tracking Number</p>
-              <p className="font-semibold text-gray-900">{order.trackingNumber}</p>
+            <div className="mt-6 pt-6 border-t border-gold-950/20">
+              <p className="text-sm text-gray-300 mb-1">Tracking Number</p>
+              <p className="font-semibold text-gray-200">{order.trackingNumber}</p>
             </div>
           )}
         </div>

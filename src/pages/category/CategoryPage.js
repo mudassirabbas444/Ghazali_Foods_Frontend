@@ -166,7 +166,7 @@ const CategoryPage = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-green-500" />
+        <Loader2 className="w-8 h-8 animate-spin text-gold-950" />
       </div>
     );
   }
@@ -176,15 +176,15 @@ const CategoryPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-darkGreen-950">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2 md:mb-0">
+            <h1 className="text-3xl font-bold text-gold-950 mb-2 md:mb-0">
               {category.name}
             </h1>
-            <p className="text-gray-600">
+            <p className="text-gray-300">
               {category.description || 'Explore our premium selection'}
             </p>
           </div>
@@ -196,8 +196,8 @@ const CategoryPage = () => {
                 onClick={() => setSelectedSubCategory('')}
                 className={`px-4 py-2 rounded-lg whitespace-nowrap transition-colors ${
                   !selectedSubCategory
-                    ? 'bg-green-500 text-white'
-                    : 'bg-white text-gray-700 hover:bg-gray-100'
+                    ? 'bg-gold-950 text-darkGreen-950'
+                    : 'bg-darkGreen-900/50 text-gray-300 border border-gold-950/30 hover:border-gold-950'
                 }`}
               >
                 All
@@ -208,8 +208,8 @@ const CategoryPage = () => {
                   onClick={() => setSelectedSubCategory(subCat._id)}
                   className={`px-4 py-2 rounded-lg whitespace-nowrap transition-colors ${
                     selectedSubCategory === subCat._id
-                      ? 'bg-green-500 text-white'
-                      : 'bg-white text-gray-700 hover:bg-gray-100'
+                      ? 'bg-gold-950 text-darkGreen-950'
+                      : 'bg-darkGreen-900/50 text-gray-300 border border-gold-950/30 hover:border-gold-950'
                   }`}
                 >
                   {subCat.name}
@@ -220,16 +220,16 @@ const CategoryPage = () => {
 
           {/* View Mode Toggle */}
           <div className="flex items-center justify-end gap-2 mb-6">
-            <div className="flex items-center border border-gray-300 rounded-lg overflow-hidden">
+            <div className="flex items-center border border-gold-950/30 rounded-lg overflow-hidden">
               <button
                 onClick={() => setViewMode('grid')}
-                className={`p-2 ${viewMode === 'grid' ? 'bg-green-500 text-white' : 'bg-white text-gray-700'}`}
+                className={`p-2 ${viewMode === 'grid' ? 'bg-gold-950 text-darkGreen-950' : 'bg-darkGreen-900/50 text-gray-300'}`}
               >
                 <Grid className="w-4 h-4" />
               </button>
               <button
                 onClick={() => setViewMode('list')}
-                className={`p-2 ${viewMode === 'list' ? 'bg-green-500 text-white' : 'bg-white text-gray-700'}`}
+                className={`p-2 ${viewMode === 'list' ? 'bg-gold-950 text-darkGreen-950' : 'bg-darkGreen-900/50 text-gray-300'}`}
               >
                 <List className="w-4 h-4" />
               </button>
@@ -240,7 +240,7 @@ const CategoryPage = () => {
         {/* Products Grid */}
         {products.length === 0 ? (
           <div className="text-center py-20">
-            <p className="text-gray-500 text-lg">No products found in this category</p>
+            <p className="text-gray-400 text-lg">No products found in this category</p>
           </div>
         ) : (
           <div
@@ -255,7 +255,7 @@ const CategoryPage = () => {
                 key={product._id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className={`bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 ${
+                className={`bg-darkGreen-900/50 border border-gold-950/20 rounded-2xl hover:border-gold-950/50 transition-all duration-300 ${
                   viewMode === 'list' ? 'flex gap-4 p-4' : 'p-4'
                 } group`}
               >
@@ -299,18 +299,18 @@ const CategoryPage = () => {
 
                 <div className={viewMode === 'list' ? 'flex-1' : ''}>
                   <Link to={ROUTES.PRODUCT_DETAIL.replace(':slug', product.slug)}>
-                    <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 text-base hover:text-orange-600 transition-colors">
+                    <h3 className="font-semibold text-gray-200 mb-2 line-clamp-2 text-base hover:text-gold-950 transition-colors">
                       {product.name}
                     </h3>
                   </Link>
 
                   <div className="flex items-center justify-between mt-3">
                     <div>
-                      <p className="text-lg font-bold text-gray-900">
+                      <p className="text-lg font-bold text-gold-950">
                         {getProductPrice(product)}
                       </p>
                       {product.compareAtPrice && (
-                        <p className="text-sm text-gray-500 line-through">
+                        <p className="text-sm text-gray-400 line-through">
                           Rs. {product.compareAtPrice.toLocaleString()}
                         </p>
                       )}
@@ -318,7 +318,7 @@ const CategoryPage = () => {
                     
                     <button
                       onClick={() => handleAddToCart(product)}
-                      className="p-2 bg-green-500 text-white rounded-lg hover:bg-orange-600 transition-colors opacity-0 group-hover:opacity-100"
+                      className="p-2 bg-gold-950 text-darkGreen-950 rounded-lg hover:bg-gold-600 transition-colors opacity-0 group-hover:opacity-100"
                     >
                       <ShoppingCart className="w-5 h-5" />
                     </button>

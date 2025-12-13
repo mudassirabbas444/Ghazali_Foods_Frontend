@@ -9,6 +9,8 @@ import {
   Trash2,
   CheckCircle,
   XCircle,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react';
 import adminService from '../../services/admin';
 import { toast } from 'react-toastify';
@@ -16,13 +18,23 @@ import FirebaseImage from '../../components/FirebaseImage';
 
 const AdminStockNotificationsPage = () => {
   const [notifications, setNotifications] = useState([]);
+  const [allNotifications, setAllNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filterNotified, setFilterNotified] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   useEffect(() => {
     fetchNotifications();
   }, [filterNotified, searchQuery]);
+
+  useEffect(() => {
+    // Update displayed notifications based on current page
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    setNotifications(allNotifications.slice(startIndex, endIndex));
+  }, [currentPage, allNotifications]);
 
   const fetchNotifications = async () => {
     try {
@@ -39,7 +51,8 @@ const AdminStockNotificationsPage = () => {
             notif.user?.email?.toLowerCase().includes(searchQuery.toLowerCase())
           );
         }
-        setNotifications(filtered);
+        setAllNotifications(filtered);
+        setCurrentPage(1);
       }
     } catch (error) {
       toast.error('Failed to load stock notifications');
@@ -193,6 +206,62 @@ const AdminStockNotificationsPage = () => {
           </div>
         )}
       </div>
+
+      {/* Pagination */}
+      {allNotifications.length > itemsPerPage && (
+        <div className="flex items-center justify-between bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+          <div className="text-sm text-gray-600">
+            Showing {(currentPage - 1) * itemsPerPage + 1} to {Math.min(currentPage * itemsPerPage, allNotifications.length)} of {allNotifications.length} notifications
+          </div>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+              disabled={currentPage === 1}
+              className="p-2 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+            <div className="flex items-center gap-1">
+              {Array.from({ length: Math.ceil(allNotifications.length / itemsPerPage) }, (_, i) => i + 1)
+                .filter(page => {
+                  const totalPages = Math.ceil(allNotifications.length / itemsPerPage);
+                  if (totalPages <= 7) return true;
+                  if (page === 1 || page === totalPages) return true;
+                  if (Math.abs(page - currentPage) <= 1) return true;
+                  return false;
+                })
+                .map((page, idx, arr) => {
+                  const totalPages = Math.ceil(allNotifications.length / itemsPerPage);
+                  const prevPage = arr[idx - 1];
+                  const showEllipsis = prevPage && page - prevPage > 1;
+                  
+                  return (
+                    <React.Fragment key={page}>
+                      {showEllipsis && <span className="px-2">...</span>}
+                      <button
+                        onClick={() => setCurrentPage(page)}
+                        className={`px-3 py-1 rounded-lg ${
+                          currentPage === page
+                            ? 'bg-orange-500 text-white'
+                            : 'border border-gray-300 hover:bg-gray-50'
+                        }`}
+                      >
+                        {page}
+                      </button>
+                    </React.Fragment>
+                  );
+                })}
+            </div>
+            <button
+              onClick={() => setCurrentPage(prev => Math.min(Math.ceil(allNotifications.length / itemsPerPage), prev + 1))}
+              disabled={currentPage >= Math.ceil(allNotifications.length / itemsPerPage)}
+              className="p-2 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

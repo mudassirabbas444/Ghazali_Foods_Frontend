@@ -10,6 +10,8 @@ import {
   X,
   Check,
   Image as ImageIcon,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react';
 import adminService from '../../services/admin';
 import categoryService from '../../services/category';
@@ -18,33 +20,68 @@ import FirebaseImage from '../../components/FirebaseImage';
 
 const AdminCategoriesPage = () => {
   const [categories, setCategories] = useState([]);
+  const [allCategories, setAllCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [editingCategory, setEditingCategory] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
+  
+  // Pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 20;
 
   useEffect(() => {
     fetchCategories();
+  }, []);
+
+  useEffect(() => {
+    setCurrentPage(1);
+    filterCategories();
   }, [searchQuery]);
+
+  useEffect(() => {
+    filterCategories();
+  }, [allCategories, searchQuery, currentPage]);
 
   const fetchCategories = async () => {
     try {
       setLoading(true);
       const response = await categoryService.getCategories();
       if (response.success) {
-        let filtered = response.categories || [];
-        if (searchQuery) {
-          filtered = filtered.filter(cat =>
-            cat.name.toLowerCase().includes(searchQuery.toLowerCase())
-          );
-        }
-        setCategories(filtered);
+        setAllCategories(response.categories || []);
       }
     } catch (error) {
       toast.error('Failed to load categories');
     } finally {
       setLoading(false);
     }
+  };
+
+  const filterCategories = () => {
+    let filtered = [...allCategories];
+    if (searchQuery) {
+      filtered = filtered.filter(cat =>
+        cat.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+    
+    // Client-side pagination
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    setCategories(filtered.slice(startIndex, endIndex));
+  };
+
+  const totalPages = Math.ceil(
+    (searchQuery
+      ? allCategories.filter(cat =>
+          cat.name.toLowerCase().includes(searchQuery.toLowerCase())
+        ).length
+      : allCategories.length) / itemsPerPage
+  );
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleDelete = async (categoryId) => {
@@ -173,6 +210,69 @@ const AdminCategoriesPage = () => {
                 </div>
               </motion.div>
             ))}
+          </div>
+        )}
+
+        {/* Pagination */}
+        {!loading && totalPages > 1 && (
+          <div className="mt-6 flex flex-col items-center justify-center gap-4">
+            <div className="text-sm text-gray-600">
+              Showing {((currentPage - 1) * itemsPerPage) + 1} to {Math.min(currentPage * itemsPerPage, searchQuery ? allCategories.filter(cat => cat.name.toLowerCase().includes(searchQuery.toLowerCase())).length : allCategories.length)} of {searchQuery ? allCategories.filter(cat => cat.name.toLowerCase().includes(searchQuery.toLowerCase())).length : allCategories.length} categories
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+                className={`p-2 rounded-lg border transition-colors ${
+                  currentPage === 1
+                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                    : 'bg-white text-gray-700 hover:bg-gray-50 border-gray-300 hover:border-orange-500'
+                }`}
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+
+              <div className="flex items-center gap-1">
+                {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                  let pageNum;
+                  if (totalPages <= 5) {
+                    pageNum = i + 1;
+                  } else if (currentPage <= 3) {
+                    pageNum = i + 1;
+                  } else if (currentPage >= totalPages - 2) {
+                    pageNum = totalPages - 4 + i;
+                  } else {
+                    pageNum = currentPage - 2 + i;
+                  }
+
+                  return (
+                    <button
+                      key={pageNum}
+                      onClick={() => handlePageChange(pageNum)}
+                      className={`px-4 py-2 rounded-lg border transition-colors ${
+                        currentPage === pageNum
+                          ? 'bg-orange-500 text-white border-orange-500'
+                          : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50 hover:border-orange-500'
+                      }`}
+                    >
+                      {pageNum}
+                    </button>
+                  );
+                })}
+              </div>
+
+              <button
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+                className={`p-2 rounded-lg border transition-colors ${
+                  currentPage === totalPages
+                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                    : 'bg-white text-gray-700 hover:bg-gray-50 border-gray-300 hover:border-orange-500'
+                }`}
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            </div>
           </div>
         )}
       </div>
