@@ -12,6 +12,7 @@ import {
   MapPin,
   ChevronDown,
   UserPlus,
+  FileText,
 } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { useLocationContext } from '../../context/LocationContext';
@@ -225,6 +226,14 @@ const Header = () => {
                 className='text-gray-300 hover:text-gold-950 transition-colors duration-300 font-medium'
               >
                 Contact
+              </Link>
+            </motion.div>
+            <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
+              <Link 
+                to={ROUTES.BLOG}
+                className='text-gray-300 hover:text-gold-950 transition-colors duration-300 font-medium'
+              >
+                Blog
               </Link>
             </motion.div>
           </nav>
@@ -446,6 +455,27 @@ const Header = () => {
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Shop
+                </Link>
+                <Link
+                  to={ROUTES.BLOG}
+                  className='block px-4 py-2 text-gray-300 hover:bg-darkGreen-900 rounded-xl transition-colors duration-300'
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Blog
+                </Link>
+                <Link
+                  to={ROUTES.ABOUT}
+                  className='block px-4 py-2 text-gray-300 hover:bg-darkGreen-900 rounded-xl transition-colors duration-300'
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  About Us
+                </Link>
+                <Link
+                  to={ROUTES.CONTACT}
+                  className='block px-4 py-2 text-gray-300 hover:bg-darkGreen-900 rounded-xl transition-colors duration-300'
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Contact
                 </Link>
                 
                 {isAuthenticated ? (

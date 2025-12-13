@@ -7,6 +7,7 @@ import {
   Search,
   LayoutGrid,
   HelpCircle,
+  FileText,
 } from 'lucide-react';
 import { ROUTES } from '../../constants';
 import cartService from '../../services/cart';
@@ -62,9 +63,9 @@ const BottomNavigation = () => {
       path: ROUTES.CATEGORIES,
     },
     {
-      label: 'Search',
-      icon: Search,
-      path: ROUTES.SEARCH,
+      label: 'Blog',
+      icon: FileText,
+      path: ROUTES.BLOG,
     },
     {
       label: 'Cart',
@@ -80,7 +81,7 @@ const BottomNavigation = () => {
   ];
 
   return (
-    <nav className='fixed bottom-0 left-0 right-0 z-[200] bg-white border-t border-gray-200 shadow-lg md:hidden'>
+    <nav className='fixed bottom-0 left-0 right-0 z-[200] bg-darkGreen-950 border-t border-gold-950/20 shadow-lg md:hidden'>
       <div className='flex items-center justify-around h-16 px-2'>
         {navItems.map((item) => {
           const Icon = item.icon;
@@ -99,25 +100,25 @@ const BottomNavigation = () => {
                 <div className='relative'>
                   <Icon
                     className={`w-5 h-5 transition-colors duration-200 ${
-                      active ? 'text-green-500' : 'text-gray-600'
+                      active ? 'text-gold-950' : 'text-gray-400'
                     }`}
                   />
                   {item.badge && item.badge > 0 && (
-                    <span className='absolute -top-1 -right-1 bg-green-500 text-white text-[10px] font-bold rounded-full min-w-[18px] h-[18px] px-1 flex items-center justify-center leading-none'>
+                    <span className='absolute -top-1 -right-1 bg-gold-950 text-darkGreen-950 text-[10px] font-bold rounded-full min-w-[18px] h-[18px] px-1 flex items-center justify-center leading-none'>
                       {item.badge > 99 ? '99+' : item.badge > 9 ? '9+' : item.badge}
                     </span>
                   )}
                 </div>
                 <span
                   className={`text-[10px] mt-1 transition-colors duration-200 ${
-                    active ? 'text-green-500 font-semibold' : 'text-gray-600'
+                    active ? 'text-gold-950 font-semibold' : 'text-gray-400'
                   }`}
                 >
                   {item.label}
                 </span>
                 {active && (
                   <motion.div
-                    className='absolute bottom-0 left-0 right-0 h-0.5 bg-green-500'
+                    className='absolute bottom-0 left-0 right-0 h-0.5 bg-gold-950'
                     layoutId='activeTab'
                     initial={false}
                     transition={{ type: 'spring', stiffness: 500, damping: 30 }}
