@@ -273,9 +273,9 @@ const CheckoutPage = () => {
                       try {
                         setIsGettingLocation(true);
                         
-                        // Check permission first
+                        // Check permission first (but allow prompt state to proceed)
                         const permissionCheck = await checkLocationPermission();
-                        if (permissionCheck.granted === false) {
+                        if (permissionCheck.denied === true) {
                           toast.error(permissionCheck.error || 'Location permission denied. Please enable location access in your browser settings.');
                           setIsGettingLocation(false);
                           return;
@@ -287,8 +287,11 @@ const CheckoutPage = () => {
                         setValue('city', locationData.name || locationName);
                         toast.success('Location detected! Please fill in your complete address.');
                       } catch (error) {
+                        console.error('Location error:', error);
                         const errorMessage = error.message || 'Failed to get location. Please enable location access in your browser settings.';
-                        toast.error(errorMessage);
+                        toast.error(errorMessage, {
+                          autoClose: 5000,
+                        });
                       } finally {
                         setIsGettingLocation(false);
                       }

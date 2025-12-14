@@ -135,17 +135,18 @@ export const LocationProvider = ({ children }) => {
         const permission = await navigator.permissions.query({ name: 'geolocation' });
         return { 
           granted: permission.state === 'granted', 
+          denied: permission.state === 'denied',
           state: permission.state,
           error: permission.state === 'denied' ? 'Location permission denied. Please enable it in your browser settings.' : null
         };
       } catch (error) {
         // Permission API might not be supported, fall back to trying to get location
-        return { granted: null, error: null };
+        return { granted: null, denied: false, error: null };
       }
     }
     
     // Fallback: Permission API not available
-    return { granted: null, error: null };
+    return { granted: null, denied: false, error: null };
   };
 
   const getCurrentLocation = async () => {
@@ -155,13 +156,56 @@ export const LocationProvider = ({ children }) => {
         return;
       }
 
-      // First check permission
+      // Check permission first (but don't block if it's in "prompt" state)
       checkLocationPermission().then((permissionCheck) => {
-        if (permissionCheck.granted === false) {
-          reject(new Error(permissionCheck.error || 'Location permission denied'));
+        // If explicitly denied, reject immediately
+        if (permissionCheck.denied === true) {
+          reject(new Error(permissionCheck.error || 'Location permission denied. Please enable location access in your browser settings.'));
           return;
         }
 
+        // Try to get location (will prompt user if permission is "prompt")
+        navigator.geolocation.getCurrentPosition(
+          async (position) => {
+            const { latitude, longitude } = position.coords;
+            try {
+              const cityName = await reverseGeocode(latitude, longitude);
+              const locationData = { latitude, longitude };
+              updateLocation(latitude, longitude, cityName);
+              resolve({ ...locationData, name: cityName });
+            } catch (error) {
+              // Even if reverse geocoding fails, we still have the coordinates
+              const locationData = { latitude, longitude };
+              updateLocation(latitude, longitude, 'Current Location');
+              resolve({ ...locationData, name: 'Current Location' });
+            }
+          },
+          (error) => {
+            let errorMessage = 'Failed to get location';
+            
+            // Handle error codes (1 = PERMISSION_DENIED, 2 = POSITION_UNAVAILABLE, 3 = TIMEOUT)
+            if (error.code === 1 || error.code === error.PERMISSION_DENIED) {
+              errorMessage = 'Location permission denied. Please enable location access in your browser settings and try again.';
+            } else if (error.code === 2 || error.code === error.POSITION_UNAVAILABLE) {
+              errorMessage = 'Location information is unavailable. Please check your device settings.';
+            } else if (error.code === 3 || error.code === error.TIMEOUT) {
+              errorMessage = 'Location request timed out. Please try again.';
+            } else {
+              // Use error message if available, otherwise use default
+              errorMessage = error.message || 'Failed to get location. Please check your browser settings and try again.';
+            }
+            
+            console.error('Geolocation error:', error);
+            reject(new Error(errorMessage));
+          },
+          {
+            enableHighAccuracy: true,
+            timeout: 15000, // Increased timeout
+            maximumAge: 0, // Don't use cached position
+          }
+        );
+      }).catch((permissionError) => {
+        // If permission check fails, still try to get location
         navigator.geolocation.getCurrentPosition(
           async (position) => {
             const { latitude, longitude } = position.coords;
@@ -179,26 +223,25 @@ export const LocationProvider = ({ children }) => {
           (error) => {
             let errorMessage = 'Failed to get location';
             
-            switch (error.code) {
-              case error.PERMISSION_DENIED:
-                errorMessage = 'Location permission denied. Please enable location access in your browser settings.';
-                break;
-              case error.POSITION_UNAVAILABLE:
-                errorMessage = 'Location information is unavailable.';
-                break;
-              case error.TIMEOUT:
-                errorMessage = 'Location request timed out. Please try again.';
-                break;
-              default:
-                errorMessage = 'Failed to get location. Please try again.';
-                break;
+            // Handle error codes (1 = PERMISSION_DENIED, 2 = POSITION_UNAVAILABLE, 3 = TIMEOUT)
+            if (error.code === 1 || error.code === error.PERMISSION_DENIED) {
+              errorMessage = 'Location permission denied. Please enable location access in your browser settings and try again.';
+            } else if (error.code === 2 || error.code === error.POSITION_UNAVAILABLE) {
+              errorMessage = 'Location information is unavailable. Please check your device settings.';
+            } else if (error.code === 3 || error.code === error.TIMEOUT) {
+              errorMessage = 'Location request timed out. Please try again.';
+            } else {
+              // Use error message if available, otherwise use default
+              errorMessage = error.message || 'Failed to get location. Please check your browser settings and try again.';
             }
             
+            console.error('Geolocation error:', error);
             reject(new Error(errorMessage));
           },
           {
             enableHighAccuracy: true,
-            timeout: 10000,
+            timeout: 15000,
+            maximumAge: 0,
           }
         );
       });

@@ -161,9 +161,9 @@ const Header = () => {
                   <button
                     onClick={async () => {
                       try {
-                        // Check permission first
+                        // Check permission first (but allow prompt state to proceed)
                         const permissionCheck = await checkLocationPermission();
-                        if (permissionCheck.granted === false) {
+                        if (permissionCheck.denied === true) {
                           toast.error(permissionCheck.error || 'Location permission denied. Please enable location access in your browser settings.');
                           setIsLocationMenuOpen(false);
                           return;
@@ -173,8 +173,11 @@ const Header = () => {
                         toast.success('Location updated');
                         setIsLocationMenuOpen(false);
                       } catch (error) {
+                        console.error('Location error:', error);
                         const errorMessage = error.message || 'Failed to get location. Please enable location access in your browser settings.';
-                        toast.error(errorMessage);
+                        toast.error(errorMessage, {
+                          autoClose: 5000,
+                        });
                         setIsLocationMenuOpen(false);
                       }
                     }}
@@ -383,9 +386,9 @@ const Header = () => {
                   <button
                     onClick={async () => {
                       try {
-                        // Check permission first
+                        // Check permission first (but allow prompt state to proceed)
                         const permissionCheck = await checkLocationPermission();
-                        if (permissionCheck.granted === false) {
+                        if (permissionCheck.denied === true) {
                           toast.error(permissionCheck.error || 'Location permission denied. Please enable location access in your browser settings.');
                           setIsLocationMenuOpen(false);
                           return;
@@ -395,8 +398,11 @@ const Header = () => {
                         toast.success('Location updated');
                         setIsLocationMenuOpen(false);
                       } catch (error) {
+                        console.error('Location error:', error);
                         const errorMessage = error.message || 'Failed to get location. Please enable location access in your browser settings.';
-                        toast.error(errorMessage);
+                        toast.error(errorMessage, {
+                          autoClose: 5000,
+                        });
                         setIsLocationMenuOpen(false);
                       }
                     }}
