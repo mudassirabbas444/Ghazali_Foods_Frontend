@@ -237,12 +237,19 @@ const AdminProductsPage = () => {
                       <p className="text-sm text-gray-900">
                         {product.stock || product.variants?.[0]?.stock || 0}
                       </p>
-                      {product.stock < 10 && (
-                        <p className="text-xs text-orange-600 flex items-center gap-1">
-                          <AlertCircle className="w-3 h-3" />
-                          Low stock
-                        </p>
-                      )}
+                      {(() => {
+                        // Calculate total stock (base stock or sum of variant stocks)
+                        let totalStock = product.stock || 0;
+                        if (product.variants && product.variants.length > 0) {
+                          totalStock = product.variants.reduce((sum, variant) => sum + (variant.stock || 0), 0);
+                        }
+                        return totalStock < 50 && totalStock > 0 ? (
+                          <p className="text-xs text-orange-600 flex items-center gap-1">
+                            <AlertCircle className="w-3 h-3" />
+                            Low stock
+                          </p>
+                        ) : null;
+                      })()}
                     </td>
                     <td className="py-3 px-4">
                       <div className="flex items-center gap-1">
