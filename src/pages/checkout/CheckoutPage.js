@@ -24,7 +24,7 @@ import FirebaseImage from '../../components/FirebaseImage';
 const CheckoutPage = () => {
   const navigate = useNavigate();
   const { isAuthenticated, user } = useAuth();
-  const { getCurrentLocation, location, locationName } = useLocationContext();
+  const { getCurrentLocation, location, locationName, checkLocationPermission } = useLocationContext();
 
   const [cart, setCart] = useState(null);
   const [addresses, setAddresses] = useState([]);
@@ -272,13 +272,23 @@ const CheckoutPage = () => {
                     onClick={async () => {
                       try {
                         setIsGettingLocation(true);
+                        
+                        // Check permission first
+                        const permissionCheck = await checkLocationPermission();
+                        if (permissionCheck.granted === false) {
+                          toast.error(permissionCheck.error || 'Location permission denied. Please enable location access in your browser settings.');
+                          setIsGettingLocation(false);
+                          return;
+                        }
+                        
                         const locationData = await getCurrentLocation();
                         setUsingCurrentLocation(true);
                         setSelectedAddress(null);
                         setValue('city', locationData.name || locationName);
                         toast.success('Location detected! Please fill in your complete address.');
                       } catch (error) {
-                        toast.error('Failed to get location. Please enable location access.');
+                        const errorMessage = error.message || 'Failed to get location. Please enable location access in your browser settings.';
+                        toast.error(errorMessage);
                       } finally {
                         setIsGettingLocation(false);
                       }

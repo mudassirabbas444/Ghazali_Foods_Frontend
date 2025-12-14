@@ -124,35 +124,84 @@ export const LocationProvider = ({ children }) => {
     localStorage.setItem('userLocationName', name);
   };
 
-  const getCurrentLocation = () => {
+  const checkLocationPermission = async () => {
+    if (!navigator.geolocation) {
+      return { granted: false, error: 'Geolocation is not supported by your browser' };
+    }
+
+    // Check if permission API is available (Chrome, Edge, etc.)
+    if (navigator.permissions && navigator.permissions.query) {
+      try {
+        const permission = await navigator.permissions.query({ name: 'geolocation' });
+        return { 
+          granted: permission.state === 'granted', 
+          state: permission.state,
+          error: permission.state === 'denied' ? 'Location permission denied. Please enable it in your browser settings.' : null
+        };
+      } catch (error) {
+        // Permission API might not be supported, fall back to trying to get location
+        return { granted: null, error: null };
+      }
+    }
+    
+    // Fallback: Permission API not available
+    return { granted: null, error: null };
+  };
+
+  const getCurrentLocation = async () => {
     return new Promise((resolve, reject) => {
       if (!navigator.geolocation) {
-        reject(new Error('Geolocation is not supported'));
+        reject(new Error('Geolocation is not supported by your browser'));
         return;
       }
 
-      navigator.geolocation.getCurrentPosition(
-        async (position) => {
-          const { latitude, longitude } = position.coords;
-          try {
-            const cityName = await reverseGeocode(latitude, longitude);
-            const locationData = { latitude, longitude };
-            updateLocation(latitude, longitude, cityName);
-            resolve({ ...locationData, name: cityName });
-          } catch (error) {
-            const locationData = { latitude, longitude };
-            updateLocation(latitude, longitude, 'Current Location');
-            resolve({ ...locationData, name: 'Current Location' });
-          }
-        },
-        (error) => {
-          reject(error);
-        },
-        {
-          enableHighAccuracy: true,
-          timeout: 10000,
+      // First check permission
+      checkLocationPermission().then((permissionCheck) => {
+        if (permissionCheck.granted === false) {
+          reject(new Error(permissionCheck.error || 'Location permission denied'));
+          return;
         }
-      );
+
+        navigator.geolocation.getCurrentPosition(
+          async (position) => {
+            const { latitude, longitude } = position.coords;
+            try {
+              const cityName = await reverseGeocode(latitude, longitude);
+              const locationData = { latitude, longitude };
+              updateLocation(latitude, longitude, cityName);
+              resolve({ ...locationData, name: cityName });
+            } catch (error) {
+              const locationData = { latitude, longitude };
+              updateLocation(latitude, longitude, 'Current Location');
+              resolve({ ...locationData, name: 'Current Location' });
+            }
+          },
+          (error) => {
+            let errorMessage = 'Failed to get location';
+            
+            switch (error.code) {
+              case error.PERMISSION_DENIED:
+                errorMessage = 'Location permission denied. Please enable location access in your browser settings.';
+                break;
+              case error.POSITION_UNAVAILABLE:
+                errorMessage = 'Location information is unavailable.';
+                break;
+              case error.TIMEOUT:
+                errorMessage = 'Location request timed out. Please try again.';
+                break;
+              default:
+                errorMessage = 'Failed to get location. Please try again.';
+                break;
+            }
+            
+            reject(new Error(errorMessage));
+          },
+          {
+            enableHighAccuracy: true,
+            timeout: 10000,
+          }
+        );
+      });
     });
   };
 
@@ -165,6 +214,7 @@ export const LocationProvider = ({ children }) => {
         updateLocation,
         updateLocationName,
         getCurrentLocation,
+        checkLocationPermission,
       }}
     >
       {children}

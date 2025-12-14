@@ -243,6 +243,10 @@ const ShopPage = () => {
   };
 
   const isProductOutOfStock = (product) => {
+    // Use backend isOutOfStock field if available, otherwise calculate
+    if (product.isOutOfStock !== undefined) {
+      return product.isOutOfStock;
+    }
     if (product.variants && product.variants.length > 0) {
       const allOutOfStock = product.variants.every(variant => 
         (variant.stock || 0) <= 0
@@ -250,6 +254,14 @@ const ShopPage = () => {
       return allOutOfStock;
     }
     return (product.stock || 0) <= 0;
+  };
+
+  const getProductStock = (product) => {
+    if (product.variants && product.variants.length > 0) {
+      const totalStock = product.variants.reduce((sum, variant) => sum + (variant.stock || 0), 0);
+      return totalStock;
+    }
+    return product.stock || 0;
   };
 
   const mainCategories = categories.filter(cat => !cat.parentCategory);
@@ -717,6 +729,13 @@ const ShopPage = () => {
                         {product.origin && (
                           <p className="text-xs text-gray-400 mb-2">{product.origin}</p>
                         )}
+                        <div className="mb-2">
+                          <p className="text-xs text-gray-400">
+                            Stock: <span className={`font-semibold ${isProductOutOfStock(product) ? 'text-red-400' : 'text-green-400'}`}>
+                              {isProductOutOfStock(product) ? 'Out of Stock' : `${getProductStock(product)} available`}
+                            </span>
+                          </p>
+                        </div>
                         <div className="flex items-center justify-between mt-3">
                           <div>
                             <p className="text-lg font-bold text-gold-950">

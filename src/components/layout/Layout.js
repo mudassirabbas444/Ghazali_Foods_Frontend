@@ -6,10 +6,23 @@ import UserNotificationContainer from '../common/UserNotificationContainer';
 
 const Layout = ({ children }) => {
   return (
-    <div className='min-h-screen flex flex-col bg-darkGreen-950 transition-colors duration-700' style={{ overflow: 'visible' }}>
+    <div 
+      className='min-h-screen flex flex-col bg-darkGreen-950 transition-colors duration-700 ios-fix' 
+      style={{ 
+        overflow: 'visible',
+        minHeight: '-webkit-fill-available',
+        paddingBottom: 'env(safe-area-inset-bottom)'
+      }}
+    >
       <Header />
 
-      <main className='flex-1 pb-16 md:pb-0' style={{ overflow: 'visible' }}>
+      <main 
+        className='flex-1 pb-16 md:pb-0 safe-bottom' 
+        style={{ 
+          overflow: 'visible',
+          paddingBottom: 'calc(env(safe-area-inset-bottom) + 4rem)'
+        }}
+      >
         {children}
       </main>
 

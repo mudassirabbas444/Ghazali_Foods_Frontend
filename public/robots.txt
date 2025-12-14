@@ -1,3 +1,13 @@
 # https://www.robotstxt.org/robotstxt.html
 User-agent: *
-Disallow:
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /_next/
+Disallow: /static/
+
+# Sitemap
+Sitemap: https://ghazalifood.com/sitemap.xml
+
+# Crawl-delay
+Crawl-delay: 1

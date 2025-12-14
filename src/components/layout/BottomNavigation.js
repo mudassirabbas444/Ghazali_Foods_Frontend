@@ -81,8 +81,20 @@ const BottomNavigation = () => {
   ];
 
   return (
-    <nav className='fixed bottom-0 left-0 right-0 z-[200] bg-darkGreen-950 border-t border-gold-950/20 shadow-lg md:hidden'>
-      <div className='flex items-center justify-around h-16 px-2'>
+    <nav 
+      className='fixed bottom-0 left-0 right-0 z-[200] bg-darkGreen-950 border-t border-gold-950/20 shadow-lg md:hidden safe-bottom'
+      style={{
+        paddingBottom: 'env(safe-area-inset-bottom)',
+        height: 'calc(4rem + env(safe-area-inset-bottom))'
+      }}
+    >
+      <div 
+        className='flex items-center justify-around px-2 safe-bottom'
+        style={{
+          height: '4rem',
+          paddingBottom: 'env(safe-area-inset-bottom)'
+        }}
+      >
         {navItems.map((item) => {
           const Icon = item.icon;
           const active = isActive(item.path);

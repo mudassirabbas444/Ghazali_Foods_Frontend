@@ -13,6 +13,7 @@ import {
   Check,
   ChevronLeft,
   ChevronRight,
+  Eye,
 } from 'lucide-react';
 import adminService from '../../services/admin';
 import productService from '../../services/product';
@@ -192,6 +193,7 @@ const AdminProductsPage = () => {
                   <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Category</th>
                   <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Price</th>
                   <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Stock</th>
+                  <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Views</th>
                   <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Status</th>
                   <th className="text-right py-3 px-4 text-sm font-semibold text-gray-700">Actions</th>
                 </tr>
@@ -241,6 +243,14 @@ const AdminProductsPage = () => {
                           Low stock
                         </p>
                       )}
+                    </td>
+                    <td className="py-3 px-4">
+                      <div className="flex items-center gap-1">
+                        <Eye className="w-4 h-4 text-gray-400" />
+                        <p className="text-sm text-gray-900 font-medium">
+                          {product.viewCount || 0}
+                        </p>
+                      </div>
                     </td>
                     <td className="py-3 px-4">
                       <button

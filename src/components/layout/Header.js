@@ -29,7 +29,7 @@ const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, isAuthenticated, logout } = useAuth();
-  const { locationName, getCurrentLocation, updateLocationName } = useLocationContext();
+  const { locationName, getCurrentLocation, updateLocationName, checkLocationPermission } = useLocationContext();
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLocationMenuOpen, setIsLocationMenuOpen] = useState(false);
@@ -161,11 +161,21 @@ const Header = () => {
                   <button
                     onClick={async () => {
                       try {
+                        // Check permission first
+                        const permissionCheck = await checkLocationPermission();
+                        if (permissionCheck.granted === false) {
+                          toast.error(permissionCheck.error || 'Location permission denied. Please enable location access in your browser settings.');
+                          setIsLocationMenuOpen(false);
+                          return;
+                        }
+                        
                         await getCurrentLocation();
                         toast.success('Location updated');
                         setIsLocationMenuOpen(false);
                       } catch (error) {
-                        toast.error('Failed to get location');
+                        const errorMessage = error.message || 'Failed to get location. Please enable location access in your browser settings.';
+                        toast.error(errorMessage);
+                        setIsLocationMenuOpen(false);
                       }
                     }}
                     className='w-full px-4 py-2 text-left hover:bg-darkGreen-800 flex items-center gap-2 text-gray-300'
@@ -373,11 +383,21 @@ const Header = () => {
                   <button
                     onClick={async () => {
                       try {
+                        // Check permission first
+                        const permissionCheck = await checkLocationPermission();
+                        if (permissionCheck.granted === false) {
+                          toast.error(permissionCheck.error || 'Location permission denied. Please enable location access in your browser settings.');
+                          setIsLocationMenuOpen(false);
+                          return;
+                        }
+                        
                         await getCurrentLocation();
                         toast.success('Location updated');
                         setIsLocationMenuOpen(false);
                       } catch (error) {
-                        toast.error('Failed to get location');
+                        const errorMessage = error.message || 'Failed to get location. Please enable location access in your browser settings.';
+                        toast.error(errorMessage);
+                        setIsLocationMenuOpen(false);
                       }
                     }}
                     className='w-full px-4 py-2 text-left hover:bg-darkGreen-800 flex items-center gap-2 text-gray-300'

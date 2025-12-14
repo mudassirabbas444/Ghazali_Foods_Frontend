@@ -33,3 +33,6 @@ export const formatDateTime = (dateString) => {
   });
 };
 
+// Export mobile utilities
+export * from './mobile';
+
