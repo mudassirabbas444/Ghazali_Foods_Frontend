@@ -32,7 +32,7 @@ const CheckoutPage = () => {
   const [paymentMethod, setPaymentMethod] = useState('cod');
   const [loading, setLoading] = useState(true);
   const [placingOrder, setPlacingOrder] = useState(false);
-  const [totals, setTotals] = useState({ subtotal: 0, discount: 0, delivery: 200, total: 0 });
+  const [totals, setTotals] = useState({ subtotal: 0, discount: 0, delivery: 240, fbrCharges: 1, total: 0 });
   const [usingCurrentLocation, setUsingCurrentLocation] = useState(false);
   const [isGettingLocation, setIsGettingLocation] = useState(false);
 
@@ -112,7 +112,7 @@ const CheckoutPage = () => {
 
   const calculateTotals = () => {
     if (!cart || !cart.items) {
-      setTotals({ subtotal: 0, discount: 0, delivery: 200, total: 200 });
+      setTotals({ subtotal: 0, discount: 0, delivery: 240, fbrCharges: 1, total: 241 });
       return;
     }
 
@@ -122,10 +122,13 @@ const CheckoutPage = () => {
     });
 
     const discount = cart.couponDiscount || 0;
-    const delivery = 200;
-    const total = Math.max(0, subtotal - discount + delivery);
+    const orderTotal = subtotal - discount;
+    // Free delivery for orders above 2500
+    const delivery = orderTotal >= 2500 ? 0 : 240;
+    const fbrCharges = 1;
+    const total = Math.max(0, orderTotal + delivery + fbrCharges);
 
-    setTotals({ subtotal, discount, delivery, total });
+    setTotals({ subtotal, discount, delivery, fbrCharges, total });
   };
 
   const onSubmit = async (data) => {
@@ -162,6 +165,7 @@ const CheckoutPage = () => {
         },
         paymentMethod,
         coupon: cart.coupon?._id || null,
+        deliveryCharges: totals.delivery, // Send calculated delivery charges
       };
 
       const response = await orderService.createOrder(orderData);
@@ -538,17 +542,23 @@ const CheckoutPage = () => {
                 )}
                 <div className="flex justify-between text-gray-300">
                   <span>Delivery Charges</span>
-                  <span className="font-semibold">Rs. {totals.delivery.toLocaleString()}</span>
+                  <span className="font-semibold">
+                    {totals.delivery === 0 ? (
+                      <span className="text-green-500">Free</span>
+                    ) : (
+                      `Rs. ${totals.delivery.toLocaleString()}`
+                    )}
+                  </span>
                 </div>
                 <div className="flex justify-between text-gray-300">
                   <span>FBR POS Charges</span>
-                  <span className="font-semibold">Rs. 15</span>
+                  <span className="font-semibold">Rs. {totals.fbrCharges?.toLocaleString() || 1}</span>
                 </div>
                 <div className="border-t border-gold-950/20 pt-2 mt-2">
                   <div className="flex justify-between">
                     <span className="text-lg font-bold text-gold-950">Grand Total</span>
                     <span className="text-lg font-bold text-gold-950">
-                      Rs. {(totals.total + 15).toLocaleString()}
+                      Rs. {totals.total.toLocaleString()}
                     </span>
                   </div>
                 </div>
