@@ -18,12 +18,12 @@ import partner6 from '../../assets/partner6.png';
 
 const AboutPage = () => {
   const partners = [
-    { logo: partner1, name: 'Partner 1' },
-    { logo: partner2, name: 'Partner 2' },
-    { logo: partner3, name: 'Partner 3' },
-    { logo: partner4, name: 'Partner 4' },
-    { logo: partner5, name: 'Partner 5' },
-    { logo: partner6, name: 'Partner 6' },
+    { logo: partner1, name: 'Ahmed Sweets', description: 'Traditional Sweet Shop' },
+    { logo: partner2, name: 'Food Festival', description: 'Grocery & Sweet Shop' },
+    { logo: partner3, name: 'Freshco', description: 'Fresh Food Store' },
+    { logo: partner4, name: 'Trends', description: 'Multi Grocery Store' },
+    { logo: partner5, name: 'Mithas by Aangan', description: 'Traditional Sweet Shop' },
+    { logo: partner6, name: 'Le Cafe', description: 'Cafe & Bakery' },
   ];
 
   const values = [
@@ -112,6 +112,11 @@ const AboutPage = () => {
                 <p className="text-sm font-semibold text-gold-950 text-center">
                   {partner.name}
                 </p>
+                {partner.description && (
+                  <p className="text-xs text-gray-300 text-center mt-1">
+                    {partner.description}
+                  </p>
+                )}
               </motion.div>
             ))}
           </div>
