@@ -78,9 +78,9 @@ class AdminService {
 
       const response = await apiService.upload('/upload/single', formData);
       // Response shape: { success, message, data: { success, url, publicUrl, ... } }
-      const data = response?.data || response;
-      const inner = data?.data || {};
-      const url = inner.url || inner.publicUrl;
+      const outer = response || {};
+      const payload = outer.data || outer;
+      const url = payload.url || payload.publicUrl;
 
       if (!url) {
         throw new Error('Video upload failed: URL not returned from server');
