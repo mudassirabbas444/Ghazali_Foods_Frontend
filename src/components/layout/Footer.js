@@ -85,18 +85,14 @@ const Footer = () => {
           {/* Company Info - Compact */}
           <div>
             <Link to='/' className='flex items-center space-x-2 mb-3'>
-              <div className='w-10 h-10 bg-gradient-to-br from-gold-950 to-gold-600 rounded-full flex items-center justify-center shadow-lg overflow-hidden'>
-                {logo ? (
-                  <img
-                    src={logo}
-                    alt='Ghazali Food Logo'
-                    className='w-full h-full object-cover rounded-full'
-                  />
-                ) : (
-                  <span className='text-darkGreen-950 font-bold text-base'>GF</span>
-                )}
+              <div className='w-12 h-12 bg-gradient-to-br from-gold-950 to-gold-600 rounded-full flex items-center justify-center shadow-lg overflow-hidden'>
+                <img
+                  src={logo}
+                  alt='Ghazali Food Logo'
+                  className='w-full h-full object-contain rounded-full'
+                />
               </div>
-              <span className='text-lg font-bold text-gold-950'>
+              <span className='text-xl font-bold text-gold-950'>
                 Ghazali Food
               </span>
             </Link>
@@ -118,6 +114,8 @@ const Footer = () => {
                   classes += ' bg-[#1DA1F2] text-white hover:bg-[#0D8BD9]';
                 } else if (social.name === 'LinkedIn') {
                   classes += ' bg-[#0A66C2] text-white hover:bg-[#084C91]';
+                } else if (social.name === 'Snapchat') {
+                  classes += ' bg-[#FFFC00] text-black hover:bg-[#F2E800]';
                 } else {
                   classes += ' bg-gold-950/20 text-gold-950 hover:bg-gold-950 hover:text-darkGreen-950';
                 }
@@ -232,18 +230,14 @@ const Footer = () => {
           {/* Company Info */}
           <div className='md:col-span-2'>
             <Link to='/' className='flex items-center space-x-2 mb-4'>
-              <div className='w-12 h-12 bg-gradient-to-br from-gold-950 to-gold-600 rounded-full flex items-center justify-center shadow-lg overflow-hidden'>
-                {logo ? (
-                  <img
-                    src={logo}
-                    alt='Ghazali Food Logo'
-                    className='w-full h-full object-cover rounded-full'
-                  />
-                ) : (
-                  <span className='text-darkGreen-950 font-bold text-xl'>GF</span>
-                )}
+              <div className='w-14 h-14 bg-gradient-to-br from-gold-950 to-gold-600 rounded-full flex items-center justify-center shadow-lg overflow-hidden'>
+                <img
+                  src={logo}
+                  alt='Ghazali Food Logo'
+                  className='w-full h-full object-contain rounded-full'
+                />
               </div>
-              <span className='text-xl font-bold text-gold-950'>
+              <span className='text-2xl font-bold text-gold-950'>
                 Ghazali Food
               </span>
             </Link>
@@ -283,6 +277,8 @@ const Footer = () => {
                   classes += ' bg-[#1DA1F2] text-white hover:bg-[#0D8BD9]';
                 } else if (social.name === 'LinkedIn') {
                   classes += ' bg-[#0A66C2] text-white hover:bg-[#084C91]';
+                } else if (social.name === 'Snapchat') {
+                  classes += ' bg-[#FFFC00] text-black hover:bg-[#F2E800]';
                 } else {
                   classes += ' bg-gold-950/20 text-gold-950 hover:bg-gold-950 hover:text-darkGreen-950';
                 }

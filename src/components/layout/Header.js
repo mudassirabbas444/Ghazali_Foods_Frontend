@@ -139,7 +139,7 @@ const Header = () => {
           >
             <Link to='/' className='flex items-center space-x-2 sm:space-x-3'>
               <motion.div
-                className='h-12 w-12 sm:h-14 sm:w-14 rounded-full bg-gradient-to-br from-gold-950 to-gold-600 flex items-center justify-center shadow-md overflow-hidden'
+                className='h-14 w-14 sm:h-16 sm:w-16 rounded-full bg-gradient-to-br from-gold-950 to-gold-600 flex items-center justify-center shadow-md overflow-hidden'
                 whileHover={{ scale: 1.05 }}
                 transition={{ duration: 0.2 }}
               >
@@ -147,13 +147,13 @@ const Header = () => {
                   <motion.img
                     src={logo}
                     alt='Ghazali Food Logo'
-                    className='h-full w-full object-cover rounded-full'
+                    className='h-full w-full object-contain rounded-full'
                   />
                 ) : (
                   <span className='text-darkGreen-950 font-bold text-lg sm:text-xl'>GF</span>
                 )}
               </motion.div>
-              <span className='text-xl sm:text-2xl font-semibold text-gold-950 hidden sm:inline-block'>
+              <span className='text-2xl sm:text-3xl font-semibold text-gold-950 hidden sm:inline-block'>
                 Ghazali Food
               </span>
             </Link>
