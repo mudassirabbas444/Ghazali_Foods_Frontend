@@ -41,14 +41,14 @@ const AnnouncementBanner = () => {
                   {announcement.link ? (
                     <Link
                       to={announcement.link}
-                      className="inline-block px-4 hover:underline"
+                      className="inline-block px-4 hover:underline font-semibold"
                       style={{ color: announcement.textColor || '#ffffff' }}
                     >
                       {announcement.text}
                     </Link>
                   ) : (
                     <span
-                      className="inline-block px-4"
+                      className="inline-block px-4 font-semibold"
                       style={{ color: announcement.textColor || '#ffffff' }}
                     >
                       {announcement.text}
@@ -67,14 +67,14 @@ const AnnouncementBanner = () => {
                   {announcement.link ? (
                     <Link
                       to={announcement.link}
-                      className="inline-block px-4 hover:underline"
+                      className="inline-block px-4 hover:underline font-semibold"
                       style={{ color: announcement.textColor || '#ffffff' }}
                     >
                       {announcement.text}
                     </Link>
                   ) : (
                     <span
-                      className="inline-block px-4"
+                      className="inline-block px-4 font-semibold"
                       style={{ color: announcement.textColor || '#ffffff' }}
                     >
                       {announcement.text}

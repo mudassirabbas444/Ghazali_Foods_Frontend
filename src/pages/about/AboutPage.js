@@ -9,29 +9,21 @@ import {
   Target,
   CheckCircle
 } from 'lucide-react';
+import partner1 from '../../assets/partner1.png';
+import partner2 from '../../assets/partner2.png';
+import partner3 from '../../assets/partner3.png';
+import partner4 from '../../assets/partner4.png';
+import partner5 from '../../assets/partner5.png';
+import partner6 from '../../assets/partner6.png';
 
 const AboutPage = () => {
-  const features = [
-    {
-      icon: <Award className="w-8 h-8" />,
-      title: "Premium Quality",
-      description: "We source only the finest ingredients from trusted suppliers to ensure exceptional quality in every product."
-    },
-    {
-      icon: <Leaf className="w-8 h-8" />,
-      title: "Natural & Fresh",
-      description: "All our products are carefully selected to maintain their natural goodness and freshness."
-    },
-    {
-      icon: <Heart className="w-8 h-8" />,
-      title: "Customer First",
-      description: "Your satisfaction is our top priority. We're committed to providing the best shopping experience."
-    },
-    {
-      icon: <ShoppingBag className="w-8 h-8" />,
-      title: "Wide Selection",
-      description: "From dry fruits to gourmet chocolates, we offer a diverse range of premium food products."
-    }
+  const partners = [
+    { logo: partner1, name: 'Partner 1' },
+    { logo: partner2, name: 'Partner 2' },
+    { logo: partner3, name: 'Partner 3' },
+    { logo: partner4, name: 'Partner 4' },
+    { logo: partner5, name: 'Partner 5' },
+    { logo: partner6, name: 'Partner 6' },
   ];
 
   const values = [
@@ -93,26 +85,33 @@ const AboutPage = () => {
           </div>
         </motion.div>
 
-        {/* Features Section */}
+        {/* Partners Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
           className="mb-12"
         >
-          <h2 className="text-3xl font-bold text-gold-950 text-center mb-8">Why Choose Us</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {features.map((feature, index) => (
+          <h2 className="text-3xl font-bold text-gold-950 text-center mb-8">Our Partners</h2>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 items-center">
+            {partners.map((partner, index) => (
               <motion.div
-                key={index}
+                key={partner.name}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.5 + index * 0.1 }}
-                className="bg-darkGreen-900/50 border border-gold-950/20 rounded-2xl p-6 hover:border-gold-950/50 transition-all duration-300"
+                transition={{ duration: 0.6, delay: 0.5 + index * 0.05 }}
+                className="bg-darkGreen-900/50 border border-gold-950/20 rounded-2xl p-4 flex flex-col items-center justify-center hover:border-gold-950/60 hover:shadow-lg transition-all duration-300"
               >
-                <div className="text-gold-950 mb-4">{feature.icon}</div>
-                <h3 className="text-xl font-bold text-gold-950 mb-2">{feature.title}</h3>
-                <p className="text-gray-300">{feature.description}</p>
+                <div className="w-24 h-24 md:w-28 md:h-28 rounded-xl overflow-hidden bg-darkGreen-950 flex items-center justify-center mb-3">
+                  <img
+                    src={partner.logo}
+                    alt={partner.name}
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+                <p className="text-sm font-semibold text-gold-950 text-center">
+                  {partner.name}
+                </p>
               </motion.div>
             ))}
           </div>

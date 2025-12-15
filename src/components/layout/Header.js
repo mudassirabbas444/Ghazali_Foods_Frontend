@@ -19,6 +19,7 @@ import { useLocationContext } from '../../context/LocationContext';
 import { cn } from '../../utils';
 import { ROUTES } from '../../constants';
 import cartService from '../../services/cart';
+import wishlistService from '../../services/wishlist';
 import { getComparison } from '../../utils/productComparison';
 import { toast } from 'react-toastify';
 import logo from '../../assets/Logo.png';
@@ -36,6 +37,7 @@ const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [cartCount, setCartCount] = useState(0);
   const [compareCount, setCompareCount] = useState(0);
+  const [wishlistCount, setWishlistCount] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -48,6 +50,7 @@ const Header = () => {
   useEffect(() => {
     if (isAuthenticated) {
       fetchCartCount();
+      fetchWishlistCount();
     }
     updateCompareCount();
   }, [isAuthenticated, location.pathname]);
@@ -89,6 +92,23 @@ const Header = () => {
     }
   };
 
+  const fetchWishlistCount = async () => {
+    try {
+      const response = await wishlistService.getWishlist();
+      if (response.success) {
+        const wishlistData = response.data || response.wishlist || {};
+        // Support both products array and items array shapes
+        const products = wishlistData.products || wishlistData.items || [];
+        setWishlistCount(Array.isArray(products) ? products.length : 0);
+      } else {
+        setWishlistCount(0);
+      }
+    } catch (error) {
+      console.error('Error fetching wishlist count:', error);
+      setWishlistCount(0);
+    }
+  };
+
   const handleLogout = () => {
     logout();
     navigate('/');
@@ -119,7 +139,7 @@ const Header = () => {
           >
             <Link to='/' className='flex items-center space-x-2 sm:space-x-3'>
               <motion.div
-                className='h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-gradient-to-br from-gold-950 to-gold-600 flex items-center justify-center shadow-md overflow-hidden'
+                className='h-12 w-12 sm:h-14 sm:w-14 rounded-full bg-gradient-to-br from-gold-950 to-gold-600 flex items-center justify-center shadow-md overflow-hidden'
                 whileHover={{ scale: 1.05 }}
                 transition={{ duration: 0.2 }}
               >
@@ -133,7 +153,7 @@ const Header = () => {
                   <span className='text-darkGreen-950 font-bold text-lg sm:text-xl'>GF</span>
                 )}
               </motion.div>
-              <span className='text-lg sm:text-xl font-semibold text-gold-950 hidden sm:inline-block'>
+              <span className='text-xl sm:text-2xl font-semibold text-gold-950 hidden sm:inline-block'>
                 Ghazali Food
               </span>
             </Link>
@@ -258,9 +278,16 @@ const Header = () => {
                 <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
                   <Link 
                     to={ROUTES.WISHLIST}
-                    className='relative p-2.5 rounded-lg text-gray-300 hover:text-gold-950 transition-colors duration-300'
+                    className='relative p-2.5 rounded-lg text-gray-300 hover:text-gold-950 transition-colors duration-300 flex flex-col items-center'
                   >
+                    <div className='relative'>
                     <Heart className='w-5 h-5' />
+                    </div>
+                    {wishlistCount > 0 && (
+                      <span className='absolute -bottom-1 left-1/2 -translate-x-1/2 bg-gold-950 text-darkGreen-950 text-[10px] font-bold rounded-full min-w-[18px] h-[18px] px-1 flex items-center justify-center leading-none whitespace-nowrap'>
+                        {wishlistCount > 99 ? '99+' : wishlistCount > 9 ? '9+' : wishlistCount}
+                      </span>
+                    )}
                   </Link>
                 </motion.div>
                 <div className='h-6 w-px bg-gold-950/30 mx-2' />

@@ -311,7 +311,7 @@ const Home = () => {
                   </div>
                 </div>
                 <h3 className="font-semibold text-gray-200 mb-0.5 md:mb-1 text-[10px] md:text-base leading-tight">Free Shipping</h3>
-                <p className="text-[8px] md:text-sm text-gray-400 leading-tight">On orders over Rs. 5,000</p>
+                <p className="text-[8px] md:text-sm text-gray-400 leading-tight">On orders over Rs. 2,500</p>
               </motion.div>
 
               {/* Secure Payments */}
@@ -345,10 +345,10 @@ const Home = () => {
                   </div>
                 </div>
                 <h3 className="font-semibold text-gray-200 mb-0.5 md:mb-1 text-[10px] md:text-base leading-tight">Easy Returns</h3>
-                <p className="text-[8px] md:text-sm text-gray-400 leading-tight">7-day return policy</p>
+                <p className="text-[8px] md:text-sm text-gray-400 leading-tight">24-hour return policy</p>
               </motion.div>
 
-              {/* 24/7 Support */}
+              {/* Support Hours */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -361,8 +361,8 @@ const Home = () => {
                     <Headphones className="w-4 h-4 md:w-8 md:h-8 text-gold-950" />
                   </div>
                 </div>
-                <h3 className="font-semibold text-gray-200 mb-0.5 md:mb-1 text-[10px] md:text-base leading-tight">24/7 Support</h3>
-                <p className="text-[8px] md:text-sm text-gray-400 leading-tight">Dedicated support team</p>
+                <h3 className="font-semibold text-gray-200 mb-0.5 md:mb-1 text-[10px] md:text-base leading-tight">Support Hours</h3>
+                <p className="text-[8px] md:text-sm text-gray-400 leading-tight">10 am to 6 pm (Mon - Sat)</p>
               </motion.div>
             </div>
           </div>
@@ -456,6 +456,21 @@ const Home = () => {
               </div>
                     </Link>
                     <div className="p-2">
+                      <div className="flex items-center gap-0.5 mb-1">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <Star key={star} className="w-3 h-3 fill-gold-950 text-gold-950" />
+                        ))}
+                        <span className="text-[10px] text-gray-400 ml-1">
+                          ({(() => {
+                            const base = (product._id || product.slug || '').toString();
+                            let hash = 0;
+                            for (let i = 0; i < base.length; i++) {
+                              hash = (hash * 31 + base.charCodeAt(i)) >>> 0;
+                            }
+                            return (hash % 91) + 10;
+                          })()})
+                        </span>
+                      </div>
                       <Link to={ROUTES.PRODUCT_DETAIL.replace(':slug', product.slug)}>
                         <h3 className="font-medium text-gray-200 mb-1 line-clamp-2 text-xs leading-tight">
                           {product.name}

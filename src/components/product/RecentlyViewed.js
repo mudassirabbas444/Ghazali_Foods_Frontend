@@ -20,7 +20,8 @@ const RecentlyViewed = () => {
 
   const loadRecentlyViewed = () => {
     const items = getRecentlyViewed();
-    setProducts(items);
+    // Only keep the last 5 (most recent first in storage)
+    setProducts(items.slice(0, 5));
   };
 
   const handleAddToCart = async (product, e) => {
@@ -52,12 +53,12 @@ const RecentlyViewed = () => {
   }
 
   return (
-    <div className="mt-12 bg-white rounded-lg p-6 shadow-sm">
+    <div className="mt-12 bg-darkGreen-900/40 border border-gold-950/20 rounded-2xl p-6">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-gray-900">Recently Viewed</h2>
+        <h2 className="text-2xl font-bold text-gold-950">Recently Viewed</h2>
         <button
           onClick={handleClear}
-          className="text-sm text-gray-600 hover:text-green-600 transition-colors"
+          className="text-sm text-gray-300 hover:text-gold-950 transition-colors"
         >
           Clear All
         </button>
@@ -66,35 +67,43 @@ const RecentlyViewed = () => {
         {products.map((product) => (
           <motion.div
             key={product._id}
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="relative group"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-darkGreen-900/50 border border-gold-950/20 rounded-lg overflow-hidden hover:border-gold-950/50 transition-all duration-300 group"
           >
             <Link to={ROUTES.PRODUCT_DETAIL.replace(':slug', product.slug)}>
-              <div className="aspect-square rounded-lg overflow-hidden bg-gray-100 mb-2">
+              <div className="relative aspect-square bg-darkGreen-950">
                 <FirebaseImage
                   src={
-                    (product.images && product.images.length > 0 && product.images[0])
-                    || product.thumbnail
-                    || 'https://images8.alphacoders.com/109/1095996.jpg'
+                    (product.images && product.images.length > 0 && product.images[0]) ||
+                    product.thumbnail ||
+                    'https://images8.alphacoders.com/109/1095996.jpg'
                   }
                   alt={product.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                 />
               </div>
-              <h3 className="text-sm font-medium text-gray-900 line-clamp-2 mb-1">
-                {product.name}
-              </h3>
-              <p className="text-sm font-bold text-green-600">
-                Rs. {(product.basePrice || product.variants?.[0]?.price || 0).toLocaleString()}
-              </p>
             </Link>
-            <button
-              onClick={(e) => handleAddToCart(product, e)}
-              className="absolute bottom-0 right-0 p-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors opacity-0 group-hover:opacity-100"
-            >
-              <ShoppingCart className="w-4 h-4" />
-            </button>
+
+            <div className="p-3">
+              <Link to={ROUTES.PRODUCT_DETAIL.replace(':slug', product.slug)}>
+                <h3 className="text-sm font-semibold text-gray-200 line-clamp-2 mb-1 hover:text-gold-950 transition-colors">
+                  {product.name}
+                </h3>
+              </Link>
+              <div className="flex items-center justify-between mt-2">
+                <p className="text-sm font-bold text-gold-950">
+                  Rs. {(product.basePrice || product.variants?.[0]?.price || 0).toLocaleString()}
+                </p>
+                <button
+                  onClick={(e) => handleAddToCart(product, e)}
+                  className="p-2 bg-gold-950 text-darkGreen-950 rounded-lg hover:bg-gold-600 transition-colors"
+                  title="Add to Cart"
+                >
+                  <ShoppingCart className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
           </motion.div>
         ))}
       </div>

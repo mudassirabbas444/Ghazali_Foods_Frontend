@@ -395,6 +395,7 @@ const ProductModal = ({ product, categories, onClose, onSuccess }) => {
     stock: product?.stock || 0,
     brand: product?.brand || '',
     origin: product?.origin || '',
+    videoUrl: product?.videoUrl || '',
     isFeatured: product?.isFeatured || false,
     isBestSeller: product?.isBestSeller || false,
     isNewArrival: product?.isNewArrival || false,
@@ -408,6 +409,7 @@ const ProductModal = ({ product, categories, onClose, onSuccess }) => {
   const [existingImages, setExistingImages] = useState(product?.images || []);
   const [imagesToRemove, setImagesToRemove] = useState([]);
   const [submitting, setSubmitting] = useState(false);
+  const [uploadingVideo, setUploadingVideo] = useState(false);
 
   // Update formData when product changes
   useEffect(() => {
@@ -424,6 +426,7 @@ const ProductModal = ({ product, categories, onClose, onSuccess }) => {
         stock: product?.stock || 0,
         brand: product?.brand || '',
         origin: product?.origin || '',
+        videoUrl: product?.videoUrl || '',
         isFeatured: product?.isFeatured || false,
         isBestSeller: product?.isBestSeller || false,
         isNewArrival: product?.isNewArrival || false,
@@ -448,6 +451,7 @@ const ProductModal = ({ product, categories, onClose, onSuccess }) => {
         stock: 0,
         brand: '',
         origin: '',
+        videoUrl: '',
         isFeatured: false,
         isBestSeller: false,
         isNewArrival: false,
@@ -546,6 +550,26 @@ const ProductModal = ({ product, categories, onClose, onSuccess }) => {
       });
     };
   }, [imagePreviews]);
+
+  const handleVideoFileChange = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    try {
+      setUploadingVideo(true);
+      const result = await adminService.uploadProductVideo(file);
+      setFormData((prev) => ({
+        ...prev,
+        videoUrl: result.url,
+      }));
+      toast.success('Product video uploaded successfully');
+    } catch (error) {
+      toast.error(error.message || 'Failed to upload video');
+    } finally {
+      setUploadingVideo(false);
+      e.target.value = '';
+    }
+  };
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto">
@@ -819,6 +843,50 @@ const ProductModal = ({ product, categories, onClose, onSuccess }) => {
                     className="hidden"
                   />
                 </label>
+              </div>
+            </div>
+
+            {/* Product Video */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Product Video (optional)
+              </label>
+              <div className="space-y-3">
+                {formData.videoUrl && (
+                  <div>
+                    <p className="text-xs text-gray-600 mb-1">Current Video Preview:</p>
+                    <video
+                      src={formData.videoUrl}
+                      controls
+                      className="w-full max-h-64 rounded-lg bg-black"
+                    />
+                  </div>
+                )}
+                <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:border-orange-400 transition-colors">
+                  <label className="cursor-pointer">
+                    <div className="flex flex-col items-center gap-2">
+                      <Plus className="w-6 h-6 text-gray-400" />
+                      <span className="text-sm font-medium text-gray-700">
+                        {formData.videoUrl ? 'Replace product video' : 'Upload product video'}
+                      </span>
+                      <span className="text-xs text-gray-500">
+                        MP4 / WebM recommended (max ~50MB)
+                      </span>
+                    </div>
+                    <input
+                      type="file"
+                      accept="video/*"
+                      onChange={handleVideoFileChange}
+                      className="hidden"
+                    />
+                  </label>
+                  {uploadingVideo && (
+                    <p className="mt-2 text-xs text-orange-600 flex items-center justify-center gap-2">
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Uploading video...
+                    </p>
+                  )}
+                </div>
               </div>
             </div>
 

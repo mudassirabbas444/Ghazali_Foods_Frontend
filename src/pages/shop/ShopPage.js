@@ -651,7 +651,7 @@ const ShopPage = () => {
               </div>
             ) : (
               <>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6">
                   {products.map((product) => (
                     <div
                       key={product._id}
@@ -685,6 +685,44 @@ const ShopPage = () => {
                               -{product.discount}%
                             </span>
                           )}
+                          {/* Mobile overlay: title & details on top of image */}
+                          <div className="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-darkGreen-950/95 via-darkGreen-950/80 to-transparent md:hidden">
+                            <div className="flex items-center gap-1 mb-1">
+                              {[1, 2, 3, 4, 5].map((star) => (
+                                <Star key={star} className="w-3 h-3 fill-gold-950 text-gold-950" />
+                              ))}
+                              <span className="text-[10px] text-gray-300 ml-1">
+                                ({(() => {
+                                  const base = (product._id || product.slug || '').toString();
+                                  let hash = 0;
+                                  for (let i = 0; i < base.length; i++) {
+                                    hash = (hash * 31 + base.charCodeAt(i)) >>> 0;
+                                  }
+                                  return (hash % 91) + 10;
+                                })()})
+                              </span>
+                            </div>
+                            <h3 className="text-xs font-semibold text-gray-100 mb-0.5 line-clamp-2">
+                              {product.name}
+                            </h3>
+                            {product.origin && (
+                              <p className="text-[10px] text-gray-300 mb-0.5 line-clamp-1">
+                                {product.origin}
+                              </p>
+                            )}
+                            <p className="text-[10px] text-gray-300">
+                              Stock:{' '}
+                              <span
+                                className={`font-semibold ${
+                                  isProductOutOfStock(product) ? 'text-red-400' : 'text-green-400'
+                                }`}
+                              >
+                                {isProductOutOfStock(product)
+                                  ? 'Out of Stock'
+                                  : `${getProductStock(product)} available`}
+                              </span>
+                            </p>
+                          </div>
                           <div className="absolute top-3 right-3 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                             <button
                               onClick={(e) => {
@@ -714,12 +752,22 @@ const ShopPage = () => {
                         </div>
                       </Link>
 
-                      <div className="p-4">
+                      {/* Desktop content below image */}
+                      <div className="p-4 hidden md:block">
                         <div className="flex items-center gap-1 mb-2">
                           {[1, 2, 3, 4, 5].map((star) => (
                             <Star key={star} className="w-4 h-4 fill-gold-950 text-gold-950" />
                           ))}
-                          <span className="text-xs text-gray-400 ml-1">(128)</span>
+                          <span className="text-xs text-gray-400 ml-1">
+                            ({(() => {
+                              const base = (product._id || product.slug || '').toString();
+                              let hash = 0;
+                              for (let i = 0; i < base.length; i++) {
+                                hash = (hash * 31 + base.charCodeAt(i)) >>> 0;
+                              }
+                              return (hash % 91) + 10;
+                            })()})
+                          </span>
                         </div>
                         <Link to={ROUTES.PRODUCT_DETAIL.replace(':slug', product.slug)}>
                           <h3 className="font-semibold text-gray-200 mb-1 hover:text-gold-950 transition-colors line-clamp-2">
@@ -731,8 +779,15 @@ const ShopPage = () => {
                         )}
                         <div className="mb-2">
                           <p className="text-xs text-gray-400">
-                            Stock: <span className={`font-semibold ${isProductOutOfStock(product) ? 'text-red-400' : 'text-green-400'}`}>
-                              {isProductOutOfStock(product) ? 'Out of Stock' : `${getProductStock(product)} available`}
+                            Stock:{' '}
+                            <span
+                              className={`font-semibold ${
+                                isProductOutOfStock(product) ? 'text-red-400' : 'text-green-400'
+                              }`}
+                            >
+                              {isProductOutOfStock(product)
+                                ? 'Out of Stock'
+                                : `${getProductStock(product)} available`}
                             </span>
                           </p>
                         </div>
@@ -760,6 +815,32 @@ const ShopPage = () => {
                             <ShoppingCart className="w-5 h-5" />
                           </button>
                         </div>
+                      </div>
+
+                      {/* Mobile content below image: price & button only */}
+                      <div className="p-3 flex items-center justify-between md:hidden">
+                        <div>
+                          <p className="text-sm font-bold text-gold-950">
+                            {getProductPrice(product)}
+                          </p>
+                          {product.compareAtPrice && (
+                            <p className="text-[11px] text-gray-500 line-through">
+                              Rs. {product.compareAtPrice.toLocaleString()}
+                            </p>
+                          )}
+                        </div>
+                        <button
+                          onClick={() => handleAddToCart(product)}
+                          disabled={isProductOutOfStock(product)}
+                          className={`p-2 rounded-lg transition-colors ${
+                            isProductOutOfStock(product)
+                              ? 'bg-gray-700 text-gray-500 cursor-not-allowed'
+                              : 'bg-gold-950 text-darkGreen-950 hover:bg-gold-600'
+                          }`}
+                          title={isProductOutOfStock(product) ? 'Out of Stock' : 'Add to Cart'}
+                        >
+                          <ShoppingCart className="w-5 h-5" />
+                        </button>
                       </div>
                     </div>
                   ))}

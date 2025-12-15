@@ -38,6 +38,7 @@ import AboutPage from './pages/about/AboutPage';
 import ContactPage from './pages/contact/ContactPage';
 import BlogPage from './pages/blog/BlogPage';
 import BlogDetailPage from './pages/blog/BlogDetailPage';
+import FaqPage from './pages/faq/FaqPage';
 
 // Admin Pages
 import AdminLoginPage from './pages/admin/AdminLoginPage';
@@ -185,6 +186,7 @@ function AppWithToast() {
                   <Route path={ROUTES.SEARCH} element={<Layout><ShopPage /></Layout>} />
                   <Route path={ROUTES.ABOUT} element={<Layout><AboutPage /></Layout>} />
                   <Route path={ROUTES.CONTACT} element={<Layout><ContactPage /></Layout>} />
+                  <Route path="/faq" element={<Layout><FaqPage /></Layout>} />
                   <Route path={ROUTES.BLOG} element={<Layout><BlogPage /></Layout>} />
                   <Route path={ROUTES.BLOG_DETAIL} element={<Layout><BlogDetailPage /></Layout>} />
 

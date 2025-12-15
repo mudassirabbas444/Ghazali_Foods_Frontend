@@ -75,8 +75,8 @@ const Footer = () => {
           {/* Company Info - Compact */}
           <div>
             <Link to='/' className='flex items-center space-x-2 mb-3'>
-              <div className='w-8 h-8 bg-gradient-to-br from-gold-950 to-gold-600 rounded-full flex items-center justify-center shadow-lg'>
-                <span className='text-darkGreen-950 font-bold text-sm'>GF</span>
+              <div className='w-10 h-10 bg-gradient-to-br from-gold-950 to-gold-600 rounded-full flex items-center justify-center shadow-lg'>
+                <span className='text-darkGreen-950 font-bold text-base'>GF</span>
               </div>
               <span className='text-lg font-bold text-gold-950'>
                 Ghazali Food
@@ -85,17 +85,32 @@ const Footer = () => {
             <p className='text-sm text-gray-300 mb-3'>
               Premium quality dry fruits, nuts, and gourmet food products.
             </p>
-            {/* Social Links - Compact */}
+            {/* Social Links - Compact (brand colors like Contact page) */}
             <div className='flex space-x-3'>
               {socialLinks.map((social) => {
                 const Icon = social.icon;
+                let classes =
+                  'p-1.5 rounded-lg border border-gold-950/30 transition-colors';
+
+                if (social.name === 'Facebook') {
+                  classes += ' bg-[#1877F2] text-white hover:bg-[#0F5AC6]';
+                } else if (social.name === 'Instagram') {
+                  classes += ' bg-[#E1306C] text-white hover:bg-[#C3225B]';
+                } else if (social.name === 'Twitter') {
+                  classes += ' bg-[#1DA1F2] text-white hover:bg-[#0D8BD9]';
+                } else if (social.name === 'LinkedIn') {
+                  classes += ' bg-[#0A66C2] text-white hover:bg-[#084C91]';
+                } else {
+                  classes += ' bg-gold-950/20 text-gold-950 hover:bg-gold-950 hover:text-darkGreen-950';
+                }
+
                 return (
                   <a
                     key={social.name}
                     href={social.href}
                     target='_blank'
                     rel='noopener noreferrer'
-                    className='p-1.5 bg-gold-950/20 border border-gold-950/30 rounded-lg hover:bg-gold-950 hover:text-darkGreen-950 transition-colors text-gold-950'
+                    className={classes}
                     aria-label={social.name}
                   >
                     <Icon className='h-4 w-4' />
@@ -199,8 +214,8 @@ const Footer = () => {
           {/* Company Info */}
           <div className='md:col-span-2'>
             <Link to='/' className='flex items-center space-x-2 mb-4'>
-              <div className='w-10 h-10 bg-gradient-to-br from-gold-950 to-gold-600 rounded-full flex items-center justify-center shadow-lg'>
-                <span className='text-darkGreen-950 font-bold text-lg'>GF</span>
+              <div className='w-12 h-12 bg-gradient-to-br from-gold-950 to-gold-600 rounded-full flex items-center justify-center shadow-lg'>
+                <span className='text-darkGreen-950 font-bold text-xl'>GF</span>
               </div>
               <span className='text-xl font-bold text-gold-950'>
                 Ghazali Food
@@ -215,7 +230,7 @@ const Footer = () => {
             <div className='flex flex-wrap items-center gap-4 md:gap-6 mb-6'>
               <div className='flex items-center space-x-2 text-gray-300'>
                 <Phone className='h-5 w-5 text-gold-950 flex-shrink-0' />
-                <span className='text-sm md:text-base'>+923101111659</span>
+                <span className='text-sm md:text-base'>+92 310 1111 659</span>
               </div>
               <div className='flex items-center space-x-2 text-gray-300'>
                 <MapPin className='h-5 w-5 text-gold-950 flex-shrink-0' />
@@ -223,21 +238,36 @@ const Footer = () => {
               </div>
               <div className='flex items-center space-x-2 text-gray-300'>
                 <Clock className='h-5 w-5 text-gold-950 flex-shrink-0' />
-                <span className='text-sm md:text-base'>10am to 6pm</span>
+                <span className='text-sm md:text-base'>10 am to 6 pm (Mon - Sat)</span>
               </div>
             </div>
 
-            {/* Social Links */}
+            {/* Social Links - brand colors like Contact page */}
             <div className='flex space-x-4'>
               {socialLinks.map((social) => {
                 const Icon = social.icon;
+
+                let classes =
+                  'p-2 rounded-lg border border-gold-950/30 transition-colors';
+                if (social.name === 'Facebook') {
+                  classes += ' bg-[#1877F2] text-white hover:bg-[#0F5AC6]';
+                } else if (social.name === 'Instagram') {
+                  classes += ' bg-[#E1306C] text-white hover:bg-[#C3225B]';
+                } else if (social.name === 'Twitter') {
+                  classes += ' bg-[#1DA1F2] text-white hover:bg-[#0D8BD9]';
+                } else if (social.name === 'LinkedIn') {
+                  classes += ' bg-[#0A66C2] text-white hover:bg-[#084C91]';
+                } else {
+                  classes += ' bg-gold-950/20 text-gold-950 hover:bg-gold-950 hover:text-darkGreen-950';
+                }
+
                 return (
                   <a
                     key={social.name}
                     href={social.href}
                     target='_blank'
                     rel='noopener noreferrer'
-                    className='p-2 bg-gold-950/20 border border-gold-950/30 rounded-lg hover:bg-gold-950 hover:text-darkGreen-950 transition-colors text-gold-950'
+                    className={classes}
                     aria-label={social.name}
                   >
                     <Icon className='h-5 w-5' />

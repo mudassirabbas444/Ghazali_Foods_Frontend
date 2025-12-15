@@ -20,8 +20,14 @@ const ContactPage = () => {
     {
       icon: <Phone className="w-6 h-6" />,
       title: "Phone",
-      content: "+923101111659",
+      content: "+92 310 1111 659 (Call / WhatsApp)",
       link: "tel:+923101111659"
+    },
+    {
+      icon: <Mail className="w-6 h-6" />,
+      title: "Email",
+      content: "info@ghazalifood.com",
+      link: "mailto:info@ghazalifood.com"
     },
     {
       icon: <MapPin className="w-6 h-6" />,
@@ -32,7 +38,7 @@ const ContactPage = () => {
     {
       icon: <Clock className="w-6 h-6" />,
       title: "Business Hours",
-      content: "10am to 6pm",
+      content: "10 am to 6 pm (Monday to Saturday)",
       link: null
     }
   ];
@@ -116,37 +122,52 @@ const ContactPage = () => {
             >
               <h3 className="font-bold text-gold-950 mb-4">Follow Us</h3>
               <div className="flex gap-4">
+                {/* Facebook */}
                 <a
-                  href="https://facebook.com"
+                  href="https://www.facebook.com/profile.php?id=100064311781297&mibextid=ZbWKwL"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-3 bg-gold-950/20 rounded-lg text-gold-950 hover:bg-gold-950/30 transition-colors"
+                  className="p-3 rounded-lg text-white bg-[#1877F2] hover:bg-[#0F5AC6] transition-colors"
                   aria-label="Facebook"
                 >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
                   </svg>
                 </a>
+                {/* LinkedIn */}
                 <a
-                  href="https://instagram.com"
+                  href="https://www.linkedin.com/in/ghazali-food-b50308394?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-3 bg-pink-100 rounded-lg text-pink-600 hover:bg-pink-200 transition-colors"
-                  aria-label="Instagram"
+                  className="p-3 rounded-lg text-white bg-[#0A66C2] hover:bg-[#084C91] transition-colors"
+                  aria-label="LinkedIn"
                 >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                    <path d="M4.98 3.5C4.98 4.88 3.88 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5zM.32 8.16h4.36V24H.32V8.16zM8.34 8.16h4.18v2.15h.06c.58-1.1 2-2.26 4.11-2.26 4.4 0 5.21 2.9 5.21 6.67V24h-4.36v-7.16c0-1.71-.03-3.91-2.39-3.91-2.39 0-2.76 1.86-2.76 3.79V24H8.34V8.16z"/>
                   </svg>
                 </a>
+                {/* YouTube */}
                 <a
-                  href="https://twitter.com"
+                  href="https://youtube.com/@ghazalifood?si=BdrIYDKnV5AGk2mz"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-3 bg-gold-950/20 rounded-lg text-gold-950 hover:bg-gold-950/30 transition-colors"
-                  aria-label="Twitter"
+                  className="p-3 rounded-lg text-white bg-[#FF0000] hover:bg-[#CC0000] transition-colors"
+                  aria-label="YouTube"
                 >
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M23.498 6.186a2.993 2.993 0 00-2.107-2.12C19.505 3.5 12 3.5 12 3.5s-7.505 0-9.391.566A2.993 2.993 0 00.502 6.186C0 8.09 0 12 0 12s0 3.91.502 5.814a2.993 2.993 0 002.107 2.12C4.495 20.5 12 20.5 12 20.5s7.505 0 9.391-.566a2.993 2.993 0 002.107-2.12C24 15.91 24 12 24 12s0-3.91-.502-5.814zM9.75 15.5v-7l6 3.5-6 3.5z" />
+                  </svg>
+                </a>
+                {/* TikTok */}
+                <a
+                  href="https://www.tiktok.com/@ghazalifood?_r=1&_t=ZS-92EwkzTtQFJ"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-3 rounded-lg text-white bg-black hover:bg-gray-800 transition-colors"
+                  aria-label="TikTok"
+                >
+                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M20 8.05a5.37 5.37 0 01-3.03-.98 5.5 5.5 0 01-1.6-1.9c-.27-.56-.44-1.16-.52-1.78h-.01A5.63 5.63 0 0114.75 2H11v11.37a2.19 2.19 0 01-1.09 1.9 2.07 2.07 0 01-1.08.3A2.19 2.19 0 016.64 13.4a2.19 2.19 0 012.19-2.19c.23 0 .45.03.66.09V8.07A5.53 5.53 0 008.83 8a5.5 5.5 0 100 11 5.5 5.5 0 005.5-5.5v-6a8.19 8.19 0 003.61 2.18c.35.1.71.18 1.06.22V8.05z" />
                   </svg>
                 </a>
               </div>

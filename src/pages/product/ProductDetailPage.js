@@ -250,7 +250,7 @@ const ProductDetailPage = () => {
     <div className="min-h-screen bg-darkGreen-950 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Breadcrumb */}
-        <div className="mb-6">
+        <div className="mb-4">
           <Link
             to={ROUTES.SHOP}
             className="text-gray-300 hover:text-gold-950 flex items-center gap-1"
@@ -258,6 +258,33 @@ const ProductDetailPage = () => {
             <ChevronLeft className="w-4 h-4" />
             Back to Shop
           </Link>
+        </div>
+
+        {/* Title + rating above image (like the example) */}
+        <div className="mb-4">
+          <h1 className="text-2xl md:text-3xl font-bold text-gold-950 mb-2">
+            {product.name}
+          </h1>
+          {product.averageRating > 0 && (
+            <div className="flex flex-wrap items-center gap-2 text-sm">
+              <div className="flex items-center">
+                {[...Array(5)].map((_, i) => (
+                  <Star
+                    key={i}
+                    className={`w-4 h-4 ${
+                      i < Math.floor(product.averageRating)
+                        ? 'fill-yellow-400 text-yellow-400'
+                        : 'text-gray-500'
+                    }`}
+                  />
+                ))}
+              </div>
+              <span className="text-gray-300">
+                {product.averageRating.toFixed(1)}{' '}
+                <span className="text-gray-400">({product.totalReviews} reviews)</span>
+              </span>
+            </div>
+          )}
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 bg-darkGreen-900/50 border border-gold-950/20 rounded-lg p-6">
@@ -275,6 +302,18 @@ const ProductDetailPage = () => {
                 className="w-full h-full object-cover"
               />
             </div>
+            {/* Optional product video */}
+            {product.videoUrl && (
+              <div className="mt-4">
+                <video
+                  src={product.videoUrl}
+                  controls
+                  className="w-full rounded-lg bg-black max-h-80"
+                >
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+            )}
             {product.images && product.images.length > 1 && (
               <div className="grid grid-cols-4 gap-2">
                 {product.images.map((image, idx) => (
@@ -306,28 +345,6 @@ const ProductDetailPage = () => {
 
           {/* Product Info */}
           <div>
-            <h1 className="text-3xl font-bold text-gold-950 mb-2">{product.name}</h1>
-            
-            {product.averageRating > 0 && (
-              <div className="flex items-center gap-2 mb-4">
-                <div className="flex items-center">
-                  {[...Array(5)].map((_, i) => (
-                    <Star
-                      key={i}
-                      className={`w-4 h-4 ${
-                        i < Math.floor(product.averageRating)
-                          ? 'fill-yellow-400 text-yellow-400'
-                          : 'text-gray-300'
-                      }`}
-                    />
-                  ))}
-                </div>
-                <span className="text-sm text-gray-300">
-                  ({product.totalReviews} reviews)
-                </span>
-              </div>
-            )}
-
             <div className="mb-6">
               <div className="flex items-baseline gap-3">
                 <span className="text-3xl font-bold text-gold-950">

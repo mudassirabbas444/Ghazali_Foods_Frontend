@@ -64,6 +64,34 @@ class AdminService {
     }
   }
 
+  // Upload a single product video to Firebase via backend upload endpoint
+  async uploadProductVideo(file) {
+    try {
+      if (!file) {
+        throw new Error('No video file provided');
+      }
+
+      const formData = new FormData();
+      // Reuse upload/single endpoint (expects field name "image")
+      formData.append('image', file);
+      formData.append('folder', 'product-videos');
+
+      const response = await apiService.upload('/upload/single', formData);
+      // Response shape: { success, message, data: { success, url, publicUrl, ... } }
+      const data = response?.data || response;
+      const inner = data?.data || {};
+      const url = inner.url || inner.publicUrl;
+
+      if (!url) {
+        throw new Error('Video upload failed: URL not returned from server');
+      }
+
+      return { success: true, url };
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async deleteProduct(productId) {
     try {
       const response = await apiService.delete(API_ENDPOINTS.PRODUCTS.DELETE.replace(':id', productId));
