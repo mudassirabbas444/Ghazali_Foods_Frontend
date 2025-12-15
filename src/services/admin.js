@@ -76,7 +76,10 @@ class AdminService {
       formData.append('image', file);
       formData.append('folder', 'product-videos');
 
-      const response = await apiService.upload('/upload/single', formData);
+      // Use a higher timeout for large video uploads (e.g. 5 minutes)
+      const response = await apiService.upload('/upload/single', formData, {
+        timeout: 5 * 60 * 1000,
+      });
       // Response shape: { success, message, data: { success, url, publicUrl, ... } }
       const outer = response || {};
       const payload = outer.data || outer;
