@@ -13,6 +13,7 @@ import {
   ChevronUp,
   Clock,
 } from 'lucide-react';
+import logo from '../../assets/Logo.png';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -84,8 +85,16 @@ const Footer = () => {
           {/* Company Info - Compact */}
           <div>
             <Link to='/' className='flex items-center space-x-2 mb-3'>
-              <div className='w-10 h-10 bg-gradient-to-br from-gold-950 to-gold-600 rounded-full flex items-center justify-center shadow-lg'>
-                <span className='text-darkGreen-950 font-bold text-base'>GF</span>
+              <div className='w-10 h-10 bg-gradient-to-br from-gold-950 to-gold-600 rounded-full flex items-center justify-center shadow-lg overflow-hidden'>
+                {logo ? (
+                  <img
+                    src={logo}
+                    alt='Ghazali Food Logo'
+                    className='w-full h-full object-cover rounded-full'
+                  />
+                ) : (
+                  <span className='text-darkGreen-950 font-bold text-base'>GF</span>
+                )}
               </div>
               <span className='text-lg font-bold text-gold-950'>
                 Ghazali Food
@@ -223,8 +232,16 @@ const Footer = () => {
           {/* Company Info */}
           <div className='md:col-span-2'>
             <Link to='/' className='flex items-center space-x-2 mb-4'>
-              <div className='w-12 h-12 bg-gradient-to-br from-gold-950 to-gold-600 rounded-full flex items-center justify-center shadow-lg'>
-                <span className='text-darkGreen-950 font-bold text-xl'>GF</span>
+              <div className='w-12 h-12 bg-gradient-to-br from-gold-950 to-gold-600 rounded-full flex items-center justify-center shadow-lg overflow-hidden'>
+                {logo ? (
+                  <img
+                    src={logo}
+                    alt='Ghazali Food Logo'
+                    className='w-full h-full object-cover rounded-full'
+                  />
+                ) : (
+                  <span className='text-darkGreen-950 font-bold text-xl'>GF</span>
+                )}
               </div>
               <span className='text-xl font-bold text-gold-950'>
                 Ghazali Food
