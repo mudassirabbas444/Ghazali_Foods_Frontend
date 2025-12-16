@@ -39,6 +39,11 @@ import ContactPage from './pages/contact/ContactPage';
 import BlogPage from './pages/blog/BlogPage';
 import BlogDetailPage from './pages/blog/BlogDetailPage';
 import FaqPage from './pages/faq/FaqPage';
+import TermsPage from './pages/terms/TermsPage';
+import ReturnsPage from './pages/returns/ReturnsPage';
+import ShippingPage from './pages/shipping/ShippingPage';
+import RefundPage from './pages/refund/RefundPage';
+import PrivacyPage from './pages/privacy/PrivacyPage';
 
 // Admin Pages
 import AdminLoginPage from './pages/admin/AdminLoginPage';
@@ -186,7 +191,12 @@ function AppWithToast() {
                   <Route path={ROUTES.SEARCH} element={<Layout><ShopPage /></Layout>} />
                   <Route path={ROUTES.ABOUT} element={<Layout><AboutPage /></Layout>} />
                   <Route path={ROUTES.CONTACT} element={<Layout><ContactPage /></Layout>} />
-                  <Route path="/faq" element={<Layout><FaqPage /></Layout>} />
+                  <Route path={ROUTES.FAQ} element={<Layout><FaqPage /></Layout>} />
+                  <Route path={ROUTES.TERMS} element={<Layout><TermsPage /></Layout>} />
+                  <Route path={ROUTES.RETURNS} element={<Layout><ReturnsPage /></Layout>} />
+                  <Route path={ROUTES.SHIPPING} element={<Layout><ShippingPage /></Layout>} />
+                  <Route path={ROUTES.REFUND} element={<Layout><RefundPage /></Layout>} />
+                  <Route path={ROUTES.PRIVACY} element={<Layout><PrivacyPage /></Layout>} />
                   <Route path={ROUTES.BLOG} element={<Layout><BlogPage /></Layout>} />
                   <Route path={ROUTES.BLOG_DETAIL} element={<Layout><BlogDetailPage /></Layout>} />
 

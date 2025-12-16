@@ -1,32 +1,48 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ChevronDown, ChevronUp, HelpCircle } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const faqs = [
   {
-    question: 'What are your delivery charges?',
+    question: 'Are Ghazali Food dry fruits organic?',
     answer:
-      'Delivery is free on orders above Rs. 2,500. For orders below this amount, a standard delivery fee is applied at checkout.',
+      'Ghazali Food provides a wide selection of premium dry fruits, including organic dry fruits sourced from trusted farms. Each product page clearly states whether the item is organic or conventionally sourced, ensuring transparency and quality assurance.',
   },
   {
-    question: 'What is your return policy?',
+    question: 'Can people with allergies consume Ghazali Food dry fruits?',
     answer:
-      'We offer a 24-hour return/replacement policy for damaged or incorrect items. Please share order details and pictures with our support team within 24 hours of delivery.',
+      'Individuals with nut or food allergies should exercise caution when consuming dry fruits. Some Ghazali Food products contain almonds, cashews, pistachios, walnuts, and other nuts that may cause allergic reactions. Always check the product label and consult a healthcare professional if you have allergies.',
   },
   {
-    question: 'What are your support hours?',
+    question: 'What is the shelf life of Ghazali Food dry fruits?',
     answer:
-      'Our support team is available from 10 am to 6 pm, Monday to Saturday.',
+      'Ghazali Food dry fruits are hygienically processed and air-tight packed to ensure long-lasting freshness. When stored properly, most dry fruits have a shelf life of several months up to one year.',
   },
   {
-    question: 'How can I place an order on WhatsApp?',
+    question: 'How should Ghazali Food dry fruits be stored?',
     answer:
-      'You can place your order directly on WhatsApp by contacting us at +92 310 1111 659. Share the product name, quantity, and your delivery details.',
+      'For best results, store Ghazali Food dry fruits in a cool, dry place away from direct sunlight. After opening, transfer the contents to an airtight container to maintain freshness, taste, and nutritional value.',
   },
   {
-    question: 'Do you deliver nationwide?',
+    question: 'Are Ghazali Food dry fruits good for daily consumption?',
     answer:
-      'Yes, we deliver across Pakistan using trusted courier partners. Delivery times may vary based on your city.',
+      'Yes. Ghazali Food dry fruits are rich in nutrients, healthy fats, and natural energy, making them suitable for daily consumption when eaten in moderation as part of a balanced diet.',
+  },
+  {
+    question: 'Are Ghazali Food dry fruits suitable for gifting?',
+    answer:
+      'Yes. Ghazali Food offers premium packaging designed for festive gifting, weddings, corporate events, and special occasions, making our dry fruits an ideal gift choice.',
+  },
+  {
+    question: 'Where can I buy Ghazali Food dry fruits?',
+    answer:
+      'You can purchase Ghazali Food dry fruits through our official website, authorized retailers, and selected online marketplaces. Visit our product pages to explore the complete range.',
+  },
+  {
+    question: 'Why choose Ghazali Food for dry fruits?',
+    answer:
+      'Ghazali Food is trusted for its premium quality, hygienic packaging, authentic taste, and customer satisfaction, making it a preferred choice for dry fruits across Pakistan.',
   },
 ];
 
@@ -53,8 +69,7 @@ const FaqPage = () => {
             </span>
           </h1>
           <p className="text-lg text-gray-300 max-w-2xl mx-auto">
-            Find quick answers about delivery, returns, support timings, and how
-            to order from Ghazali Food.
+            Discover everything you need to know about Ghazali Food premium dry fruits, including quality, storage, allergies, and organic options.
           </p>
         </motion.div>
 
@@ -97,6 +112,27 @@ const FaqPage = () => {
             );
           })}
         </div>
+
+        {/* Need More Assistance Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="mt-12 text-center bg-darkGreen-900/50 border border-gold-950/20 rounded-2xl p-8"
+        >
+          <h2 className="text-2xl font-semibold text-gold-950 mb-4">
+            Need more assistance?
+          </h2>
+          <p className="text-gray-300 mb-6">
+            For additional questions, visit our Contact Us page or reach out to our customer support team.
+          </p>
+          <Link
+            to="/contact"
+            className="inline-block px-6 py-3 bg-gold-950 text-darkGreen-950 rounded-lg hover:bg-gold-600 transition-all font-semibold"
+          >
+            Contact Us
+          </Link>
+        </motion.div>
       </div>
     </div>
   );

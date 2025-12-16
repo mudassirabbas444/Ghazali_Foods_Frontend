@@ -1,11 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  Facebook,
-  Twitter,
-  Instagram,
-  Linkedin,
-  Mail,
   Phone,
   MapPin,
   Heart,
@@ -14,6 +9,7 @@ import {
   Clock,
 } from 'lucide-react';
 import logo from '../../assets/Logo.png';
+import { ROUTES } from '../../constants';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -26,54 +22,79 @@ const Footer = () => {
     }));
   };
 
+  // Organize existing pages into 3 equal columns
   const footerLinks = {
-    support: [
-      { name: 'Help Center', href: '/help' },
-      { name: 'FAQ', href: '/faq' },
-      { name: 'Contact Us', href: '/contact' },
-      { name: 'Shipping Info', href: '/shipping' },
-      { name: 'Returns', href: '/returns' },
+    column1: [
+      { name: 'FAQ', href: ROUTES.FAQ },
+      { name: 'Contact Us', href: ROUTES.CONTACT },
+      { name: 'Shipping Policy', href: ROUTES.SHIPPING },
     ],
-    legal: [
-      { name: 'Terms & Conditions', href: '/terms' },
-      { name: 'Privacy Policy', href: '/privacy' },
-      { name: 'Cookie Policy', href: '/cookies' },
-      { name: 'Refund Policy', href: '/refund' },
-      { name: 'Shipping Policy', href: '/shipping-policy' },
+    column2: [
+      { name: 'Terms & Conditions', href: ROUTES.TERMS },
+      { name: 'Privacy Policy', href: ROUTES.PRIVACY },
+      { name: 'Refund Policy', href: ROUTES.REFUND },
     ],
-    account: [
-      { name: 'My Account', href: '/profile' },
-      { name: 'Order History', href: '/orders' },
-      { name: 'Wishlist', href: '/wishlist' },
-      { name: 'Track Order', href: '/orders' },
+    column3: [
+      { name: 'Return Policy', href: ROUTES.RETURNS },
+      { name: 'About Us', href: ROUTES.ABOUT },
     ],
   };
 
   const socialLinks = [
     {
       name: 'Facebook',
-      icon: Facebook,
-      href: 'https://facebook.com/ghazalifoods',
-    },
-    { name: 'Twitter', icon: Twitter, href: 'https://twitter.com/ghazalifoods' },
-    {
-      name: 'Instagram',
-      icon: Instagram,
-      href: 'https://instagram.com/ghazalifoods',
+      icon: () => (
+        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+        </svg>
+      ),
+      href: 'https://www.facebook.com/profile.php?id=100064311781297&mibextid=ZbWKwL',
+      bgClass: 'bg-[#1877F2] hover:bg-[#0F5AC6]',
+      textClass: 'text-white',
     },
     {
       name: 'LinkedIn',
-      icon: Linkedin,
-      href: 'https://linkedin.com/company/ghazalifoods',
+      icon: () => (
+        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M4.98 3.5C4.98 4.88 3.88 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5zM.32 8.16h4.36V24H.32V8.16zM8.34 8.16h4.18v2.15h.06c.58-1.1 2-2.26 4.11-2.26 4.4 0 5.21 2.9 5.21 6.67V24h-4.36v-7.16c0-1.71-.03-3.91-2.39-3.91-2.39 0-2.76 1.86-2.76 3.79V24H8.34V8.16z"/>
+        </svg>
+      ),
+      href: 'https://www.linkedin.com/in/ghazali-food-b50308394?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app',
+      bgClass: 'bg-[#0A66C2] hover:bg-[#084C91]',
+      textClass: 'text-white',
+    },
+    {
+      name: 'YouTube',
+      icon: () => (
+        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M23.498 6.186a2.993 2.993 0 00-2.107-2.12C19.505 3.5 12 3.5 12 3.5s-7.505 0-9.391.566A2.993 2.993 0 00.502 6.186C0 8.09 0 12 0 12s0 3.91.502 5.814a2.993 2.993 0 002.107 2.12C4.495 20.5 12 20.5 12 20.5s7.505 0 9.391-.566a2.993 2.993 0 002.107-2.12C24 15.91 24 12 24 12s0-3.91-.502-5.814zM9.75 15.5v-7l6 3.5-6 3.5z" />
+        </svg>
+      ),
+      href: 'https://youtube.com/@ghazalifood?si=BdrIYDKnV5AGk2mz',
+      bgClass: 'bg-[#FF0000] hover:bg-[#CC0000]',
+      textClass: 'text-white',
+    },
+    {
+      name: 'TikTok',
+      icon: () => (
+        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M20 8.05a5.37 5.37 0 01-3.03-.98 5.5 5.5 0 01-1.6-1.9c-.27-.56-.44-1.16-.52-1.78h-.01A5.63 5.63 0 0114.75 2H11v11.37a2.19 2.19 0 01-1.09 1.9 2.07 2.07 0 01-1.08.3A2.19 2.19 0 016.64 13.4a2.19 2.19 0 012.19-2.19c.23 0 .45.03.66.09V8.07A5.53 5.53 0 008.83 8a5.5 5.5 0 100 11 5.5 5.5 0 005.5-5.5v-6a8.19 8.19 0 003.61 2.18c.35.1.71.18 1.06.22V8.05z" />
+        </svg>
+      ),
+      href: 'https://www.tiktok.com/@ghazalifood?_r=1&_t=ZS-92EwkzTtQFJ',
+      bgClass: 'bg-black hover:bg-gray-800',
+      textClass: 'text-white',
     },
     {
       name: 'Snapchat',
       icon: () => (
-        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="w-4 h-4 md:w-5 md:h-5">
+        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
           <path d="M12.005 2c-2.52 0-4.58 1.93-4.73 4.45-.04.71-.02 1.45-.02 2.18 0 1.18-.2 1.68-.36 2.02-.24.52-.63.86-1.36 1.08-.23.07-.37.3-.33.54.14.82.71 1.27 1.27 1.55.22.11.3.36.2.57-.39.79-1.01 1.33-1.7 1.66-.29.14-.42.48-.3.78.2.47.66.78 1.23.86.32.05.66.04 1.02.02.18-.01.36-.02.54-.02.46 0 .83.1 1.18.2.36.1.7.2 1.08.2.46 0 .82-.13 1.19-.27.32-.12.65-.24 1.03-.24.4 0 .73.12 1.06.24.37.14.73.27 1.19.27.39 0 .72-.1 1.08-.2.35-.1.72-.2 1.18-.2.17 0 .35.01.53.02.36.02.7.03 1.02-.02.57-.08 1.03-.39 1.23-.86.12-.3-.01-.64-.3-.78-.69-.33-1.31-.87-1.7-1.66-.11-.21-.03-.46.2-.57.56-.28 1.13-.73 1.27-1.55.04-.24-.1-.47-.33-.54-.73-.22-1.12-.56-1.36-1.08-.16-.34-.36-.84-.36-2.02 0-.73.02-1.47-.02-2.18C16.585 3.93 14.525 2 12.005 2z" />
         </svg>
       ),
       href: 'https://www.snapchat.com/add/ghazalifood?share_id=2vW7jbXCvOw&locale=en-GB',
+      bgClass: 'bg-[#FFFC00] hover:bg-[#F2E800]',
+      textClass: 'text-black',
     },
   ];
 
@@ -89,7 +110,7 @@ const Footer = () => {
                 <img
                   src={logo}
                   alt='Ghazali Food Logo'
-                  className='w-full h-full object-contain rounded-full'
+                  className='w-full h-full object-cover rounded-full scale-110'
                 />
               </div>
               <span className='text-xl font-bold text-gold-950'>
@@ -99,130 +120,58 @@ const Footer = () => {
             <p className='text-sm text-gray-300 mb-3'>
               Premium quality dry fruits, nuts, and gourmet food products.
             </p>
-            {/* Social Links - Compact (brand colors like Contact page) */}
+            {/* Social Links - Compact (exact same as Contact page) */}
             <div className='flex space-x-3'>
               {socialLinks.map((social) => {
                 const Icon = social.icon;
-                let classes =
-                  'p-1.5 rounded-lg border border-gold-950/30 transition-colors';
-
-                if (social.name === 'Facebook') {
-                  classes += ' bg-[#1877F2] text-white hover:bg-[#0F5AC6]';
-                } else if (social.name === 'Instagram') {
-                  classes += ' bg-[#E1306C] text-white hover:bg-[#C3225B]';
-                } else if (social.name === 'Twitter') {
-                  classes += ' bg-[#1DA1F2] text-white hover:bg-[#0D8BD9]';
-                } else if (social.name === 'LinkedIn') {
-                  classes += ' bg-[#0A66C2] text-white hover:bg-[#084C91]';
-                } else if (social.name === 'Snapchat') {
-                  classes += ' bg-[#FFFC00] text-black hover:bg-[#F2E800]';
-                } else {
-                  classes += ' bg-gold-950/20 text-gold-950 hover:bg-gold-950 hover:text-darkGreen-950';
-                }
-
                 return (
                   <a
                     key={social.name}
                     href={social.href}
                     target='_blank'
                     rel='noopener noreferrer'
-                    className={classes}
+                    className={`p-1.5 rounded-lg ${social.bgClass} ${social.textClass} transition-colors`}
                     aria-label={social.name}
                   >
-                    <Icon className='h-4 w-4' />
+                    <Icon />
                   </a>
                 );
               })}
             </div>
           </div>
 
-          {/* Collapsible Sections */}
-          {/* Shipping Info */}
-          <div className='border-b border-gold-950/20 pb-2'>
-            <button
-              onClick={() => toggleSection('shipping')}
-              className='w-full flex items-center justify-between text-left py-2'
-            >
-              <h3 className='text-sm font-semibold text-gray-300'>Shipping Info</h3>
-              {expandedSections.shipping ? (
-                <ChevronUp className='h-4 w-4 text-gray-400' />
-              ) : (
-                <ChevronDown className='h-4 w-4 text-gray-400' />
+          {/* Collapsible Sections - 3 columns */}
+          {Object.entries(footerLinks).map(([key, links], index) => (
+            <div key={key} className='border-b border-gold-950/20 pb-2'>
+              <button
+                onClick={() => toggleSection(key)}
+                className='w-full flex items-center justify-between text-left py-2'
+              >
+                <h3 className='text-sm font-semibold text-gold-950'>
+                  {key === 'column1' ? 'Support' : key === 'column2' ? 'Legal' : 'Information'}
+                </h3>
+                {expandedSections[key] ? (
+                  <ChevronUp className='h-4 w-4 text-gray-400' />
+                ) : (
+                  <ChevronDown className='h-4 w-4 text-gray-400' />
+                )}
+              </button>
+              {expandedSections[key] && (
+                <ul className='space-y-2 pt-2'>
+                  {links.map((link) => (
+                    <li key={link.name}>
+                      <Link
+                        to={link.href}
+                        className='text-sm text-gray-300 hover:text-gold-950 transition-colors block py-1'
+                      >
+                        {link.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
               )}
-            </button>
-            {expandedSections.shipping && (
-              <ul className='space-y-2 pt-2'>
-                {footerLinks.support.slice(3, 5).map((link) => (
-                  <li key={link.name}>
-                    <Link
-                      to={link.href}
-                      className='text-sm text-gray-300 hover:text-gold-950 transition-colors block py-1'
-                    >
-                      {link.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-
-          {/* Legal */}
-          <div className='border-b border-gold-950/20 pb-2'>
-            <button
-              onClick={() => toggleSection('legal')}
-              className='w-full flex items-center justify-between text-left py-2'
-            >
-              <h3 className='text-sm font-semibold text-gold-950'>Legal</h3>
-              {expandedSections.legal ? (
-                <ChevronUp className='h-4 w-4 text-gray-400' />
-              ) : (
-                <ChevronDown className='h-4 w-4 text-gray-400' />
-              )}
-            </button>
-            {expandedSections.legal && (
-              <ul className='space-y-2 pt-2'>
-                {footerLinks.legal.map((link) => (
-                  <li key={link.name}>
-                    <Link
-                      to={link.href}
-                      className='text-sm text-gray-300 hover:text-gold-950 transition-colors block py-1'
-                    >
-                      {link.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-
-          {/* Account */}
-          <div className='border-b border-gold-950/20 pb-2'>
-            <button
-              onClick={() => toggleSection('account')}
-              className='w-full flex items-center justify-between text-left py-2'
-            >
-              <h3 className='text-sm font-semibold text-gold-950'>Account</h3>
-              {expandedSections.account ? (
-                <ChevronUp className='h-4 w-4 text-gray-400' />
-              ) : (
-                <ChevronDown className='h-4 w-4 text-gray-400' />
-              )}
-            </button>
-            {expandedSections.account && (
-              <ul className='space-y-2 pt-2'>
-                {footerLinks.account.map((link) => (
-                  <li key={link.name}>
-                    <Link
-                      to={link.href}
-                      className='text-sm text-gray-300 hover:text-gold-950 transition-colors block py-1'
-                    >
-                      {link.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
+            </div>
+          ))}
         </div>
 
         {/* Desktop Layout */}
@@ -234,7 +183,7 @@ const Footer = () => {
                 <img
                   src={logo}
                   alt='Ghazali Food Logo'
-                  className='w-full h-full object-contain rounded-full'
+                  className='w-full h-full object-cover rounded-full scale-110'
                 />
               </div>
               <span className='text-2xl font-bold text-gold-950'>
@@ -262,48 +211,31 @@ const Footer = () => {
               </div>
             </div>
 
-            {/* Social Links - brand colors like Contact page */}
+            {/* Social Links - exact same as Contact page */}
             <div className='flex space-x-4'>
               {socialLinks.map((social) => {
                 const Icon = social.icon;
-
-                let classes =
-                  'p-2 rounded-lg border border-gold-950/30 transition-colors';
-                if (social.name === 'Facebook') {
-                  classes += ' bg-[#1877F2] text-white hover:bg-[#0F5AC6]';
-                } else if (social.name === 'Instagram') {
-                  classes += ' bg-[#E1306C] text-white hover:bg-[#C3225B]';
-                } else if (social.name === 'Twitter') {
-                  classes += ' bg-[#1DA1F2] text-white hover:bg-[#0D8BD9]';
-                } else if (social.name === 'LinkedIn') {
-                  classes += ' bg-[#0A66C2] text-white hover:bg-[#084C91]';
-                } else if (social.name === 'Snapchat') {
-                  classes += ' bg-[#FFFC00] text-black hover:bg-[#F2E800]';
-                } else {
-                  classes += ' bg-gold-950/20 text-gold-950 hover:bg-gold-950 hover:text-darkGreen-950';
-                }
-
                 return (
                   <a
                     key={social.name}
                     href={social.href}
                     target='_blank'
                     rel='noopener noreferrer'
-                    className={classes}
+                    className={`p-3 rounded-lg ${social.bgClass} ${social.textClass} transition-colors`}
                     aria-label={social.name}
                   >
-                    <Icon className='h-5 w-5' />
+                    <Icon />
                   </a>
                 );
               })}
             </div>
           </div>
 
-          {/* Support Links */}
+          {/* Three Equal Columns for Links */}
           <div>
             <h3 className='text-lg font-semibold mb-4 text-gold-950'>Support</h3>
             <ul className='space-y-3'>
-              {footerLinks.support.map((link) => (
+              {footerLinks.column1.map((link) => (
                 <li key={link.name}>
                   <Link
                     to={link.href}
@@ -316,11 +248,10 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Legal Links */}
           <div>
             <h3 className='text-lg font-semibold mb-4 text-gold-950'>Legal</h3>
             <ul className='space-y-3'>
-              {footerLinks.legal.map((link) => (
+              {footerLinks.column2.map((link) => (
                 <li key={link.name}>
                   <Link
                     to={link.href}
@@ -333,11 +264,10 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Account Links */}
           <div>
-            <h3 className='text-lg font-semibold mb-4 text-gold-950'>Account</h3>
+            <h3 className='text-lg font-semibold mb-4 text-gold-950'>Information</h3>
             <ul className='space-y-3'>
-              {footerLinks.account.map((link) => (
+              {footerLinks.column3.map((link) => (
                 <li key={link.name}>
                   <Link
                     to={link.href}

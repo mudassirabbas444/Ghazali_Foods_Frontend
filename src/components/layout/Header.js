@@ -147,7 +147,7 @@ const Header = () => {
                   <motion.img
                     src={logo}
                     alt='Ghazali Food Logo'
-                    className='h-full w-full object-contain rounded-full'
+                    className='h-full w-full object-cover rounded-full scale-110'
                   />
                 ) : (
                   <span className='text-darkGreen-950 font-bold text-lg sm:text-xl'>GF</span>

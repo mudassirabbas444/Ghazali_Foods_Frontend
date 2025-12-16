@@ -245,6 +245,12 @@ export const ROUTES = {
   COMPARE: '/compare',
   ABOUT: '/about',
   CONTACT: '/contact',
+  FAQ: '/faq',
+  TERMS: '/terms',
+  RETURNS: '/returns',
+  SHIPPING: '/shipping',
+  REFUND: '/refund',
+  PRIVACY: '/privacy',
   BLOG: '/blog',
   BLOG_DETAIL: '/blog/:slug',
   // Admin routes
