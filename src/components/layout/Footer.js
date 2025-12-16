@@ -106,7 +106,7 @@ const Footer = () => {
           {/* Company Info - Compact */}
           <div>
             <Link to='/' className='flex items-center space-x-2 mb-3'>
-              <div className='w-12 h-12 bg-gradient-to-br from-gold-950 to-gold-600 rounded-full flex items-center justify-center shadow-lg overflow-hidden'>
+              <div className='w-10 h-10 bg-gradient-to-br from-gold-950 to-gold-600 rounded-full flex items-center justify-center shadow-lg overflow-hidden'>
                 <img
                   src={logo}
                   alt='Ghazali Food Logo'
@@ -179,7 +179,7 @@ const Footer = () => {
           {/* Company Info */}
           <div className='md:col-span-2'>
             <Link to='/' className='flex items-center space-x-2 mb-4'>
-              <div className='w-14 h-14 bg-gradient-to-br from-gold-950 to-gold-600 rounded-full flex items-center justify-center shadow-lg overflow-hidden'>
+              <div className='w-12 h-12 bg-gradient-to-br from-gold-950 to-gold-600 rounded-full flex items-center justify-center shadow-lg overflow-hidden'>
                 <img
                   src={logo}
                   alt='Ghazali Food Logo'
